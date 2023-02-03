@@ -1,0 +1,9 @@
+user1234        AA 000000200
+user5678        AA 000000400
+adminUser1      AA 000000700
+newUser123      AA 000000350
+newUser1234     BS 000000350
+newUser12345    SS 999999999
+newUser123456   AA 000000376
+nonAdminUser1   AA 000000234
+currentSeller21 SS 000001283
