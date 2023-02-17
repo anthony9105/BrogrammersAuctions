@@ -4,10 +4,12 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <cstdio>
 using namespace std;
 
 const string DAILY_TRANS_FILE = "../files/DailyTransactions.txt";
 const string CURR_USER_ACC_FILE = "../files/CurrentUserAccounts.txt";
+const string TEMP_FILE = "../files/Temp.txt";
 bool isLoggedIn = false;
 ofstream dailyTransFile;
 ifstream readUserAccountsFile;
@@ -114,6 +116,42 @@ class Transaction : public User {
             userAccountsFile.close();
         }
 
+        void removeFromUsersFile(string usernameToRemove) {
+            // first open file and write everything but the line with
+            // the user being deleted to a temp file
+            userAccountsFile.open(TEMP_FILE);
+            readUserAccountsFile.open(CURR_USER_ACC_FILE);
+            string line;
+            vector<string> result;
+            while(getline(readUserAccountsFile, line)) {
+                result = splitIntoVector(line);
+
+                if (result[0] == usernameToRemove) {
+                    cout << result[0] << endl;
+                }
+                else {
+                    userAccountsFile << line << endl;
+                }
+            }
+            userAccountsFile.close();
+            readUserAccountsFile.close();
+
+            // next read from the temp file and print everything from there
+            // to the currentuseraccounts.txt file
+            readUserAccountsFile.open(TEMP_FILE);
+            userAccountsFile.open(CURR_USER_ACC_FILE);
+            while(getline(readUserAccountsFile, line)) {
+                userAccountsFile << line << endl;
+            }
+
+            readUserAccountsFile.close();
+            userAccountsFile.close();
+
+            // finally delete the temp file since it is no longer needed
+            remove(TEMP_FILE.c_str());
+            
+        }
+
         bool checkIfUserExists(string username) {
             readUserAccountsFile.open(CURR_USER_ACC_FILE);
             string line;
@@ -206,8 +244,22 @@ class Create : public Transaction {
 class Delete : public Transaction {
     public:
         void executeTransaction(string name, string accountType, int balance) {
+            string nameToDelete;
+            bool usernameExists = false;
+
+            cout << "Enter username of user to delete" << endl;
+            while (!usernameExists) {
+                getline(cin, nameToDelete);
+                usernameExists = Transaction::checkIfUserExists(nameToDelete);
+
+                if (!usernameExists) {
+                    cout << "Error.  Username does not exist.  Enter a username of a user to delete" << endl;
+                }
+            }
+
+            Transaction::removeFromUsersFile(nameToDelete);
             Transaction::addToTransFile(name, accountType, balance, "02");
-            cout << "Delete account" << endl;
+            cout << "User account deleted" << endl;
         }
 };
 
@@ -310,7 +362,15 @@ int main() {
                         cout << "logout successful" << endl;
                     }
                 }
-                else if (userInput[0] == "delete") {}
+                else if (userInput[0] == "delete") {
+                    if (transactionSession.getAccountType() == "AA") {
+                        Delete deleteTransaction;
+                        deleteTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+                    }
+                    else {
+                        cout << "You can not delete any accounts unless you are on an admin account" << endl;
+                    }
+                }
                 else if (userInput[0] == "advertise") {}
                 else if (userInput[0] == "bid") {}
                 else if (userInput[0] == "refund") {}
