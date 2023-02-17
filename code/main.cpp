@@ -70,13 +70,13 @@ class Transaction : public User {
         }
 
         string getBalanceIn9Char(int balance) {
-            string temp = "";
-            temp += to_string(balance);
-            while (temp.length() < 9) {
-                temp += "0";
+            string temp1 = "", temp2 = "";
+            temp1 += to_string(balance);
+            while (temp1.length() - temp2.length() + 2 < 9) {
+                temp2 += "0";
             }
-
-            return temp;
+            temp2 += temp1;
+            return temp2;
         }
 
         void setBalance(int iBalance) {
@@ -126,10 +126,7 @@ class Transaction : public User {
             while(getline(readUserAccountsFile, line)) {
                 result = splitIntoVector(line);
 
-                if (result[0] == usernameToRemove) {
-                    cout << result[0] << endl;
-                }
-                else {
+                if (result[0] != usernameToRemove) {
                     userAccountsFile << line << endl;
                 }
             }
@@ -149,7 +146,42 @@ class Transaction : public User {
 
             // finally delete the temp file since it is no longer needed
             remove(TEMP_FILE.c_str());
-            
+        }
+
+        void updateCreditInUsersFile(string userToUpdate, int creditToAdd) {
+            // first open file and write everything but the line with
+            // the user being deleted to a temp file
+            userAccountsFile.open(TEMP_FILE);
+            readUserAccountsFile.open(CURR_USER_ACC_FILE);
+            string line;
+            vector<string> result;
+            while(getline(readUserAccountsFile, line)) {
+                result = splitIntoVector(line);
+
+                if (result[0] == userToUpdate) {
+                    cout << "before: " << result[2] << endl; 
+                    result[2] = getBalanceIn9Char((stoi(result[2])) + creditToAdd);
+                    cout << "after: " << result[2] << endl;
+                    line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2];
+                }
+                userAccountsFile << line << endl;
+            }
+            userAccountsFile.close();
+            readUserAccountsFile.close();
+
+            // next read from the temp file and print everything from there
+            // to the currentuseraccounts.txt file
+            readUserAccountsFile.open(TEMP_FILE);
+            userAccountsFile.open(CURR_USER_ACC_FILE);
+            while(getline(readUserAccountsFile, line)) {
+                userAccountsFile << line << endl;
+            }
+
+            readUserAccountsFile.close();
+            userAccountsFile.close();
+
+            // finally delete the temp file since it is no longer needed
+            remove(TEMP_FILE.c_str());
         }
 
         bool checkIfUserExists(string username) {
@@ -253,7 +285,7 @@ class Delete : public Transaction {
                 usernameExists = Transaction::checkIfUserExists(nameToDelete);
 
                 if (!usernameExists) {
-                    cout << "Error.  Username does not exist.  Enter a username of a user to delete" << endl;
+                    cout << "Error.  Username does not exist.  Enter a username of an existing user" << endl;
                 }
             }
 
@@ -274,24 +306,33 @@ class Bid : public Transaction {
 class AddCredit : public Transaction {
     public:
         void executeTransaction(string name, string accountType, int balance) {
+            string nameToAddCredit;
+            nameToAddCredit = name;
+            bool usernameExists = false;
+
+            if (accountType == "AA") {
+                cout << "Enter username of account to add credit to" << endl;
+                while (!usernameExists) {
+                    getline(cin, nameToAddCredit);
+                    usernameExists = Transaction::checkIfUserExists(nameToAddCredit);
+
+                    if (!usernameExists) {
+                        cout << "Error.  Username does not exist.  Enter a username of an existing user" << endl;
+                    }
+                }
+            }
+
+            int creditToAdd;
+            cout << "Enter credit to add to user" << endl;
+            cin >> creditToAdd;
+            Transaction::updateCreditInUsersFile(nameToAddCredit, creditToAdd);
+            //Transaction::setBalance(Transaction::getBalance() + creditToAdd);
             Transaction::addToTransFile(name, accountType, balance, "06");
-            cout << "Add credit transaction" << endl;
+            cout << "Add credit successful" << endl;
+
+            // seg fault after here for some reason
         }
 };
-
-// vector<string> splitIntoVector(string line) {
-//     string temp;
-
-//     // split the input into a vector of strings with space as the delimiter
-//     stringstream ss(line);
-//     vector<string> finalVector;
-//     while(getline(ss, temp, ' ')) {
-//         if (temp != "  ")
-//             finalVector.push_back(temp);
-//     }
-
-//     return finalVector;
-// }
 
 vector<string> logIn(string username) {
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
@@ -311,11 +352,8 @@ vector<string> logIn(string username) {
     }
 
     readUserAccountsFile.close();
-
     cout << "Error. Login unsuccessful.  No account corresponding to this username" << endl;
-
     return vector<string>();
-
 }
 
 
@@ -374,22 +412,16 @@ int main() {
                 else if (userInput[0] == "advertise") {}
                 else if (userInput[0] == "bid") {}
                 else if (userInput[0] == "refund") {}
-                else if (userInput[0] == "addcredit") {}
+                else if (userInput[0] == "addcredit") {
+                    AddCredit addCreditTransaction;
+                    addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+                }
+                else {
+                    cout << "Unknown command.  Try again" << endl;
+                }
             }
         }
     } while (userInput.empty() || userInput[0] != "close");
-
-    // Transaction transactionSession;
-    // transactionSession.setName("Anthony");
-    // transactionSession.setAccountType("AA");
-    // cout << transactionSession.getName() << " " << transactionSession.getAccountType() << endl;
-    // Create create1;
-    // create1.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
-    // Bid bid1;
-    // bid1.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
-    // bid1.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
-    // create1.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
-    // transactionSession.printAllTransactions();
 
     return 0;
 }
