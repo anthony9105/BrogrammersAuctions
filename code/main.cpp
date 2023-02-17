@@ -97,8 +97,11 @@ int main() {
                         cout << "You can not delete any accounts unless you are on an admin account" << endl;
                     }
                 }
+                // todo
                 else if (userInput[0] == "advertise") {}
+                // todo
                 else if (userInput[0] == "bid") {}
+                // todo
                 else if (userInput[0] == "refund") {}
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {

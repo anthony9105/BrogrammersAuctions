@@ -226,25 +226,4 @@ bool Transaction::nameIsTooLong(string username) {
     return false;
 }
 
-void Transaction::printAllTransactions() {
-    for (int i=0; i < transactionNames.size(); i++){
-        cout << transactionNames[i] << endl;
-    }
-}
-
-bool Transaction::hasGeneralPermission(string accountType, string buyOrSell) {
-    if (accountType == "AA" || accountType == "FS") {
-        return true;
-    }
-    else if (accountType == "BS" && buyOrSell == "buy") {
-        return true;
-    }
-    else if (accountType == "SS" && buyOrSell == "sell") {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 void Transaction::executeTransaction() {}
