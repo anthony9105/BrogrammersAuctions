@@ -15,6 +15,9 @@ ofstream dailyTransFile;
 ifstream readUserAccountsFile;
 ofstream userAccountsFile;
 
+/// @brief splitIntoVector function used to split a line (string) into a vector<string>
+/// @param line - line to split
+/// @return - vector<string> of the line split up by spaces
 vector<string> splitIntoVector(string line) {
     stringstream ss(line);
     string word;
@@ -27,6 +30,9 @@ vector<string> splitIntoVector(string line) {
     return result;
 }
 
+/**
+ * User class
+*/
 class User {
     protected:
         int balance = 0;
@@ -43,10 +49,16 @@ class User {
         User() {}
 };
 
+/**
+ * Transaction session class
+*/
 class Transaction : public User {
     public:
         vector<string> transactionNames;
 
+        /**
+         * getters
+        */
         string getName() {
             return name;
         }
@@ -79,6 +91,10 @@ class Transaction : public User {
             return temp2;
         }
 
+
+        /**
+         * setters
+        */
         void setBalance(int iBalance) {
             balance = iBalance;
         }
@@ -91,19 +107,31 @@ class Transaction : public User {
             accountType = iAccountType;
         }
 
+
+        /// @brief addToTransFile function used to add a transaction to the DailyTransactions.txt file
+        /// @param userName - username of the user who did the transaction
+        /// @param accountType - account type of the user who did the transaction (ex: AA for admin)
+        /// @param balance - balance of the user who did the transaction
+        /// @param transCode - transaction code which represents the type of transaction (ex: 01 for create)
         void addToTransFile(string userName, string accountType, int balance, string transCode) {
             // append to the file
             dailyTransFile.open(DAILY_TRANS_FILE, ios::app);
 
+            // write new line to the file
             if (dailyTransFile.is_open()) {
                 dailyTransFile << transCode << " " << getNameIn15Char(userName)
                 << " " << accountType << " " << getBalanceIn9Char(balance) << endl;
             }
+
             dailyTransFile.close();
-            // transactionNames.push_back(name);
         }
 
+        /// @brief addToTransFile function used to add a transaction to the CurrentUsersFile.txt file
+        /// @param userName - username of the user to add
+        /// @param accountType - account type of the user to add (ex: AA for admin)
+        /// @param balance - balance of the user to add
         void addToUsersFile(string userName, string accountType, int balance) {
+            
             // append to the file
             userAccountsFile.open(CURR_USER_ACC_FILE, ios::app);
             cout << getNameIn15Char(userName)
@@ -116,6 +144,9 @@ class Transaction : public User {
             userAccountsFile.close();
         }
 
+        /// @brief removeFromUsersFile used to remove the information of the user
+        /// from the CurrentUserAccounts.txt file
+        /// @param usernameToRemove - username of the user to be removed
         void removeFromUsersFile(string usernameToRemove) {
             // first open file and write everything but the line with
             // the user being deleted to a temp file
@@ -148,6 +179,9 @@ class Transaction : public User {
             remove(TEMP_FILE.c_str());
         }
 
+        /// @brief updateCreditInUsersFile function used to update the credit of the chosen user
+        /// @param userToUpdate - the username of the user to update the credit of
+        /// @param creditToAdd - the amount of credit to add
         void updateCreditInUsersFile(string userToUpdate, int creditToAdd) {
             // first open file and write everything but the line with
             // the user being deleted to a temp file
@@ -159,7 +193,6 @@ class Transaction : public User {
                 result = splitIntoVector(line);
 
                 if (result[0] == userToUpdate) {
-                    cout << "before: " << result[2] << endl; 
                     result[2] = getBalanceIn9Char((stoi(result[2])) + creditToAdd);
                     cout << "after: " << result[2] << endl;
                     line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2];
@@ -184,6 +217,10 @@ class Transaction : public User {
             remove(TEMP_FILE.c_str());
         }
 
+        /// @brief checkIfUserExists function used to check if the given username is a 
+        /// username of an exiting user
+        /// @param username - username to check exists
+        /// @return - true for the user exists or false for the user does not exist
         bool checkIfUserExists(string username) {
             readUserAccountsFile.open(CURR_USER_ACC_FILE);
             string line;
@@ -192,6 +229,7 @@ class Transaction : public User {
                 result = splitIntoVector(line);
 
                 for (int i=0; i < result.size(); i++) {
+                    // if username is found
                     if (result[i] == username) {
                         cout << "Login successful" << endl;
                         isLoggedIn = true;
@@ -204,6 +242,10 @@ class Transaction : public User {
             return false;
         }
 
+        /// @brief nameIsTooLong function used to check if the given username is too long
+        /// (over 15 characters)
+        /// @param username - given username to check
+        /// @return - true for too long or false for a valid length
         bool nameIsTooLong(string username) {
             if (username.length() > 15) {
                 return true;
@@ -235,6 +277,10 @@ class Transaction : public User {
         void executeTransaction() {}
 };
 
+
+/**
+ * Create class
+*/
 class Create : public Transaction {
     public:
         void executeTransaction() {
@@ -244,6 +290,8 @@ class Create : public Transaction {
             string username, accountType;
             
             cout << "Enter new username" << endl;
+
+            // while loop that does not end until valid input is entered
             while (usernameIsInUse || nameTooLong) {
                 getline(cin, username);
                 usernameIsInUse = Transaction::checkIfUserExists(username);
@@ -259,20 +307,27 @@ class Create : public Transaction {
             }
 
             cout << "Enter type of user (admin (AA), full-standard (FS), buy-standard (BS), or sell-standard (SS))" << endl;
-            getline(cin, accountType);
+            // while loop that does not end until valid input is entered
             while (!validAccountType) {
+                getline(cin, accountType);
                 if (accountType == "AA" || accountType == "FS" || accountType == "BS" || accountType == "SS") {
                     validAccountType = true;
                 }
+                cout << "Please enter a valid type of user (admin (AA), full-standard (FS), buy-standard (BS), or sell-standard (SS))" << endl;
             }
 
+            // use functions in the parent class Transaction
             Transaction::addToUsersFile(username, accountType, balance);
             Transaction::addToTransFile(username, accountType, balance, "01");
+
             cout << "Success.  New user added." << endl;
         }
 
 };
 
+/**
+ * Delete class
+*/
 class Delete : public Transaction {
     public:
         void executeTransaction(string name, string accountType, int balance) {
@@ -280,6 +335,8 @@ class Delete : public Transaction {
             bool usernameExists = false;
 
             cout << "Enter username of user to delete" << endl;
+
+            // while loop that does not end until valid input is entered
             while (!usernameExists) {
                 getline(cin, nameToDelete);
                 usernameExists = Transaction::checkIfUserExists(nameToDelete);
@@ -289,12 +346,16 @@ class Delete : public Transaction {
                 }
             }
 
+            // use functions in the parent class Transaction
             Transaction::removeFromUsersFile(nameToDelete);
             Transaction::addToTransFile(name, accountType, balance, "02");
             cout << "User account deleted" << endl;
         }
 };
 
+/**
+ * incomplete
+*/
 class Bid : public Transaction {
     public:
         void executeTransaction(string name, string accountType, int balance) {
@@ -312,6 +373,8 @@ class AddCredit : public Transaction {
 
             if (accountType == "AA") {
                 cout << "Enter username of account to add credit to" << endl;
+
+                // while loop that does not end until valid input is entered        
                 while (!usernameExists) {
                     getline(cin, nameToAddCredit);
                     usernameExists = Transaction::checkIfUserExists(nameToAddCredit);
@@ -325,8 +388,9 @@ class AddCredit : public Transaction {
             int creditToAdd;
             cout << "Enter credit to add to user" << endl;
             cin >> creditToAdd;
+
+            // use functions in the parent class Transaction
             Transaction::updateCreditInUsersFile(nameToAddCredit, creditToAdd);
-            //Transaction::setBalance(Transaction::getBalance() + creditToAdd);
             Transaction::addToTransFile(name, accountType, balance, "06");
             cout << "Add credit successful" << endl;
 
@@ -334,6 +398,10 @@ class AddCredit : public Transaction {
         }
 };
 
+
+/// @brief logIn function used to login
+/// @param username - username of user trying to login
+/// @return - vector<string> containing information about the user
 vector<string> logIn(string username) {
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
@@ -366,6 +434,8 @@ int main() {
     do {
         getline(cin, line);
         userInput = splitIntoVector(line);
+
+        // when login is entered
         if (userInput[0] == "login") {
             if (isLoggedIn) {
                 cout << "Error.  You are already logged in." << endl;
@@ -377,16 +447,20 @@ int main() {
                 userInput[0] == "close";
             }
             else {
+                // set transactionSession with the informaton returned from logIn function
                 transactionSession.setName(userInfo[0]);
                 transactionSession.setAccountType(userInfo[1]);
                 transactionSession.setBalance(stoi(userInfo[2]));
             }
         }
+        // when create is entered
         else if (userInput[0] == "create") {
             Create createTransaction;
             createTransaction.executeTransaction();
         }
+        // commands that require te user to be logged in
         else {
+            // when not logged in
             if (!isLoggedIn) {
                 cout << "Error. You are not logged in" << endl;
             }  
@@ -400,6 +474,7 @@ int main() {
                         cout << "logout successful" << endl;
                     }
                 }
+                // when delete is entered
                 else if (userInput[0] == "delete") {
                     if (transactionSession.getAccountType() == "AA") {
                         Delete deleteTransaction;
@@ -412,10 +487,12 @@ int main() {
                 else if (userInput[0] == "advertise") {}
                 else if (userInput[0] == "bid") {}
                 else if (userInput[0] == "refund") {}
+                // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
                     AddCredit addCreditTransaction;
                     addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
+                // unknown/invalid command
                 else {
                     cout << "Unknown command.  Try again" << endl;
                 }
