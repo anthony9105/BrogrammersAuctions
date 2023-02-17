@@ -1,13 +1,21 @@
 #ifndef ADVERTISE_H
 #define ADVERTISE_H
 
+#include <iostream>
 #include <string>
 #include "../user/user.h"
-#include "transaction.h"
+#include "../transactions/item.h"
+#include "../transactions/transaction.h"
+#include "../transactions/currentitemsfilemanager.h"
 
-class AdvertiseTransaction : public Transaction {
+class Advertise : public Transaction {
 public:
-  void execute();
+    // Constructor
+    Advertise(User* user, CurrentItemsFileManager* itemManager, CurrentTransactionItemsFileManager* transactionItemsManager);
+
+
+    // Execute the advertise transaction
+    bool execute();
 };
 
 #endif

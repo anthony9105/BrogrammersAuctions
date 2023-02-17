@@ -1,43 +1,56 @@
+#include "Advertise.h"
+
 #include <iostream>
 #include <string>
-#include <cstdlib>
-#include <ctime>
-#include "../user/user.h"
-#include "transaction.h"
-#include "advertise.h"
 
-void AdvertiseTransaction::execute() {
-  const int nameLimit = 25;
-  const double bidLimit = 999.99;
-  const int maxDays = 100;
+Advertise::Advertise(User* user, CurrentItemsFileManager* itemManager, TransactionItemsFileManager* transactionItemsFileManager)
+    : Transaction(user, itemManager), transactionItemsFileManager(transactionItemsFileManager)
+{
+}
 
-  std::string itemName;
-  std::string minimumBid;
-  int numDays;
-
-  std::cout << "Enter Item Name: ";
-  std::cin.ignore();
-  std::getline(std::cin, itemName);
-
-  if (itemName.length() <= nameLimit) {
-    std::cout << "Enter starting bid: ";
-    std::cin >> minimumBid;
-    if (std::stod(minimumBid) <= bidLimit) {
-      std::cout << "Enter auction end date: ";
-      std::cin >> numDays;
-      if (numDays <= maxDays) {
-        std::cout << itemName << " has now been posted." << std::endl;
-        DailyTransactionFileManager::addAdvertiseTransaction(itemName, CurrentUserAccountsFileManager::getCurrentUsername(), numDays, minimumBid);
-      } else {
-        std::cout << "Error: Number of days exceeds max days." << std::endl;
-        return;
-      }
-    } else {
-      std::cout << "Error: Bid price exceeds max limit." << std::endl;
-      return;
+bool Advertise::execute()
+{
+    // Check if user balance is sufficient for advertising
+    double userBalance = getUser()->getBalance();
+    if (userBalance <= 0) {
+        std::cout << "Transaction failed. User balance is not sufficient for advertisement." << std::endl;
+        return false;
     }
-  } else {
-    std::cout << "Error: Item name exceeds character limit." << std::endl;
-    return;
-  }
+
+    // Get the item information from the user
+    std::string itemName;
+    double itemPrice;
+    int itemQuantity;
+    std::cout << "Enter item name: ";
+    std::getline(std::cin, itemName);
+    std::cout << "Enter item price: ";
+    std::cin >> itemPrice;
+    std::cout << "Enter item quantity: ";
+    std::cin >> itemQuantity;
+
+    // Check if the item name is already in use
+    if (getItemManager()->itemExists(itemName)) {
+        std::cout << "Transaction failed. Item name already exists." << std::endl;
+        return false;
+    }
+
+    // Create a new item and add it to the item manager
+    Item newItem(itemName, itemPrice, itemQuantity);
+    getItemManager()->addItem(newItem);
+
+    // Deduct the user's balance by the advertisement fee
+    double fee = 0.1 * itemPrice;
+    getUser()->deductBalance(fee);
+
+    // Add transaction to the transaction file
+    TransactionItem transactionItem;
+    transactionItem.setTransactionType(TransactionType::Advertise);
+    transactionItem.setSellerUsername(getUser()->getUsername());
+    transactionItem.setItemName(itemName);
+    transactionItem.setItemPrice(itemPrice);
+    transactionItem.setItemQuantity(itemQuantity);
+    transactionItemsFileManager->addTransactionItem(transactionItem);
+
+    std::cout << "Transaction successful. Item " << itemName << " advertised for sale." << std::endl;
+    return true;
 }
