@@ -11,6 +11,19 @@ const string CURR_USER_ACC_FILE = "../files/CurrentUserAccounts.txt";
 bool isLoggedIn = false;
 ofstream dailyTransFile;
 ifstream readUserAccountsFile;
+ofstream userAccountsFile;
+
+vector<string> splitIntoVector(string line) {
+    stringstream ss(line);
+    string word;
+    vector<string> result;
+
+    while (ss >> word) {
+        result.push_back(word);
+    }
+
+    return result;
+}
 
 class User {
     protected:
@@ -76,7 +89,7 @@ class Transaction : public User {
             accountType = iAccountType;
         }
 
-        void addToFile(string userName, string accountType, int balance, string transCode) {
+        void addToTransFile(string userName, string accountType, int balance, string transCode) {
             // append to the file
             dailyTransFile.open(DAILY_TRANS_FILE, ios::app);
 
@@ -86,6 +99,46 @@ class Transaction : public User {
             }
             dailyTransFile.close();
             // transactionNames.push_back(name);
+        }
+
+        void addToUsersFile(string userName, string accountType, int balance) {
+            // append to the file
+            userAccountsFile.open(CURR_USER_ACC_FILE, ios::app);
+            cout << getNameIn15Char(userName)
+                << " " << accountType << " " << getBalanceIn9Char(balance) << endl;
+
+            if (userAccountsFile.is_open()) {
+                userAccountsFile << getNameIn15Char(userName)
+                << " " << accountType << " " << getBalanceIn9Char(balance) << endl;
+            }
+            userAccountsFile.close();
+        }
+
+        bool checkIfUserExists(string username) {
+            readUserAccountsFile.open(CURR_USER_ACC_FILE);
+            string line;
+            vector<string> result;
+            while (getline(readUserAccountsFile, line)) {
+                result = splitIntoVector(line);
+
+                for (int i=0; i < result.size(); i++) {
+                    if (result[i] == username) {
+                        cout << "Login successful" << endl;
+                        isLoggedIn = true;
+                        readUserAccountsFile.close();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        bool nameIsTooLong(string username) {
+            if (username.length() > 15) {
+                return true;
+            }
+            return false;
         }
 
         void printAllTransactions() {
@@ -114,9 +167,38 @@ class Transaction : public User {
 
 class Create : public Transaction {
     public:
-        void executeTransaction(string name, string accountType, int balance) {
-            Transaction::addToFile(name, accountType, balance, "01");
-            cout << "Create account" << endl;
+        void executeTransaction() {
+            bool usernameIsInUse = true;
+            bool nameTooLong = true;
+            bool validAccountType = false;
+            string username, accountType;
+            
+            cout << "Enter new username" << endl;
+            while (usernameIsInUse || nameTooLong) {
+                getline(cin, username);
+                usernameIsInUse = Transaction::checkIfUserExists(username);
+                nameTooLong = Transaction::nameIsTooLong(username);
+
+                if (usernameIsInUse) {
+                    cout << "Error.  Username is already in use.  Enter a new username" << endl;
+                }
+
+                if (nameTooLong) {
+                    cout << "Error.  Username is too long.  Enter a new username" << endl;
+                }
+            }
+
+            cout << "Enter type of user (admin (AA), full-standard (FS), buy-standard (BS), or sell-standard (SS))" << endl;
+            getline(cin, accountType);
+            while (!validAccountType) {
+                if (accountType == "AA" || accountType == "FS" || accountType == "BS" || accountType == "SS") {
+                    validAccountType = true;
+                }
+            }
+
+            Transaction::addToUsersFile(username, accountType, balance);
+            Transaction::addToTransFile(username, accountType, balance, "01");
+            cout << "Success.  New user added." << endl;
         }
 
 };
@@ -124,7 +206,7 @@ class Create : public Transaction {
 class Delete : public Transaction {
     public:
         void executeTransaction(string name, string accountType, int balance) {
-            Transaction::addToFile(name, accountType, balance, "02");
+            Transaction::addToTransFile(name, accountType, balance, "02");
             cout << "Delete account" << endl;
         }
 };
@@ -132,7 +214,7 @@ class Delete : public Transaction {
 class Bid : public Transaction {
     public:
         void executeTransaction(string name, string accountType, int balance) {
-            Transaction::addToFile(name, accountType, balance, "04");
+            Transaction::addToTransFile(name, accountType, balance, "04");
             cout << "Bid transaction" << endl;
         }
 };
@@ -140,7 +222,7 @@ class Bid : public Transaction {
 class AddCredit : public Transaction {
     public:
         void executeTransaction(string name, string accountType, int balance) {
-            Transaction::addToFile(name, accountType, balance, "06");
+            Transaction::addToTransFile(name, accountType, balance, "06");
             cout << "Add credit transaction" << endl;
         }
 };
@@ -159,23 +241,11 @@ class AddCredit : public Transaction {
 //     return finalVector;
 // }
 
-vector<string> splitIntoVector(string line) {
-    stringstream ss(line);
-    string word;
-    vector<string> result;
-
-    while (ss >> word) {
-        result.push_back(word);
-    }
-
-    return result;
-}
-
 vector<string> logIn(string username) {
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
-    while ( getline(readUserAccountsFile, line)) {
+    while (getline(readUserAccountsFile, line)) {
         result = splitIntoVector(line);
 
         for (int i=0; i < result.size(); i++) {
@@ -186,12 +256,6 @@ vector<string> logIn(string username) {
                 return result;
             }
         }
-        // if (line.find(username) != string::npos) {
-        //     cout << "Login successful" << endl;
-        //     isLoggedIn = true;
-        //     readUserAccountsFile.close();
-        //     return line;
-        // }
     }
 
     readUserAccountsFile.close();
@@ -228,27 +292,31 @@ int main() {
                 transactionSession.setBalance(stoi(userInfo[2]));
             }
         }
-        else {
-            if (userInput[0] == "logout") {
-                if (!isLoggedIn) {
-                    cout << "Error.  You cannot logout if you are not already logged in." << endl;
-                }
-                else {
-                    isLoggedIn = false;
-                    userInput[0] == "close";
-                    cout << "logout successful" << endl;
-                }
-            }
-            else if (userInput[0] == "create") {}
-            else if (userInput[0] == "delete") {}
-            else if (userInput[0] == "advertise") {}
-            else if (userInput[0] == "bid") {}
-            else if (userInput[0] == "refund") {}
-            else if (userInput[0] == "addcredit") {}
+        else if (userInput[0] == "create") {
+            Create createTransaction;
+            createTransaction.executeTransaction();
         }
-        // else {
-        //     cout << "You are not logged in" << endl;
-        // }
+        else {
+            if (!isLoggedIn) {
+                cout << "Error. You are not logged in" << endl;
+            }  
+            else { 
+                if (userInput[0] == "logout") {
+                    if (!isLoggedIn) {
+                        cout << "Error.  You cannot logout if you are not already logged in." << endl;
+                    }
+                    else {
+                        isLoggedIn = false;
+                        cout << "logout successful" << endl;
+                    }
+                }
+                else if (userInput[0] == "delete") {}
+                else if (userInput[0] == "advertise") {}
+                else if (userInput[0] == "bid") {}
+                else if (userInput[0] == "refund") {}
+                else if (userInput[0] == "addcredit") {}
+            }
+        }
     } while (userInput.empty() || userInput[0] != "close");
 
     // Transaction transactionSession;
