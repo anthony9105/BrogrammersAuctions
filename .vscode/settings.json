@@ -5,6 +5,9 @@
         "string": "cpp",
         "iostream": "cpp",
         "vector": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "system_error": "cpp",
+        "xlocale": "cpp",
+        "cstdio": "cpp"
     }
 }
