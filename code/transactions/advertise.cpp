@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+///TODO: implement/fix this
+
 Advertise::Advertise(User* user, CurrentItemsFileManager* itemManager, TransactionItemsFileManager* transactionItemsFileManager)
     : Transaction(user, itemManager), transactionItemsFileManager(transactionItemsFileManager)
 {

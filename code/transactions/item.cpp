@@ -1,6 +1,8 @@
 #include "item.h"
 #include <stdexcept>
 
+///TODO: implement/fix this
+
 Item::Item(const std::string& name, double price, const std::string& seller)
     : name_(name), price_(price), seller_(seller), available_(true) {}
 

@@ -1,6 +1,8 @@
 #include "CurrentItemsFileManager.h"
 #include <fstream>
 
+///TODO: implement/fix this
+
 CurrentItemsFileManager::CurrentItemsFileManager(const std::string& filename)
     : m_filename(filename)
 {}
