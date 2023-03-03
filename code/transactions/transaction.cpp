@@ -337,4 +337,34 @@ bool Transaction::passwordAccepted(string username, string submittedPassword) {
     return false;
 }
 
+void Transaction::displayAllAccountInfo(string accountType) {
+    if (accountType == "AA") {
+        cout.width(20);
+        cout << "Username";
+        cout.width(20);
+        cout << "Account Type";
+        cout.width(20);
+        cout << "Credit" << endl;
+
+        readUserAccountsFile.open(CURR_USER_ACC_FILE);
+        string line;
+        vector<string> result;
+        while (getline(readUserAccountsFile, line)) {
+            result = splitIntoVector(line);
+
+            for (int i=0; i < result.size(); i++) {
+                // dont display the password (last element in result)
+                if (i < result.size()-1) {
+                    cout.width(20);
+                    cout << result[i];
+                }
+            }
+            cout << endl;
+        }
+    }
+    else {
+        cout << "You do not have the privilege to do this" << endl;
+    }
+}
+
 void Transaction::executeTransaction() {}

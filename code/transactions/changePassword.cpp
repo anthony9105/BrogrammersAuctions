@@ -23,7 +23,10 @@ void ChangePassword::executeTransaction(string name, string accountType, int bal
         } 
     }
 
+    // update the password in the current users file
     Transaction::updatePasswordInUsersFile(name, newPassword);
+
+    // add this "transaction" to the transaction file
     Transaction::addToTransFile(name, accountType, balance, "07");
 
     cout << "Password updated successfully" << endl;

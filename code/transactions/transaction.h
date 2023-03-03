@@ -103,6 +103,8 @@ class Transaction : public User {
 
         bool passwordAccepted(string username, string submittedPassword);
 
+        void displayAllAccountInfo(string accountType);
+
 
         void executeTransaction();
 };

@@ -137,6 +137,9 @@ void runSession()
                     changePasswordTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
                                                                  transactionSession.getBalance(), transactionSession.getPassword());
                 }
+                else if (userInput[0] == "listallusers") {
+                    transactionSession.displayAllAccountInfo(transactionSession.getAccountType());
+                }
                 // unknown/invalid command
                 else {
                     cout << "Unknown command.  Try again" << endl;
