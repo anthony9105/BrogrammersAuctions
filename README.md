@@ -1,5 +1,4 @@
 # BrogrammersAuctions
-a
 
 Steps to compile and run in a terminal:
 
