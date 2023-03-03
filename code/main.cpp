@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 #include <cstdio>
+#include <thread>
+
 #include "user/user.h"
 #include "transactions/transaction.h"
 #include "transactions/delete.h"
@@ -12,10 +14,13 @@
 #include "transactions/addcredit.h"
 using namespace std;
 
+Transaction transactionSession; 
+
+
 /// @brief logIn function used to login
 /// @param username - username of user trying to login
 /// @return - vector<string> containing information about the user
-vector<string> logIn(string username) {
+vector<string> logIn(string username, string submittedPassword) {
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
@@ -24,29 +29,49 @@ vector<string> logIn(string username) {
 
         for (int i=0; i < result.size(); i++) {
             if (result[i] == username) {
-                cout << "Login successful" << endl;
-                isLoggedIn = true;
+                //cout << "Login successful" << endl;
+                //isLoggedIn = true;
                 readUserAccountsFile.close();
-                return result;
+                break;
+                //return result;
             }
         }
     }
 
-    readUserAccountsFile.close();
-    cout << "Error. Login unsuccessful.  No account corresponding to this username" << endl;
-    return vector<string>();
+    //readUserAccountsFile.close();
+    bool usernameValid, passwordCorrect;
+
+    usernameValid = transactionSession.checkIfUserExists(username);
+    passwordCorrect = transactionSession.passwordAccepted(submittedPassword);
+    if (!usernameValid) {
+        cout << "Error. Login unsuccessful.  No account corresponding to this username" << endl;
+        return vector<string>();
+    }
+    else if (!passwordCorrect) {
+        cout << "Error. Login unsuccessful.  Password incorect" << endl;
+        return vector<string>();
+    }
+    else {
+        cout << "Login successful" << endl;
+        isLoggedIn = true;
+        return result;
+    }
 }
 
-
-int main() {
+void runSession()
+{
     string line;
     vector<string> userInput;
     vector<string> userInfo;
-    Transaction transactionSession;
+
 
     do {
         getline(cin, line);
         userInput = splitIntoVector(line);
+
+        if (userInput[0] == "close") {
+            return;
+        }
 
         // when login is entered
         if (userInput[0] == "login") {
@@ -54,9 +79,17 @@ int main() {
                 cout << "Error.  You are already logged in." << endl;
                 break;
             }
-            userInfo = logIn(userInput[1]);
 
-            if (userInfo.empty()) {
+            if (userInput.size() < 3) {
+                cout << "Please enter a password" << endl;
+                userInput[0] = "";
+                //break;
+            }
+            else {
+                userInfo = logIn(userInput[1], userInput[2]);
+            }
+
+            if (userInfo.empty() || userInfo[0] == "") {
                 userInput[0] == "close";
             }
             else {
@@ -85,6 +118,9 @@ int main() {
                     else {
                         isLoggedIn = false;
                         cout << "logout successful" << endl;
+
+                        // add end of session (code: 00) to the daily transaction file
+                        transactionSession.addToTransFile(userInfo[0], userInfo[1], stoi(userInfo[2]), "00");
                     }
                 }
                 // when delete is entered
@@ -116,6 +152,25 @@ int main() {
             }
         }
     } while (userInput.empty() || userInput[0] != "close");
+}
+
+int main() {
+
+    // string message1 = "thread 1";
+    // string message2 = "thread 2";
+    // string messages[] = {message1, message2};
+    // vector<thread> threads;
+    runSession();
+
+    //system("gnome-terminal");
+    // int numOfThreads = 2;
+    // for (int i=0; i < numOfThreads; i++) {
+    //     threads.push_back(thread(runSession, messages[i]));
+    // }
+
+    // for (auto &th : threads) {
+    //     th.join();
+    // }
 
     return 0;
 }

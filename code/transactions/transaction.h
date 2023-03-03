@@ -43,6 +43,8 @@ class Transaction : public User {
 
         string getBalanceIn9Char(int balance);
 
+        string getPassword();
+
 
         /**
          * setters
@@ -52,6 +54,8 @@ class Transaction : public User {
         void setName(string iName);
 
         void setAccountType(string iAccountType);
+
+        void setPassword(string iPassword);
 
 
         /// @brief addToTransFile function used to add a transaction to the DailyTransactions.txt file
@@ -65,7 +69,9 @@ class Transaction : public User {
         /// @param userName - username of the user to add
         /// @param accountType - account type of the user to add (ex: AA for admin)
         /// @param balance - balance of the user to add
-        void addToUsersFile(string userName, string accountType, int balance);
+        /// @param displayPassword - displayPassword of the user (not encrypted).  This function does encrypt it here
+        ///                          right before outputting to the file.
+        void addToUsersFile(string userName, string accountType, int balance, string displayPassword);
 
         /// @brief removeFromUsersFile used to remove the information of the user
         /// from the CurrentUserAccounts.txt file
@@ -88,10 +94,13 @@ class Transaction : public User {
         /// @param username - given username to check
         /// @return - true for too long or false for a valid length
         bool nameIsTooLong(string username);
+        
+        string encryptPassword(string givenPassword);
 
-        void printAllTransactions();
+        string decryptPassword(string givenPassword);
 
-        bool hasGeneralPermission(string accountType, string buyOrSell);
+        bool passwordAccepted(string submittedPassword);
+
 
         void executeTransaction();
 };

@@ -63,6 +63,10 @@ string Transaction::getBalanceIn9Char(int balance) {
     return temp2;
 }
 
+string Transaction::getPassword() {
+    return password;
+}
+
 
 /**
  * setters
@@ -77,6 +81,15 @@ void Transaction::setName(string iName) {
 
 void Transaction::setAccountType(string iAccountType) {
     accountType = iAccountType;
+}
+
+void Transaction::setPassword(string iPassword) {
+    while (iPassword.length() < 1 || iPassword.length() > 14) {
+        cout << "Invalid.  Enter a password with more than 1 character and less than 15 characters:" << endl;
+        getline(cin, iPassword);
+    }
+
+    password = iPassword;
 }
 
 
@@ -102,16 +115,17 @@ void Transaction::addToTransFile(string userName, string accountType, int balanc
 /// @param userName - username of the user to add
 /// @param accountType - account type of the user to add (ex: AA for admin)
 /// @param balance - balance of the user to add
-void Transaction::addToUsersFile(string userName, string accountType, int balance) {
-    
+/// @param displayPassword - displayPassword of the user (not encrypted).  This function does encrypt it here
+///                          right before outputting to the file.
+void Transaction::addToUsersFile(string userName, string accountType, int balance, string displayPassword) {
+    displayPassword = encryptPassword(displayPassword);
+
     // append to the file
     userAccountsFile.open(CURR_USER_ACC_FILE, ios::app);
-    cout << getNameIn15Char(userName)
-        << " " << accountType << " " << getBalanceIn9Char(balance) << endl;
 
     if (userAccountsFile.is_open()) {
         userAccountsFile << getNameIn15Char(userName)
-        << " " << accountType << " " << getBalanceIn9Char(balance) << endl;
+        << " " << accountType << " " << getBalanceIn9Char(balance) << " " << displayPassword << endl;
     }
     userAccountsFile.close();
 }
@@ -204,8 +218,8 @@ bool Transaction::checkIfUserExists(string username) {
         for (int i=0; i < result.size(); i++) {
             // if username is found
             if (result[i] == username) {
-                cout << "Login successful" << endl;
-                isLoggedIn = true;
+                //cout << "Login successful" << endl;
+                //isLoggedIn = true;
                 readUserAccountsFile.close();
                 return true;
             }
@@ -223,6 +237,69 @@ bool Transaction::nameIsTooLong(string username) {
     if (username.length() > 15) {
         return true;
     }
+    return false;
+}
+
+string Transaction::encryptPassword(string givenPassword) {
+    string encryptedPassword= "";
+
+    for (int i=0; i < givenPassword.length(); i++) {
+        char tempChar = givenPassword.at(i);
+        int tempInt = int(tempChar);
+        
+        tempInt += 3;
+
+        // make sure the characters are only from ! to ~ (33 to 126)
+        if (tempInt > 126) {
+            tempInt = tempInt - (127-33);
+        }
+
+        encryptedPassword += char(tempInt);
+    }
+
+    return encryptedPassword;
+}
+
+string Transaction::decryptPassword(string givenPassword) {
+    string decryptedPassword = "";
+
+        for (int i=0; i < givenPassword.length(); i++) {
+        char tempChar = givenPassword.at(i);
+        int tempInt = int(tempChar);
+        
+        tempInt -= 3;
+
+        // make sure the characters are only from ! to ~ (33 to 126)
+        if (tempInt < 33) {
+            tempInt = tempInt + (127-33);
+        }
+
+        decryptedPassword += char(tempInt);
+    }
+
+    return decryptedPassword;
+}
+
+bool Transaction::passwordAccepted(string submittedPassword) {
+    readUserAccountsFile.open(CURR_USER_ACC_FILE);
+    string line;
+    vector<string> result;
+    string encryptedPassword = encryptPassword(submittedPassword);
+
+    while (getline(readUserAccountsFile, line)) {
+        result = splitIntoVector(line);
+
+        for (int i=0; i < result.size(); i++) {
+            // if password is correct
+            if (result[i] == encryptedPassword) {
+                //cout << "Login successful" << endl;
+                //isLoggedIn = true;
+                readUserAccountsFile.close();
+                return true;
+            }
+        }
+    }
+
     return false;
 }
 
