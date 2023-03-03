@@ -155,22 +155,7 @@ void runSession()
 }
 
 int main() {
-
-    // string message1 = "thread 1";
-    // string message2 = "thread 2";
-    // string messages[] = {message1, message2};
-    // vector<thread> threads;
     runSession();
-
-    //system("gnome-terminal");
-    // int numOfThreads = 2;
-    // for (int i=0; i < numOfThreads; i++) {
-    //     threads.push_back(thread(runSession, messages[i]));
-    // }
-
-    // for (auto &th : threads) {
-    //     th.join();
-    // }
 
     return 0;
 }
