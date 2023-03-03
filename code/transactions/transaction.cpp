@@ -204,6 +204,41 @@ void Transaction::updateCreditInUsersFile(string userToUpdate, int creditToAdd) 
     remove(TEMP_FILE.c_str());
 }
 
+
+void Transaction::updatePasswordInUsersFile(string userToUpdate, string newPassword) {
+    // first open file and write everything but the line with
+    // the user being deleted to a temp file
+    userAccountsFile.open(TEMP_FILE);
+    readUserAccountsFile.open(CURR_USER_ACC_FILE);
+    string line;
+    vector<string> result;
+    while(getline(readUserAccountsFile, line)) {
+        result = splitIntoVector(line);
+
+        if (result[0] == userToUpdate) {
+            result[3] = encryptPassword(newPassword);
+            line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2] + " " + result[3];
+        }
+        userAccountsFile << line << endl;
+    }
+    userAccountsFile.close();
+    readUserAccountsFile.close();
+
+    // next read from the temp file and print everything from there
+    // to the currentuseraccounts.txt file
+    readUserAccountsFile.open(TEMP_FILE);
+    userAccountsFile.open(CURR_USER_ACC_FILE);
+    while(getline(readUserAccountsFile, line)) {
+        userAccountsFile << line << endl;
+    }
+
+    readUserAccountsFile.close();
+    userAccountsFile.close();
+
+    // finally delete the temp file since it is no longer needed
+    remove(TEMP_FILE.c_str());
+}
+
 /// @brief checkIfUserExists function used to check if the given username is a 
 /// username of an exiting user
 /// @param username - username to check exists
@@ -218,7 +253,6 @@ bool Transaction::checkIfUserExists(string username) {
         for (int i=0; i < result.size(); i++) {
             // if username is found
             if (result[i] == username) {
-                //cout << "Login successful" << endl;
                 //isLoggedIn = true;
                 readUserAccountsFile.close();
                 return true;
@@ -280,7 +314,7 @@ string Transaction::decryptPassword(string givenPassword) {
     return decryptedPassword;
 }
 
-bool Transaction::passwordAccepted(string submittedPassword) {
+bool Transaction::passwordAccepted(string username, string submittedPassword) {
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
@@ -291,7 +325,7 @@ bool Transaction::passwordAccepted(string submittedPassword) {
 
         for (int i=0; i < result.size(); i++) {
             // if password is correct
-            if (result[i] == encryptedPassword) {
+            if (result[i] == encryptedPassword && result[0] == username) {
                 //cout << "Login successful" << endl;
                 //isLoggedIn = true;
                 readUserAccountsFile.close();

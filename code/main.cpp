@@ -12,10 +12,10 @@
 #include "transactions/delete.h"
 #include "transactions/create.h"
 #include "transactions/addcredit.h"
+#include "transactions/changePassword.h"
 using namespace std;
 
 Transaction transactionSession; 
-
 
 /// @brief logIn function used to login
 /// @param username - username of user trying to login
@@ -24,38 +24,25 @@ vector<string> logIn(string username, string submittedPassword) {
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
+    string encryptedPassword = transactionSession.encryptPassword(submittedPassword);
+
     while (getline(readUserAccountsFile, line)) {
         result = splitIntoVector(line);
 
         for (int i=0; i < result.size(); i++) {
-            if (result[i] == username) {
-                //cout << "Login successful" << endl;
-                //isLoggedIn = true;
+            // if username and password is correct
+            if (result[i] == encryptedPassword && result[0] == username) {
+                cout << "Login successful" << endl;
+                isLoggedIn = true;
                 readUserAccountsFile.close();
-                break;
-                //return result;
+                return result;
             }
         }
     }
 
-    //readUserAccountsFile.close();
-    bool usernameValid, passwordCorrect;
-
-    usernameValid = transactionSession.checkIfUserExists(username);
-    passwordCorrect = transactionSession.passwordAccepted(submittedPassword);
-    if (!usernameValid) {
-        cout << "Error. Login unsuccessful.  No account corresponding to this username" << endl;
-        return vector<string>();
-    }
-    else if (!passwordCorrect) {
-        cout << "Error. Login unsuccessful.  Password incorect" << endl;
-        return vector<string>();
-    }
-    else {
-        cout << "Login successful" << endl;
-        isLoggedIn = true;
-        return result;
-    }
+    readUserAccountsFile.close();
+    cout << "Login unsuccessful.  Username and/or password incorrect" << endl;
+    return vector<string>();
 }
 
 void runSession()
@@ -63,7 +50,6 @@ void runSession()
     string line;
     vector<string> userInput;
     vector<string> userInfo;
-
 
     do {
         getline(cin, line);
@@ -89,7 +75,7 @@ void runSession()
                 userInfo = logIn(userInput[1], userInput[2]);
             }
 
-            if (userInfo.empty() || userInfo[0] == "") {
+            if (userInfo.empty()) {
                 userInput[0] == "close";
             }
             else {
@@ -97,6 +83,7 @@ void runSession()
                 transactionSession.setName(userInfo[0]);
                 transactionSession.setAccountType(userInfo[1]);
                 transactionSession.setBalance(stoi(userInfo[2]));
+                transactionSession.setPassword(transactionSession.decryptPassword(userInfo[3]));
             }
         }
         // when create is entered
@@ -144,6 +131,11 @@ void runSession()
                 else if (userInput[0] == "addcredit") {
                     AddCredit addCreditTransaction;
                     addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+                }
+                else if (userInput[0] == "changepassword") {
+                    ChangePassword changePasswordTransaction;
+                    changePasswordTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
+                                                                 transactionSession.getBalance(), transactionSession.getPassword());
                 }
                 // unknown/invalid command
                 else {

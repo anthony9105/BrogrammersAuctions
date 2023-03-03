@@ -83,6 +83,8 @@ class Transaction : public User {
         /// @param creditToAdd - the amount of credit to add
         void updateCreditInUsersFile(string userToUpdate, int creditToAdd);
 
+        void updatePasswordInUsersFile(string userToUpdate, string newPassword);
+
         /// @brief checkIfUserExists function used to check if the given username is a 
         /// username of an exiting user
         /// @param username - username to check exists
@@ -99,7 +101,7 @@ class Transaction : public User {
 
         string decryptPassword(string givenPassword);
 
-        bool passwordAccepted(string submittedPassword);
+        bool passwordAccepted(string username, string submittedPassword);
 
 
         void executeTransaction();
