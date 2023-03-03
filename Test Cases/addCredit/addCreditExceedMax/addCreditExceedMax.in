@@ -1,2 +1,3 @@
-login adminUser1
-addcredit 700 user12345
+login newUser12345
+addcredit
+700

@@ -53,7 +53,12 @@ void runSession()
 
     do {
         getline(cin, line);
-        userInput = splitIntoVector(line);
+        if (line.empty()) {
+            userInput.push_back("");
+        }
+        else {
+            userInput = splitIntoVector(line);
+        }
 
         if (userInput[0] == "close") {
             return;

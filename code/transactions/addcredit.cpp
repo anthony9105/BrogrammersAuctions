@@ -33,6 +33,12 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     cout << "Enter credit to add to user" << endl;
     cin >> creditToAdd;
 
+    if (balance + creditToAdd > 999999999)
+    {
+        cout << "Error. This transaction will cause credit account to exceed max of 999999999" << endl;
+        return;
+    }
+
     // use functions in the parent class Transaction
     Transaction::updateCreditInUsersFile(nameToAddCredit, creditToAdd);
     Transaction::addToTransFile(name, accountType, balance, "06");
