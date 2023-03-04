@@ -30,19 +30,30 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     }
 
     int creditToAdd;
-    cout << "Enter credit to add to user" << endl;
-    cin >> creditToAdd;
+    bool validCreditToAdd = false;
 
-    if (balance + creditToAdd > 999999999)
-    {
-        cout << "Error. This transaction will cause credit account to exceed max of 999999999" << endl;
-        return;
+    while (!validCreditToAdd) {
+        cout << "Enter credit to add to user" << endl;
+        cin >> creditToAdd;
+
+        if (balance + creditToAdd > 999999999)
+        {
+            cout << "Error. This transaction will cause credit account to exceed max of 999999999" << endl;
+        }
+        else if (Transaction::sessionCreditLimitExceeded(creditToAdd)) {
+            cout << "Error. No more than $1000.00 can be added in a given session" << endl;
+        }
+        else {
+            validCreditToAdd = true;
+            break;
+        }
     }
 
     // use functions in the parent class Transaction
     Transaction::updateCreditInUsersFile(nameToAddCredit, creditToAdd);
     Transaction::addToTransFile(name, accountType, balance, "06");
     cout << "Add credit successful" << endl;
+    return;
 
     // seg fault after here for some reason
 }
