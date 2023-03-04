@@ -17,6 +17,11 @@ void ChangePassword::executeTransaction(string name, string accountType, int bal
         cout << "Enter new password (more than 1 character and less than 15 characters)" << endl;
         getline(cin, newPassword);
 
+        // to exit from/cancel changepassword entirely
+        if (Transaction::cancelTransaction(newPassword)) {
+            return;
+        }
+
         // if over 1 character, less than 15 characters, and not the same as the current password
         if (newPassword.length() > 1 && newPassword.length() < 15 && newPassword != currentPassword) {
             validPassword = true;

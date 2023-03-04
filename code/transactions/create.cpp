@@ -24,6 +24,12 @@ void Create::executeTransaction() {
     // while loop that does not end until valid input is entered
     while (usernameIsInUse || nameTooLong) {
         getline(cin, username);
+
+        // to exit from/cancel create entirely
+        if (Transaction::cancelTransaction(username)) {
+            return;
+        }
+
         usernameIsInUse = Transaction::checkIfUserExists(username);
         nameTooLong = Transaction::nameIsTooLong(username);
 
@@ -40,6 +46,12 @@ void Create::executeTransaction() {
     // while loop that does not end until valid input is entered
     while (!validAccountType) {
         getline(cin, accountType);
+
+        // to exit from/cancel create entirely
+        if (Transaction::cancelTransaction(accountType)) {
+            return;
+        }
+
         if (accountType == "AA" || accountType == "FS" || accountType == "BS" || accountType == "SS") {
             validAccountType = true;
             break;
@@ -51,6 +63,11 @@ void Create::executeTransaction() {
     // while loop that does not end until valid input is entered
     while (!validPassword) {
         getline(cin, enteredPassword);
+
+        // to exit from/cancel create entirely
+        if (Transaction::cancelTransaction(enteredPassword)) {
+            return;
+        }
 
         if (enteredPassword.length() > 1 && enteredPassword.length() < 15) {
             validPassword = true;

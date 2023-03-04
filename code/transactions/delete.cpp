@@ -21,6 +21,12 @@ void Delete::executeTransaction(string name, string accountType, int balance) {
     // while loop that does not end until valid input is entered
     while (!usernameExists) {
         getline(cin, nameToDelete);
+
+        // to exit from/cancel delete entirely
+        if (Transaction::cancelTransaction(nameToDelete)) {
+            return;
+        }
+
         usernameExists = Transaction::checkIfUserExists(nameToDelete);
 
         if (!usernameExists) {

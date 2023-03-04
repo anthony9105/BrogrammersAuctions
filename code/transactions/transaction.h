@@ -16,6 +16,7 @@ static string DAILY_TRANS_FILE;
 static string CURR_USER_ACC_FILE;
 const string TEMP_FILE = "../files/Temp.txt";
 static bool isLoggedIn = false;
+const string CANCEL_COMMAND = "cancel please";
 
 /// @brief splitIntoVector function used to split a line (string) into a vector<string>
 /// @param line - line to split
@@ -108,6 +109,8 @@ class Transaction : public User {
         bool sessionCreditLimitExceeded(int creditToAdd);
 
         int getBalanceFromChosenUser(string chosenUsername);
+
+        bool cancelTransaction(string response);
 
 
         void executeTransaction();

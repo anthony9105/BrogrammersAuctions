@@ -420,4 +420,12 @@ bool Transaction::sessionCreditLimitExceeded(int creditToAdd) {
     return false;
 }
 
+bool Transaction::cancelTransaction(string response) {
+    if (response == CANCEL_COMMAND) {
+        cout << "Transaction cancelled" << endl;
+        return true;
+    }
+    return false;
+}
+
 void Transaction::executeTransaction() {}
