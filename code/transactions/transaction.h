@@ -107,6 +107,8 @@ class Transaction : public User {
 
         bool sessionCreditLimitExceeded(int creditToAdd);
 
+        int getBalanceFromChosenUser(string chosenUsername);
+
 
         void executeTransaction();
 };

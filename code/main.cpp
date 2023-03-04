@@ -169,6 +169,7 @@ void runSession()
 }
 
 int main(int argc, char* argv[]) {
+    // for 2 files (will be changed for 3 files when that part is implemented)
     if (argc < 3) {
         cout << "Incorrect number of file paths provided.  Program ending" << endl;
         return 0;

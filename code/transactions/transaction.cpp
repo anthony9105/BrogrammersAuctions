@@ -282,6 +282,27 @@ bool Transaction::checkIfUserExists(string username) {
     return false;
 }
 
+int Transaction::getBalanceFromChosenUser(string chosenUsername) {
+     ifstream readUserAccountsFile;
+    readUserAccountsFile.open(CURR_USER_ACC_FILE);
+
+    string line;
+    vector<string> result;
+    while (getline(readUserAccountsFile, line)) {
+        result = splitIntoVector(line);
+
+        for (int i=0; i < result.size(); i++) {
+            // if username is found
+            if (result[i] == chosenUsername) {
+                readUserAccountsFile.close();
+                return stoi(result[i+2]);
+            }
+        }
+    }
+
+    return 0;
+}
+
 /// @brief nameIsTooLong function used to check if the given username is too long
 /// (over 15 characters)
 /// @param username - given username to check

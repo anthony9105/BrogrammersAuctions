@@ -31,12 +31,19 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
 
     int creditToAdd;
     bool validCreditToAdd = false;
+    int balanceOfUserToAddTo = Transaction::getBalanceFromChosenUser(nameToAddCredit);
 
+    if (balanceOfUserToAddTo >= 999999999) {
+        cout << "Balance is already at the maximum of 999999999" << endl;
+        return;
+    }
+
+    // loop to run until the credit added is a valid amount
     while (!validCreditToAdd) {
         cout << "Enter credit to add to user" << endl;
         cin >> creditToAdd;
 
-        if (balance + creditToAdd > 999999999)
+        if (balanceOfUserToAddTo + creditToAdd > 999999999)
         {
             cout << "Error. This transaction will cause credit account to exceed max of 999999999" << endl;
         }
@@ -47,6 +54,11 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
             validCreditToAdd = true;
             break;
         }
+    }
+
+    // if the user is adding credit to themselves
+    if (nameToAddCredit == name) {
+        balance += creditToAdd;
     }
 
     // use functions in the parent class Transaction
