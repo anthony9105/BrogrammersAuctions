@@ -9,10 +9,8 @@ nonAdminUser1   SS 000000234 aaaa
 currentSeller21 SS 000001283 aaaa
 newuser9191     FS 000000308 aaaa
 testuser5678    BS 000000000 aaaa
-dummy182        BS 000000000 aaaa
 dummy9191       SS 000003459 aaaa
 someguy71       SS 000000000 def
 someguy88       BS 000000000 ghkx
-bob             AA 000000564 def
 adam            SS 000000000 ghxk
-anthony         AA 000000000 ijk
+anthony         AA 000000046 ijkm

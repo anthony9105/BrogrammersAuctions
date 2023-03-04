@@ -12,8 +12,8 @@
 using namespace std;
 
 static int creditAddedThisSession = 0;
-const string DAILY_TRANS_FILE = "../files/DailyTransactions.txt";
-const string CURR_USER_ACC_FILE = "../files/CurrentUserAccounts.txt";
+static string DAILY_TRANS_FILE;
+static string CURR_USER_ACC_FILE;
 const string TEMP_FILE = "../files/Temp.txt";
 static bool isLoggedIn = false;
 
@@ -54,6 +54,8 @@ class Transaction : public User {
         void setAccountType(string iAccountType);
 
         void setPassword(string iPassword);
+
+        void setFiles(string dailyTrans, string currUser);
 
 
         /// @brief addToTransFile function used to add a transaction to the DailyTransactions.txt file

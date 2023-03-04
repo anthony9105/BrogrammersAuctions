@@ -3,6 +3,7 @@
 #include <istream>
 #include <vector>
 #include <string>
+#include <cstring>
 #include <sstream>
 #include <cstdio>
 #include <thread>
@@ -96,6 +97,7 @@ void runSession()
         // when create is entered
         else if (userInput[0] == "create") {
             Create createTransaction;
+            createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
             createTransaction.executeTransaction();
         }
         // commands that require te user to be logged in
@@ -119,12 +121,14 @@ void runSession()
 
                         // reset transactionSession instance since the user is logging out of this session
                         transactionSession = Transaction();
+                        transactionSession.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
                     }
                 }
                 // when delete is entered
                 else if (userInput[0] == "delete") {
                     if (transactionSession.getAccountType() == "AA") {
                         Delete deleteTransaction;
+                        deleteTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
                         deleteTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                     }
                     else {
@@ -141,11 +145,13 @@ void runSession()
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
                     AddCredit addCreditTransaction;
+                    addCreditTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
                     addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
                 // when changepassword is entered
                 else if (userInput[0] == "changepassword") {
                     ChangePassword changePasswordTransaction;
+                    changePasswordTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
                     changePasswordTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
                                                                  transactionSession.getBalance(), transactionSession.getPassword());
                 }
@@ -162,7 +168,25 @@ void runSession()
     } while (userInput.empty() || userInput[0] != "close");
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc < 3) {
+        cout << "Incorrect number of file paths provided.  Program ending" << endl;
+        return 0;
+    }
+
+    string temp1 = argv[1];
+    string temp2 = argv[2];
+
+    DAILY_TRANS_FILE.assign(argv[1]);
+    CURR_USER_ACC_FILE.assign(argv[2]);
+
+    transactionSession.setFiles(argv[1], argv[2]);
+    // DAILY_TRANS_FILE = argv[1];
+    // CURR_USER_ACC_FILE = argv[2];
+
+    cout << DAILY_TRANS_FILE << endl;
+    cout << CURR_USER_ACC_FILE << endl;
+
     runSession();
 
     return 0;

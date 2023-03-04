@@ -93,6 +93,11 @@ void Transaction::setPassword(string iPassword) {
     password = iPassword;
 }
 
+void Transaction::setFiles(string dailyTrans, string currUser){
+    DAILY_TRANS_FILE = dailyTrans;
+    CURR_USER_ACC_FILE = currUser;
+}
+
 
 /// @brief addToTransFile function used to add a transaction to the DailyTransactions.txt file
 /// @param userName - username of the user who did the transaction
@@ -259,6 +264,7 @@ void Transaction::updatePasswordInUsersFile(string userToUpdate, string newPassw
 bool Transaction::checkIfUserExists(string username) {
     ifstream readUserAccountsFile;
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
+
     string line;
     vector<string> result;
     while (getline(readUserAccountsFile, line)) {
@@ -267,7 +273,6 @@ bool Transaction::checkIfUserExists(string username) {
         for (int i=0; i < result.size(); i++) {
             // if username is found
             if (result[i] == username) {
-                //isLoggedIn = true;
                 readUserAccountsFile.close();
                 return true;
             }
