@@ -174,18 +174,12 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    // set the file paths
     string temp1 = argv[1];
     string temp2 = argv[2];
-
     DAILY_TRANS_FILE.assign(argv[1]);
     CURR_USER_ACC_FILE.assign(argv[2]);
-
     transactionSession.setFiles(argv[1], argv[2]);
-    // DAILY_TRANS_FILE = argv[1];
-    // CURR_USER_ACC_FILE = argv[2];
-
-    cout << DAILY_TRANS_FILE << endl;
-    cout << CURR_USER_ACC_FILE << endl;
 
     runSession();
 
