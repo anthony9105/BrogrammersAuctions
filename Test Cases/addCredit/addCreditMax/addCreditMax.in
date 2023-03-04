@@ -1,2 +1,4 @@
-login adminUser1
-addcredit 1001
+login adminUser1 ^^^^
+addcredit
+adminUser1
+1001
