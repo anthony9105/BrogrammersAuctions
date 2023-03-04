@@ -1,5 +1,4 @@
 Login successful
 Enter username of account to add credit to
-Enter credit to add to user
-Error. No more than $1000.00 can be added in a given session
-Enter credit to add to user
+Balance is already at the maximum of 999999999
+logout successful
