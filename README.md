@@ -7,6 +7,8 @@ Steps to compile and run in a terminal:
 3. enter: ./main ../files/DailyTransactions.txt ../files/CurrentUserAccounts.txt
 4. the previous step wants the path to the DailyTransactions.txt file first and then the CurrentUserAccounts.txt file after
 
+*To cancel out of a transaction enter exactly: cancel please*
+
 Mutliple terminals can run ./main ../files/DailyTransactions.txt ../files/CurrentUserAccounts.txt at the same time and work since the transaction files and current user accounts files are updated immediately rather than just after logout.
 
 If CurrentUserAccounts.txt file path is incorrect you will not be able to login since it is reading from a non-existing file to check for username and password.
