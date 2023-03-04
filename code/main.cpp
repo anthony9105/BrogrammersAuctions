@@ -21,6 +21,8 @@ Transaction transactionSession;
 /// @param username - username of user trying to login
 /// @return - vector<string> containing information about the user
 vector<string> logIn(string username, string submittedPassword) {
+    ifstream readUserAccountsFile;
+
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
@@ -47,11 +49,11 @@ vector<string> logIn(string username, string submittedPassword) {
 
 void runSession()
 {
-    string line;
     vector<string> userInput;
-    vector<string> userInfo;
-
     do {
+        userInput.clear();
+        string line;
+        vector<string> userInfo;
         getline(cin, line);
         if (line.empty()) {
             userInput.push_back("");
@@ -112,7 +114,11 @@ void runSession()
                         cout << "logout successful" << endl;
 
                         // add end of session (code: 00) to the daily transaction file
-                        transactionSession.addToTransFile(userInfo[0], userInfo[1], stoi(userInfo[2]), "00");
+                        transactionSession.addToTransFile(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance(), "00");
+                        //transactionSession.addToTransFile(userInfo[0], userInfo[1], stoi(userInfo[2]), "00");
+
+                        // reset transactionSession instance since the user is logging out of this session
+                        transactionSession = Transaction();
                     }
                 }
                 // when delete is entered
@@ -137,16 +143,18 @@ void runSession()
                     AddCredit addCreditTransaction;
                     addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
+                // when changepassword is entered
                 else if (userInput[0] == "changepassword") {
                     ChangePassword changePasswordTransaction;
                     changePasswordTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
                                                                  transactionSession.getBalance(), transactionSession.getPassword());
                 }
+                // when listallusers is entered
                 else if (userInput[0] == "listallusers") {
                     transactionSession.displayAllAccountInfo(transactionSession.getAccountType());
                 }
                 // unknown/invalid command
-                else {
+                else if (!userInput[0].empty()) {
                     cout << "Unknown command.  Try again" << endl;
                 }
             }

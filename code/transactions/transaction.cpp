@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 /// @brief splitIntoVector function used to split a line (string) into a vector<string>
 /// @param line - line to split
 /// @return - vector<string> of the line split up by spaces
@@ -99,6 +100,8 @@ void Transaction::setPassword(string iPassword) {
 /// @param balance - balance of the user who did the transaction
 /// @param transCode - transaction code which represents the type of transaction (ex: 01 for create)
 void Transaction::addToTransFile(string userName, string accountType, int balance, string transCode) {
+    ofstream dailyTransFile;
+
     // append to the file
     dailyTransFile.open(DAILY_TRANS_FILE, ios::app);
 
@@ -120,6 +123,7 @@ void Transaction::addToTransFile(string userName, string accountType, int balanc
 void Transaction::addToUsersFile(string userName, string accountType, int balance, string displayPassword) {
     displayPassword = encryptPassword(displayPassword);
 
+    ofstream userAccountsFile;
     // append to the file
     userAccountsFile.open(CURR_USER_ACC_FILE, ios::app);
 
@@ -134,6 +138,9 @@ void Transaction::addToUsersFile(string userName, string accountType, int balanc
 /// from the CurrentUserAccounts.txt file
 /// @param usernameToRemove - username of the user to be removed
 void Transaction::removeFromUsersFile(string usernameToRemove) {
+    ifstream readUserAccountsFile;
+    ofstream userAccountsFile;
+
     // first open file and write everything but the line with
     // the user being deleted to a temp file
     userAccountsFile.open(TEMP_FILE);
@@ -169,6 +176,9 @@ void Transaction::removeFromUsersFile(string usernameToRemove) {
 /// @param userToUpdate - the username of the user to update the credit of
 /// @param creditToAdd - the amount of credit to add
 void Transaction::updateCreditInUsersFile(string userToUpdate, int creditToAdd) {
+    ifstream readUserAccountsFile;
+    ofstream userAccountsFile;
+
     // first open file and write everything but the line with
     // the user being deleted to a temp file
     userAccountsFile.open(TEMP_FILE);
@@ -182,7 +192,7 @@ void Transaction::updateCreditInUsersFile(string userToUpdate, int creditToAdd) 
             cout << "before: " << result[2] << endl;
             result[2] = getBalanceIn9Char((stoi(result[2])) + creditToAdd);
             cout << "after: " << result[2] << endl;
-            line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2];
+            line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2] + " " + result[3];
         }
         userAccountsFile << line << endl;
     }
@@ -206,6 +216,9 @@ void Transaction::updateCreditInUsersFile(string userToUpdate, int creditToAdd) 
 
 
 void Transaction::updatePasswordInUsersFile(string userToUpdate, string newPassword) {
+    ifstream readUserAccountsFile;
+    ofstream userAccountsFile;
+    
     // first open file and write everything but the line with
     // the user being deleted to a temp file
     userAccountsFile.open(TEMP_FILE);
@@ -244,6 +257,7 @@ void Transaction::updatePasswordInUsersFile(string userToUpdate, string newPassw
 /// @param username - username to check exists
 /// @return - true for the user exists or false for the user does not exist
 bool Transaction::checkIfUserExists(string username) {
+    ifstream readUserAccountsFile;
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
@@ -315,6 +329,8 @@ string Transaction::decryptPassword(string givenPassword) {
 }
 
 bool Transaction::passwordAccepted(string username, string submittedPassword) {
+    ifstream readUserAccountsFile;
+
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
@@ -346,6 +362,8 @@ void Transaction::displayAllAccountInfo(string accountType) {
         cout.width(20);
         cout << "Credit" << endl;
 
+        ifstream readUserAccountsFile;
+
         readUserAccountsFile.open(CURR_USER_ACC_FILE);
         string line;
         vector<string> result;
@@ -365,6 +383,15 @@ void Transaction::displayAllAccountInfo(string accountType) {
     else {
         cout << "You do not have the privilege to do this" << endl;
     }
+}
+
+bool Transaction::sessionCreditLimitExceeded(int creditToAdd) {
+    if (creditAddedThisSession + creditToAdd > 1000) {
+        return true;
+    }
+
+    creditAddedThisSession += creditToAdd;
+    return false;
 }
 
 void Transaction::executeTransaction() {}

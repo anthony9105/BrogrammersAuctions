@@ -11,13 +11,11 @@
 
 using namespace std;
 
+static int creditAddedThisSession = 0;
 const string DAILY_TRANS_FILE = "../files/DailyTransactions.txt";
 const string CURR_USER_ACC_FILE = "../files/CurrentUserAccounts.txt";
 const string TEMP_FILE = "../files/Temp.txt";
 static bool isLoggedIn = false;
-static ofstream dailyTransFile;
-static ifstream readUserAccountsFile;
-static ofstream userAccountsFile;
 
 /// @brief splitIntoVector function used to split a line (string) into a vector<string>
 /// @param line - line to split
@@ -104,6 +102,8 @@ class Transaction : public User {
         bool passwordAccepted(string username, string submittedPassword);
 
         void displayAllAccountInfo(string accountType);
+
+        bool sessionCreditLimitExceeded(int creditToAdd);
 
 
         void executeTransaction();
