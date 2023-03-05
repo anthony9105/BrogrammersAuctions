@@ -17,23 +17,26 @@
 using namespace std;
 
 Transaction transactionSession; 
+const string CLOSE_COMMAND = "close";
 
 /// @brief logIn function used to login
 /// @param username - username of user trying to login
-/// @return - vector<string> containing information about the user
+/// @return - vector<string> containing information about the user if the login is
+///           successful, or an empty vector<string> if the login is unsuccessful
 vector<string> logIn(string username, string submittedPassword) {
     ifstream readUserAccountsFile;
 
     readUserAccountsFile.open(CURR_USER_ACC_FILE);
     string line;
     vector<string> result;
+    // get the encrypted version of the password that was entered by the user
     string encryptedPassword = transactionSession.encryptPassword(submittedPassword);
 
     while (getline(readUserAccountsFile, line)) {
         result = splitIntoVector(line);
 
         for (int i=0; i < result.size(); i++) {
-            // if username and password is correct
+            // if username and password is correct (if both found in the same line in the file)
             if (result[i] == encryptedPassword && result[0] == username) {
                 cout << "Login successful" << endl;
                 isLoggedIn = true;
@@ -51,43 +54,60 @@ vector<string> logIn(string username, string submittedPassword) {
 void runSession()
 {
     vector<string> userInput;
+
+    // do while loop used to keep accepting inputs in the terminal(s) until the user
+    // enters the CLOSE_COMMAND
     do {
+        
+        // resetting/redefining these
         userInput.clear();
         string line;
         vector<string> userInfo;
+
+        // get input
         getline(cin, line);
+
+        // if an empty line was entered
         if (line.empty()) {
             userInput.push_back("");
         }
+        // using splitIntoVector function to split the string line into a vector<string>
+        // called userInput
         else {
             userInput = splitIntoVector(line);
         }
 
-        if (userInput[0] == "close") {
+        // if the first element/word of userInput is the CLOSE_COMMAND, return from this function
+        // to the main to end the program
+        if (userInput[0] == CLOSE_COMMAND) {
             return;
         }
 
         // when login is entered
         if (userInput[0] == "login") {
+
+            // if the user is already logged in
             if (isLoggedIn) {
                 cout << "Error.  You are already logged in." << endl;
                 break;
             }
 
+            // if the user entered "login" but no username and/or password after it
             if (userInput.size() < 3) {
-                cout << "Please enter a password" << endl;
+                cout << "Please enter a username and password as well" << endl;
                 userInput[0] = "";
-                //break;
             }
+            // if login username password is given, call the logIn function
             else {
                 userInfo = logIn(userInput[1], userInput[2]);
             }
 
+            // if userInfo is empty
             if (userInfo.empty()) {
-                userInput[0] == "close";
+                userInput[0] == CLOSE_COMMAND;
             }
             else {
-                // set transactionSession with the informaton returned from logIn function
+                // set transactionSession with the information returned from logIn function
                 transactionSession.setName(userInfo[0]);
                 transactionSession.setAccountType(userInfo[1]);
                 transactionSession.setBalance(stoi(userInfo[2]));
@@ -100,14 +120,17 @@ void runSession()
             createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
             createTransaction.executeTransaction();
         }
-        // commands that require te user to be logged in
+        // commands that require the user to be logged in
         else {
             // when not logged in
             if (!isLoggedIn) {
                 cout << "Error. You are not logged in" << endl;
             }  
-            else { 
+            else {
+                // when logout is entered
                 if (userInput[0] == "logout") {
+
+                    // if the user tries to logout when not already logged in
                     if (!isLoggedIn) {
                         cout << "Error.  You cannot logout if you are not already logged in." << endl;
                     }
@@ -117,7 +140,6 @@ void runSession()
 
                         // add end of session (code: 00) to the daily transaction file
                         transactionSession.addToTransFile(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance(), "00");
-                        //transactionSession.addToTransFile(userInfo[0], userInfo[1], stoi(userInfo[2]), "00");
 
                         // reset transactionSession instance since the user is logging out of this session
                         transactionSession = Transaction();
@@ -126,6 +148,7 @@ void runSession()
                 }
                 // when delete is entered
                 else if (userInput[0] == "delete") {
+                    // if the user is an admin
                     if (transactionSession.getAccountType() == "AA") {
                         Delete deleteTransaction;
                         deleteTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
@@ -159,7 +182,7 @@ void runSession()
                 else if (userInput[0] == "listallusers") {
                     transactionSession.displayAllAccountInfo(transactionSession.getAccountType());
                 }
-                // unknown/invalid command
+                // when an unknown/invalid command is entered
                 else if (!userInput[0].empty()) {
                     cout << "Unknown command.  Try again" << endl;
                 }
@@ -182,6 +205,7 @@ int main(int argc, char* argv[]) {
     CURR_USER_ACC_FILE.assign(argv[2]);
     transactionSession.setFiles(argv[1], argv[2]);
 
+    // run the program
     runSession();
 
     return 0;
