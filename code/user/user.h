@@ -12,10 +12,11 @@ class User {
         int balance = 0;
         string name;
         string accountType;
+        string password;
 
     public:
         // constructor
-        User(string iName, string iAccountType);
+        User(string iName, string iAccountType, string iPassword);
 
         User() {};
 };
