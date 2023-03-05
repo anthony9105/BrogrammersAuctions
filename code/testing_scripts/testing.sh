@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Define the directory paths for input, output, and expected output files
+INPUT_DIR="Test Cases\inputs"
+OUTPUT_DIR="Test Cases\outputs"
+EXPECTED_DIR="Test Cases\expected"
+
+# Compile your C++ program
+g++ main.cpp user/user.cpp transactions/transaction.cpp transactions/create.cpp transactions/delete.cpp transactions/addcredit.cpp transactions/changePassword.cpp -o main
+
+# Loop through each input file in the input directory
+for input_file in $INPUT_DIR/*
+do
+  # Generate the output file by running your program with the current input file
+  output_file="$OUTPUT_DIR/$(basename "$input_file" .txt)_output.txt"
+  ./your_program < "$input_file" > "$output_file"
+  
+  # Compare the generated output file to the expected output file
+  expected_file="$EXPECTED_DIR/$(basename "$input_file" .txt)_expected.txt"
+  if diff "$output_file" "$expected_file" >/dev/null ; then
+    echo "$(basename "$input_file") passed"
+  else
+    echo "$(basename "$input_file") failed"
+  fi
+done
