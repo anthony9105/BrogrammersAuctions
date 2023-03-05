@@ -16,6 +16,7 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     nameToAddCredit = name;
     bool usernameExists = false;
 
+    // if the user doing this transaction is an admin
     if (accountType == "AA") {
         cout << "Enter username of account to add credit to" << endl;
 
@@ -28,6 +29,7 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
                 return;
             }
 
+            // check if the username exists in the CurrentUserAccounts.txt file
             usernameExists = Transaction::checkIfUserExists(nameToAddCredit);
 
             if (!usernameExists) {
@@ -41,6 +43,7 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     bool validCreditToAdd = false;
     int balanceOfUserToAddTo = Transaction::getBalanceFromChosenUser(nameToAddCredit);
 
+    // if the balance of the user to add to is already at the maximum credit
     if (balanceOfUserToAddTo >= 999999999) {
         cout << "Balance is already at the maximum of 999999999" << endl;
         return;
