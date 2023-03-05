@@ -78,13 +78,14 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     }
 
     // if the user is adding credit to themselves
-    if (nameToAddCredit == name) {
-        balance += creditToAdd;
-    }
+    // if (nameToAddCredit == name) {
+    //     balance += creditToAdd;
+    // }
+    balanceOfUserToAddTo += creditToAdd;
 
     // use functions in the parent class Transaction
     Transaction::updateCreditInUsersFile(nameToAddCredit, creditToAdd);
-    Transaction::addToTransFile(name, accountType, balance, "06");
+    Transaction::addToTransFile(name, accountType, balanceOfUserToAddTo, "06");
     cout << "Add credit successful" << endl;
     return;
 

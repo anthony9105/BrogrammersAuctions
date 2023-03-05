@@ -197,9 +197,7 @@ vector<string> splitIntoVector(string line) {
             result = splitIntoVector(line);
 
             if (result[0] == userToUpdate) {
-                cout << "before: " << result[2] << endl;
                 result[2] = getBalanceIn9Char((stoi(result[2])) + creditToAdd);
-                cout << "after: " << result[2] << endl;
                 line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2] + " " + result[3];
             }
             userAccountsFile << line << endl;
