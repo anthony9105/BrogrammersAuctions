@@ -14,9 +14,9 @@
 #include "transactions/create.h"
 #include "transactions/addcredit.h"
 #include "transactions/changePassword.h"
-#include "transactions/advertise.h"
-#include "transactions/bid.h"
-#include "transactions/refund.h"
+// #include "transactions/advertise.h"
+// #include "transactions/bid.h"
+// #include "transactions/refund.h"
 using namespace std;
 
 Transaction transactionSession; 
@@ -151,9 +151,15 @@ void runSession()
                 }
                 // when create is entered
                 else if (userInput[0] == "create") {
-                    Create createTransaction;
-                    createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    createTransaction.executeTransaction();
+                    // only if the user is an admin
+                    if (transactionSession.getAccountType() == "AA") {
+                        Create createTransaction;
+                        createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                        createTransaction.executeTransaction();
+                    }
+                    else {
+                        cout << "You cannot create accounts unless you are on an admin account" << endl;
+                    }
                 }
                 // when delete is entered
                 else if (userInput[0] == "delete") {
@@ -170,21 +176,21 @@ void runSession()
                 /// TODO: for advertise, bid, refund; item, currentitemsfilemanager need to be fixed/implemented
                 // when advertise is entered
                 else if (userInput[0] == "advertise") {
-                    Advertise advertiseTransaction;
-                    advertiseTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    advertiseTransaction.executeTransaction("hey");
+                    // Advertise advertiseTransaction;
+                    // advertiseTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                    // advertiseTransaction.executeTransaction("hey");
                 }
                 // when bid is entered
                 else if (userInput[0] == "bid") {
-                    Bid bidTransaction;
-                    bidTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    // bidTransaction.executeTransaction();
+                    // Bid bidTransaction;
+                    // bidTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                    // // bidTransaction.executeTransaction();
                 }
                 // when refund is entered
                 else if (userInput[0] == "refund") {
-                    Refund refundTransaction;
-                    refundTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    //refundTransaction.executeTransaction();
+                    // Refund refundTransaction;
+                    // refundTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                    // //refundTransaction.executeTransaction();
                 }
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
@@ -220,9 +226,9 @@ int main(int argc, char* argv[]) {
     }
 
     // set the file paths
-    string temp1 = argv[1];
-    string temp2 = argv[2];
-    string tep3 = argv[3];
+    // string temp1 = argv[1];
+    // string temp2 = argv[2];
+    // string temp3 = argv[3];
     DAILY_TRANS_FILE.assign(argv[1]);
     CURR_USER_ACC_FILE.assign(argv[2]);
     AVAIL_ITEMS_FILE.assign(argv[3]);
