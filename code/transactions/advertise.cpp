@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "transaction.h"
+#include "../user/user.h"
 
 Advertise::Advertise(std::string dailyTransFileName) {
     sellerName = "";
