@@ -1,35 +1,51 @@
-#include <iostream>
-#include <string>
-#include "User.h"
-#include "CurrentUserAccountsFileManager.h"
-#include "DailyTransactionFileManager.h"
 #include "refund.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include "../user/user.h"
 
-void refund(User* user) {
-    std::string buyerUsername;
-    std::string sellerUsername;
-    std::string amount;
+Refund::Refund() {}
 
-    std::cout << "Enter the buyer’s account name: " << std::endl;
-    std::cin >> buyerUsername;
-    if (buyerUsername == "exit") {
-        return;
-    }
-    std::cout << "Enter the seller’s account name: " << std::endl;
-    std::cin >> sellerUsername;
-    if (sellerUsername == "exit") {
-        return;
-    }
-    std::cout << "Enter the amount of credit to transfer: " << std::endl;
-    std::cin >> amount;
+void Refund::executeTransaction() {
+    std::string username, targetUsername, refundAmount;
+    std::cout << "Please enter the username of the account to refund: ";
+    std::cin >> targetUsername;
+    std::cout << "Please enter the amount to refund: ";
+    std::cin >> refundAmount;
 
-    User* buyer = CurrentUserAccountsFileManager::findUser(buyerUsername);
-    User* seller = CurrentUserAccountsFileManager::findUser(sellerUsername);
-
-    if (buyer->getUsername() == "" || seller->getUsername() == "") {
-        std::cout << "ERROR: One or both of the given users does not exist..." << std::endl;
+    // check if the refund amount is not a valid integer
+    if (!isValidNumber(refundAmount)) {
+        std::cout << "Error: Invalid refund amount." << std::endl;
         return;
     }
 
-    DailyTransactionFileManager::addRefundTransaction(buyer->getUsername(), seller->getUsername(), amount);
+    int refundAmountInt = stoi(refundAmount);
+
+    // check if the refund amount is greater than the balance of the target user's account
+    if (refundAmountInt > getUserBalance(targetUsername)) {
+        std::cout << "Error: Refund amount is greater than target user's balance." << std::endl;
+        return;
+    }
+
+    // perform refund transaction
+    int balance = getUserBalance(transactionSession.getName());
+    balance += refundAmountInt;
+    setUserBalance(transactionSession.getName(), balance);
+    balance = getUserBalance(targetUsername);
+    balance -= refundAmountInt;
+    setUserBalance(targetUsername, balance);
+
+    // add refund transaction to the daily transaction file
+    std::ofstream dailyTransFile;
+    dailyTransFile.open(dailyTransFile_, std::ios_base::app);
+    std::stringstream ss;
+    ss << std::setw(15) << std::left << "05";
+    ss << std::setw(15) << std::left << targetUsername;
+    ss << std::setw(15) << std::left << "AA";
+    ss << std::setw(15) << std::left << refundAmount;
+    ss << std::endl;
+    dailyTransFile << ss.str();
+    dailyTransFile.close();
+
+    std::cout << "Refund successful." << std::endl;
 }

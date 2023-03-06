@@ -1,64 +1,67 @@
-#include "Advertise.h"
-#include <fstream>
-#include <istream>
-#include <vector>
-#include <sstream>
-#include <cstdio>
-#include "../user/user.h"
-#include "transaction.h"
+#include "advertise.h"
 #include <iostream>
-#include <string>
+#include <fstream>
+#include <sstream>
 
-///TODO: implement/fix this
-
-Advertise::Advertise(User* user, CurrentItemsFileManager* itemManager, TransactionItemsFileManager* transactionItemsFileManager)
-    : Transaction(user, itemManager), transactionItemsFileManager(transactionItemsFileManager)
-{
+Advertise::Advertise() {
+    sellerName = "";
+    itemKeyword = "";
+    minBid = 0.0f;
 }
 
-bool Advertise::execute()
-{
-    // Check if user balance is sufficient for advertising
-    double userBalance = getUser()->getBalance();
-    if (userBalance <= 0) {
-        std::cout << "Transaction failed. User balance is not sufficient for advertisement." << std::endl;
-        return false;
+void Advertise::executeTransaction(std::string transaction) {
+    std::stringstream stream(transaction);
+    std::string word;
+
+    std::vector<std::string> words;
+    while (stream >> word) {
+        words.push_back(word);
     }
 
-    // Get the item information from the user
-    std::string itemName;
-    double itemPrice;
-    int itemQuantity;
-    std::cout << "Enter item name: ";
-    std::getline(std::cin, itemName);
-    std::cout << "Enter item price: ";
-    std::cin >> itemPrice;
-    std::cout << "Enter item quantity: ";
-    std::cin >> itemQuantity;
-
-    // Check if the item name is already in use
-    if (getItemManager()->itemExists(itemName)) {
-        std::cout << "Transaction failed. Item name already exists." << std::endl;
-        return false;
+    if (words.size() != 4) {
+        std::cout << "ERROR: Invalid advertise transaction format" << std::endl;
+        return;
     }
 
-    // Create a new item and add it to the item manager
-    Item newItem(itemName, itemPrice, itemQuantity);
-    getItemManager()->addItem(newItem);
+    // check if seller is logged in
+    if (getName() != words[1]) {
+        std::cout << "ERROR: Seller is not logged in" << std::endl;
+        return;
+    }
 
-    // Deduct the user's balance by the advertisement fee
-    double fee = 0.1 * itemPrice;
-    getUser()->deductBalance(fee);
+    // get seller's balance
+    int balance = getBalance();
 
-    // Add transaction to the transaction file
-    TransactionItem transactionItem;
-    transactionItem.setTransactionType(TransactionType::Advertise);
-    transactionItem.setSellerUsername(getUser()->getUsername());
-    transactionItem.setItemName(itemName);
-    transactionItem.setItemPrice(itemPrice);
-    transactionItem.setItemQuantity(itemQuantity);
-    transactionItemsFileManager->addTransactionItem(transactionItem);
+    // check if balance is negative
+    if (balance < 0) {
+        std::cout << "ERROR: Seller's balance is negative" << std::endl;
+        return;
+    }
 
-    std::cout << "Transaction successful. Item " << itemName << " advertised for sale." << std::endl;
-    return true;
+    // check if balance is less than 1
+    if (balance < 1) {
+        std::cout << "ERROR: Seller's balance is less than 1" << std::endl;
+        return;
+    }
+
+    // check if item keyword is greater than 15 characters
+    if (words[2].length() > 15) {
+        std::cout << "ERROR: Item keyword length exceeds 15 characters" << std::endl;
+        return;
+    }
+
+    // check if min bid is greater than or equal to 0.01
+    float minBid = std::stof(words[3]);
+    if (minBid < 0.01) {
+        std::cout << "ERROR: Minimum bid must be greater than or equal to 0.01" << std::endl;
+        return;
+    }
+
+    // write transaction to daily transaction file
+    std::ofstream dailyTransFile;
+    dailyTransFile.open(getDailyTransFileName(), std::ios::app);
+    dailyTransFile << "05 " << getName() << " " << std::to_string(getBalance()) << " " << words[2] << " " << words[3] << std::endl;
+    dailyTransFile.close();
+
+    std::cout << "Advertise transaction successful" << std::endl;
 }
