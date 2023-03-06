@@ -123,3 +123,6 @@
 02 adminUser1      AA 000000123
 00 adminUser1      AA 000000123
 00 adminUser1      AA 000000123
+00 newUser12345    SS 999999999
+00 adminUser1      AA 000000123
+00 adminUser1      AA 000000123

@@ -1,4 +1,4 @@
-login adminUser1                  
+login adminUser1 ^^^^
 logout
-bid racecar            currentSeller21    
-bid racecar57          currentSeller21    
+bid racecar currentSeller21    
+bid racecar57 currentSeller21    
