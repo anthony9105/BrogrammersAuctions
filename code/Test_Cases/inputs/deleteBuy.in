@@ -1,5 +1,4 @@
-login 
-newUser1234
+login newUser1234 ^^^^
 delete 
 nonAdminUser1 
 logout

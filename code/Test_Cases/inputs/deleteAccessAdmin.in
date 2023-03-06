@@ -1,5 +1,4 @@
-login 
-adminUser1 
+login adminUser1 ^^^^
 delete 
-nonAdminUser1 
+someperson
 logout
