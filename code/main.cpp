@@ -89,29 +89,29 @@ void runSession()
             // if the user is already logged in
             if (isLoggedIn) {
                 cout << "Error.  You are already logged in." << endl;
-                break;
-            }
-
-            // if the user entered "login" but no username and/or password after it
-            if (userInput.size() < 3) {
-                cout << "Please enter a username and password as well" << endl;
-                userInput[0] = "";
-            }
-            // if login username password is given, call the logIn function
-            else {
-                userInfo = logIn(userInput[1], userInput[2]);
-            }
-
-            // if userInfo is empty
-            if (userInfo.empty()) {
-                userInput[0] == CLOSE_COMMAND;
             }
             else {
-                // set transactionSession with the information returned from logIn function
-                transactionSession.setName(userInfo[0]);
-                transactionSession.setAccountType(userInfo[1]);
-                transactionSession.setBalance(stoi(userInfo[2]));
-                transactionSession.setPassword(transactionSession.decryptPassword(userInfo[3]));
+                // if the user entered "login" but no username and/or password after it
+                if (userInput.size() < 3) {
+                    cout << "Please enter a username and password as well" << endl;
+                    userInput[0] = "";
+                }
+                // if login username password is given, call the logIn function
+                else {
+                    userInfo = logIn(userInput[1], userInput[2]);
+                }
+
+                // if userInfo is empty
+                if (userInfo.empty()) {
+                    userInput[0] == CLOSE_COMMAND;
+                }
+                else {
+                    // set transactionSession with the information returned from logIn function
+                    transactionSession.setName(userInfo[0]);
+                    transactionSession.setAccountType(userInfo[1]);
+                    transactionSession.setBalance(stoi(userInfo[2]));
+                    transactionSession.setPassword(transactionSession.decryptPassword(userInfo[3]));
+                }
             }
         }
         // when create is entered
