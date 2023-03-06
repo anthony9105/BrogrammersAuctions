@@ -15,16 +15,24 @@
 void Delete::executeTransaction(string name, string accountType, int balance) {
     string nameToDelete;
     bool usernameExists = false;
+    bool tryingToDeleteSelf = true;
 
     cout << "Enter username of user to delete" << endl;
 
     // while loop that does not end until valid input is entered
-    while (!usernameExists) {
+    while (!usernameExists || tryingToDeleteSelf) {
         getline(cin, nameToDelete);
 
         // to exit from/cancel delete entirely
         if (Transaction::cancelTransaction(nameToDelete)) {
             return;
+        }
+
+        if (nameToDelete == name) {
+            cout << "Cannot delete yourself.  Enter a username of an existing user" << endl;
+        }
+        else {
+            tryingToDeleteSelf = false;
         }
 
         usernameExists = Transaction::checkIfUserExists(nameToDelete);
