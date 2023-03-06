@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "transaction.h"
 #include "../user/user.h"
 
 Refund::Refund() {}

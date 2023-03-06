@@ -178,13 +178,13 @@ void runSession()
                 else if (userInput[0] == "bid") {
                     Bid bidTransaction;
                     bidTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    // bidTransaction.executeTransaction();
+                    bidTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
                 // when refund is entered
                 else if (userInput[0] == "refund") {
                     Refund refundTransaction;
                     refundTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    //refundTransaction.executeTransaction();
+                    refundTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
