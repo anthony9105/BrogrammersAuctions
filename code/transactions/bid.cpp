@@ -1,80 +1,78 @@
 #include "bid.h"
+#include "../user/user.h"
+#include "addcredit.h"
+#include <iostream>
+#include <fstream>
+
+using namespace std;
 
 Bid::Bid() {
-    sellerUsername = "";
-    buyerUsername = "";
-    itemKeyword = "";
-    bidAmount = 0.0;
-}
-
-void Bid::setSellerUsername(std::string sellerUsername) {
-    this->sellerUsername = sellerUsername;
-}
-
-void Bid::setBuyerUsername(std::string buyerUsername) {
-    this->buyerUsername = buyerUsername;
-}
-
-void Bid::setItemKeyword(std::string itemKeyword) {
-    this->itemKeyword = itemKeyword;
-}
-
-void Bid::setBidAmount(float bidAmount) {
-    this->bidAmount = bidAmount;
-}
-
-std::string Bid::getSellerUsername() {
-    return sellerUsername;
-}
-
-std::string Bid::getBuyerUsername() {
-    return buyerUsername;
-}
-
-std::string Bid::getItemKeyword() {
-    return itemKeyword;
-}
-
-float Bid::getBidAmount() {
-    return bidAmount;
+    // set files used by this transaction
+    setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
 }
 
 void Bid::executeTransaction() {
-    std::vector<std::string> currentUserInfo = getUserInfo(getName(), getAccountType(), getBalance(), getPassword());
-    std::vector<std::string> sellerUserInfo = getUserInfo(sellerUsername);
-    std::vector<std::string> buyerUserInfo = getUserInfo(buyerUsername);
+    vector<string> userInput;
+    string item, seller, highestBidder;
+    int currentHighestBid, bidAmount;
 
-    // checking if the seller and buyer exist
-    if (sellerUserInfo.empty() || buyerUserInfo.empty()) {
-        std::cout << "Error.  The buyer and/or seller does not exist." << std::endl;
+    // prompt user for item and seller name
+    cout << "Enter the name of the item you want to bid on: ";
+    getline(cin, item);
+    cout << "Enter the seller name: ";
+    getline(cin, seller);
+
+    // read item file
+    ifstream readItemFile(item + ".txt");
+    if (!readItemFile) {
+        cout << "Error. Item not found." << endl;
         return;
     }
 
-    // checking if the buyer is able to afford the bid
-    if (std::stof(buyerUserInfo[2]) < bidAmount) {
-        std::cout << "Error.  The buyer does not have enough credits for this bid." << std::endl;
-        return;
-    }
+    // extract information from item file
+    readItemFile >> seller >> currentHighestBid >> highestBidder;
+    readItemFile.close();
 
-    // checking if the item exists and belongs to the seller
-    std::ifstream readItemsFile;
-    readItemsFile.open(ITEMS_FILE);
-    std::string line;
-    bool foundItem = false;
-    while (getline(readItemsFile, line)) {
-        std::vector<std::string> itemInfo = splitIntoVector(line);
-        if (itemInfo[0] == itemKeyword && itemInfo[1] == sellerUsername) {
-            foundItem = true;
+    // check if the user already made a bid on this item
+    ifstream readDailyTransFile(getFiles()[0]);
+    string line;
+    bool alreadyBidOnItem = false;
+    while (getline(readDailyTransFile, line)) {
+        vector<string> tokens = splitIntoVector(line);
+        if (tokens[0] == "10" && tokens[2] == item && tokens[3] == getUser().getUsername()) {
+            alreadyBidOnItem = true;
             break;
         }
     }
-    readItemsFile.close();
-    if (!foundItem) {
-        std::cout << "Error.  The item does not exist or does not belong to the seller." << std::endl;
+    readDailyTransFile.close();
+    if (alreadyBidOnItem) {
+        cout << "Error. You have already made a bid on this item." << endl;
         return;
     }
 
-    // updating the balances of the buyer and seller
-    float newSellerBalance = std::stof(sellerUserInfo[2]) + bidAmount;
-    float newBuyerBalance = std::stof(buyerUserInfo[2]) - bidAmount;
-    updateUserBalance(sellerUsername, new
+    // prompt user for bid amount
+    cout << "Enter the bid amount: ";
+    cin >> bidAmount;
+    cin.ignore(); // ignore the newline character in the input stream
+
+    // check if bid is higher than current highest bid
+    if (bidAmount <= currentHighestBid) {
+        cout << "Error. Your bid amount must be greater than the current highest bid of $" << currentHighestBid << endl;
+        return;
+    }
+
+    // add credit transaction to update user balance
+    AddCredit addCreditTransaction;
+    addCreditTransaction.setFiles(getFiles()[0], getFiles()[1]);
+    addCreditTransaction.executeTransaction(getUser().getUsername(), getUser().getAccountType(), getUser().getBalance(), to_string(-1 * bidAmount));
+
+    // update item file with new highest bid and bidder
+    ofstream writeItemFile(item + ".txt");
+    writeItemFile << seller << " " << bidAmount << " " << getUser().getUsername();
+    writeItemFile.close();
+
+    // add bid transaction to daily transaction file
+    addToTransFile(getUser().getUsername(), getUser().getAccountType(), getUser().getBalance(), "10 " + item + " " + to_string(bidAmount));
+
+    cout << "Bid successful." << endl;
+}
