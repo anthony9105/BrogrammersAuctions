@@ -1,4 +1,5 @@
-Welcome to the Auction System. 
-Please login to begin. 
-Welcome, adminUser1.
-Cannot delete your account
+Login successful
+Enter username of user to delete
+Cannot delete yourself.  Enter a username of an existing user
+Transaction cancelled
+logout successful

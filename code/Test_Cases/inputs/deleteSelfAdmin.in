@@ -1,5 +1,5 @@
-login 
-adminUser1 
-delete 
-nonAdminUser1 
+login adminUser1 ^^^^ 
+delete
+adminUser1
+cancel please
 logout
