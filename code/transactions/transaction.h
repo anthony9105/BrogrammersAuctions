@@ -15,6 +15,7 @@ using namespace std;
 static int creditAddedThisSession = 0;
 static string DAILY_TRANS_FILE;
 static string CURR_USER_ACC_FILE;
+static string AVAIL_ITEMS_FILE;
 const string TEMP_FILE = "../files/Temp.txt";   // used as a temporary file for changing/removing values in current users file
 static bool isLoggedIn = false;
 const string CANCEL_COMMAND = "cancel please";
@@ -59,7 +60,7 @@ class Transaction : public User {
 
             /// setFiles function to set the global static string values for the paths to the 
             /// DailyTransactions.txt and CurrentUserAccounts.txt files 
-            void setFiles(string dailyTrans, string currUser);
+            void setFiles(string dailyTrans, string currUser, string availItems);
 
 
         

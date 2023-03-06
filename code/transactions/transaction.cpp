@@ -93,9 +93,10 @@ vector<string> splitIntoVector(string line) {
         password = iPassword;
     }
 
-    void Transaction::setFiles(string dailyTrans, string currUser){
+    void Transaction::setFiles(string dailyTrans, string currUser, string availIems){
         DAILY_TRANS_FILE = dailyTrans;
         CURR_USER_ACC_FILE = currUser;
+        AVAIL_ITEMS_FILE = availIems;
     }
 
 
