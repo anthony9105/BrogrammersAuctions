@@ -10,9 +10,11 @@ class Advertise : public Transaction {
         std::string sellerName;
         std::string itemKeyword;
         float minBid;
+        std::string dailyTransFileName;
     public:
         Advertise();
-        void executeTransaction(std::string transaction);
+        Advertise(std::string dailyTransFileName);
+        void executeTransaction(std::string transaction) override;
 };
 
 #endif
