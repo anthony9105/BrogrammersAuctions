@@ -3,10 +3,11 @@
 #include <fstream>
 #include <sstream>
 
-Advertise::Advertise() {
+Advertise::Advertise(std::string dailyTransFileName) {
     sellerName = "";
     itemKeyword = "";
     minBid = 0.0f;
+    this->dailyTransFileName = dailyTransFileName;
 }
 
 void Advertise::executeTransaction(std::string transaction) {
@@ -59,7 +60,7 @@ void Advertise::executeTransaction(std::string transaction) {
 
     // write transaction to daily transaction file
     std::ofstream dailyTransFile;
-    dailyTransFile.open(getDailyTransFileName(), std::ios::app);
+    dailyTransFile.open(dailyTransFileName, std::ios::app);
     dailyTransFile << "05 " << getName() << " " << std::to_string(getBalance()) << " " << words[2] << " " << words[3] << std::endl;
     dailyTransFile.close();
 
