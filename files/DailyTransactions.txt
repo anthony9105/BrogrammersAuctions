@@ -126,3 +126,6 @@
 00 newUser12345    SS 999999999
 00 adminUser1      AA 000000123
 00 adminUser1      AA 000000123
+01 kaathihan       AA 000000000
+00 kaathihan       AA 000000000
+07 kaathihan       AA 000000000

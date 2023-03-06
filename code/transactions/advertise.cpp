@@ -1,5 +1,11 @@
 #include "Advertise.h"
-
+#include <fstream>
+#include <istream>
+#include <vector>
+#include <sstream>
+#include <cstdio>
+#include "../user/user.h"
+#include "transaction.h"
 #include <iostream>
 #include <string>
 
