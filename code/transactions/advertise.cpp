@@ -1,4 +1,4 @@
-#include "advertise.h"
+/*#include "advertise.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -65,3 +65,4 @@ void Advertise::executeTransaction(std::string transaction) {
     cout << "Advertise successful" << endl;
     return;
 }
+*/

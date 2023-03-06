@@ -1,4 +1,4 @@
-#ifndef ADVERTISE_H
+/*#ifndef ADVERTISE_H
 #define ADVERTISE_H
 
 #include <string>
@@ -18,3 +18,4 @@ class Advertise : public Transaction {
 };
 
 #endif
+*/

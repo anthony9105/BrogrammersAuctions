@@ -1,8 +1,9 @@
-#include "bid.h"
+/*#include "bid.h"
 #include "../user/user.h"
 #include "addcredit.h"
 #include <iostream>
 #include <fstream>
+
 
 using namespace std;
 
@@ -10,8 +11,7 @@ Bid::Bid() {
     // set files used by this transaction
     setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
 }
-
-void Bid::executeTransaction() {
+void Bid::executeTransaction(User currentUser, const std::string& dailyTransactionFile, const std::string& currentUserAccountsFile) {
     vector<string> userInput;
     string item, seller, highestBidder;
     int currentHighestBid, bidAmount;
@@ -34,12 +34,12 @@ void Bid::executeTransaction() {
     readItemFile.close();
 
     // check if the user already made a bid on this item
-    ifstream readDailyTransFile(getFiles()[0]);
+    ifstream readDailyTransFile(dailyTransactionFile);
     string line;
     bool alreadyBidOnItem = false;
     while (getline(readDailyTransFile, line)) {
         vector<string> tokens = splitIntoVector(line);
-        if (tokens[0] == "10" && tokens[2] == item && tokens[3] == getUser().getUsername()) {
+        if (tokens[0] == "10" && tokens[2] == item && tokens[3] == currentUser.getUsername()) {
             alreadyBidOnItem = true;
             break;
         }
@@ -63,16 +63,17 @@ void Bid::executeTransaction() {
 
     // add credit transaction to update user balance
     AddCredit addCreditTransaction;
-    addCreditTransaction.setFiles(getFiles()[0], getFiles()[1]);
-    addCreditTransaction.executeTransaction(getUser().getUsername(), getUser().getAccountType(), getUser().getBalance(), to_string(-1 * bidAmount));
+    addCreditTransaction.setFiles(dailyTransactionFile, currentUserAccountsFile);
+    addCreditTransaction.executeTransaction(currentUser.getUsername(), currentUser.getAccountType(), currentUser.getBalance(), to_string(-1 * bidAmount));
 
     // update item file with new highest bid and bidder
     ofstream writeItemFile(item + ".txt");
-    writeItemFile << seller << " " << bidAmount << " " << getUser().getUsername();
+    writeItemFile << seller << " " << bidAmount << " " << currentUser.getUsername();
     writeItemFile.close();
 
     // add bid transaction to daily transaction file
-    addToTransFile(getUser().getUsername(), getUser().getAccountType(), getUser().getBalance(), "10 " + item + " " + to_string(bidAmount));
+    addToTransFile(currentUser.getUsername(), currentUser.getAccountType(), currentUser.getBalance(), "10 " + item + " " + to_string(bidAmount), dailyTransactionFile);
 
     cout << "Bid successful." << endl;
 }
+*/
