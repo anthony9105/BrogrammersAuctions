@@ -1,4 +1,8 @@
 create
 newUser12345   
-sell-standard
-bid racecar            currentSeller21    
+SS
+abc
+login newUser12345 abc 
+bid racecar currentSeller21
+150
+logout

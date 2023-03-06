@@ -116,3 +116,4 @@
 00 adminUser1      AA 000001231
 06 adminUser1      AA 000001607
 00 adminUser1      AA 000001231
+01 newUser55       AA 000000000

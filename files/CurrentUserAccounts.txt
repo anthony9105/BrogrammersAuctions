@@ -16,3 +16,4 @@ adam            SS 000000014 ghxk
 anthony         AA 000000080 ijkm
 baron           AA 000000000 eeee
 nearlyAtMax     SS 999999991 eeee
+newUser55       AA 000000000 def
