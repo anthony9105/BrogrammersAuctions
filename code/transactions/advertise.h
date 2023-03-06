@@ -14,7 +14,7 @@ class Advertise : public Transaction {
     public:
         Advertise();
         Advertise(std::string dailyTransFileName);
-        void executeTransaction(std::string transaction) override;
+        void executeTransaction(std::string transaction);
 };
 
 #endif

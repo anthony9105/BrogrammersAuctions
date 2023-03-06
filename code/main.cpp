@@ -159,12 +159,24 @@ void runSession()
                     }
                 }
                 /// TODO: for advertise, bid, refund; item, currentitemsfilemanager need to be fixed/implemented
-                /// TODO: implement advertise.cpp
-                else if (userInput[0] == "advertise") {}
-                /// TODO: implement bid
-                else if (userInput[0] == "bid") {}
-                /// TODO: implement refund
-                else if (userInput[0] == "refund") {}
+                // when advertise is entered
+                else if (userInput[0] == "advertise") {
+                    Advertise advertiseTransaction;
+                    advertiseTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+                    advertiseTransaction.executeTransaction();
+                }
+                // when bid is entered
+                else if (userInput[0] == "bid") {{
+                    Bid bidTransaction;
+                    bidTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+                    bidTransaction.executeTransaction();
+                }
+                // when refund is entered
+                else if (userInput[0] == "refund") {{
+                    Refund refundTransaction;
+                    refundTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+                    refundTransaction.executeTransaction();
+                }
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
                     AddCredit addCreditTransaction;

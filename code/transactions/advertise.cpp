@@ -58,11 +58,8 @@ void Advertise::executeTransaction(std::string transaction) {
         return;
     }
 
-    // write transaction to daily transaction file
-    std::ofstream dailyTransFile;
-    dailyTransFile.open(dailyTransFileName, std::ios::app);
-    dailyTransFile << "05 " << getName() << " " << std::to_string(getBalance()) << " " << words[2] << " " << words[3] << std::endl;
-    dailyTransFile.close();
-
-    std::cout << "Advertise transaction successful" << std::endl;
+    // use functions in the parent class Transaction
+    Transaction::addToUsersFile(sellerName, itemKeyword, balance, "05");
+    cout << "Advertise successful" << endl;
+    return;
 }
