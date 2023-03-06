@@ -1,0 +1,7 @@
+Enter new username
+Enter type of user (admin (AA), full-standard (FS), buy-standard (BS), or sell-standard (SS))
+Enter password (over 1 character, less than 15 characters)
+Success.  New user added.
+Login successful
+Error.  You do not have the privilege to do this transaction.
+logout successful
