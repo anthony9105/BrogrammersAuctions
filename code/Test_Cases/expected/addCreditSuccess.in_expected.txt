@@ -1,0 +1,5 @@
+Login successful
+Enter username of account to add credit to
+Enter credit to add to user
+Add credit successful
+logout successful

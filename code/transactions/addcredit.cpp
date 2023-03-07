@@ -40,6 +40,7 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     }
 
     int creditToAdd;
+    string response;
     bool validCreditToAdd = false;
     int balanceOfUserToAddTo = Transaction::getBalanceFromChosenUser(nameToAddCredit);
 
@@ -53,10 +54,10 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     while (!validCreditToAdd) {
         cout << "Enter credit to add to user" << endl;
 
-        cin.exceptions(ios_base::failbit);
-
         try {
-            cin >> creditToAdd;
+            getline(cin, response);
+
+            creditToAdd = stoi(response);
 
             if (balanceOfUserToAddTo + creditToAdd > 999999999) {
                 cout << "Error. This transaction will cause credit account to exceed max of 999999999" << endl;
@@ -70,7 +71,11 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
             }
         }
         // invalid input such as entering a string instead of int
-        catch (ios_base::failure &) {
+        catch (invalid_argument& ia) {
+            // check if user wants to cancel transaction
+            if (Transaction::cancelTransaction(response)) {
+                return;
+            }
             cout << "Invalid input" << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -78,13 +83,14 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
     }
 
     // if the user is adding credit to themselves
-    if (nameToAddCredit == name) {
-        balance += creditToAdd;
-    }
+    // if (nameToAddCredit == name) {
+    //     balance += creditToAdd;
+    // }
+    balanceOfUserToAddTo += creditToAdd;
 
     // use functions in the parent class Transaction
     Transaction::updateCreditInUsersFile(nameToAddCredit, creditToAdd);
-    Transaction::addToTransFile(name, accountType, balance, "06");
+    Transaction::addToTransFile(name, accountType, balanceOfUserToAddTo, "06");
     cout << "Add credit successful" << endl;
     return;
 

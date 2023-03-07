@@ -1,0 +1,2 @@
+Enter new username
+Error.  Username is already in use.  Enter a new username

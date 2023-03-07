@@ -1,0 +1,4 @@
+Login successful
+You can not delete any accounts unless you are on an admin account
+Transaction cancelled
+logout successful

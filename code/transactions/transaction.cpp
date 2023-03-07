@@ -93,9 +93,10 @@ vector<string> splitIntoVector(string line) {
         password = iPassword;
     }
 
-    void Transaction::setFiles(string dailyTrans, string currUser){
+    void Transaction::setFiles(string dailyTrans, string currUser, string availIems){
         DAILY_TRANS_FILE = dailyTrans;
         CURR_USER_ACC_FILE = currUser;
+        AVAIL_ITEMS_FILE = availIems;
     }
 
 
@@ -197,9 +198,7 @@ vector<string> splitIntoVector(string line) {
             result = splitIntoVector(line);
 
             if (result[0] == userToUpdate) {
-                cout << "before: " << result[2] << endl;
                 result[2] = getBalanceIn9Char((stoi(result[2])) + creditToAdd);
-                cout << "after: " << result[2] << endl;
                 line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2] + " " + result[3];
             }
             userAccountsFile << line << endl;

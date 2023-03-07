@@ -14,6 +14,9 @@
 #include "transactions/create.h"
 #include "transactions/addcredit.h"
 #include "transactions/changePassword.h"
+// #include "transactions/advertise.h"
+// #include "transactions/bid.h"
+// #include "transactions/refund.h"
 using namespace std;
 
 Transaction transactionSession; 
@@ -89,37 +92,37 @@ void runSession()
             // if the user is already logged in
             if (isLoggedIn) {
                 cout << "Error.  You are already logged in." << endl;
-                break;
-            }
-
-            // if the user entered "login" but no username and/or password after it
-            if (userInput.size() < 3) {
-                cout << "Please enter a username and password as well" << endl;
-                userInput[0] = "";
-            }
-            // if login username password is given, call the logIn function
-            else {
-                userInfo = logIn(userInput[1], userInput[2]);
-            }
-
-            // if userInfo is empty
-            if (userInfo.empty()) {
-                userInput[0] == CLOSE_COMMAND;
             }
             else {
-                // set transactionSession with the information returned from logIn function
-                transactionSession.setName(userInfo[0]);
-                transactionSession.setAccountType(userInfo[1]);
-                transactionSession.setBalance(stoi(userInfo[2]));
-                transactionSession.setPassword(transactionSession.decryptPassword(userInfo[3]));
+                // if the user entered "login" but no username and/or password after it
+                if (userInput.size() < 3) {
+                    cout << "Please enter a username and password as well" << endl;
+                    userInput[0] = "";
+                }
+                // if login username password is given, call the logIn function
+                else {
+                    userInfo = logIn(userInput[1], userInput[2]);
+                }
+
+                // if userInfo is empty
+                if (userInfo.empty()) {
+                    userInput[0] == CLOSE_COMMAND;
+                }
+                else {
+                    // set transactionSession with the information returned from logIn function
+                    transactionSession.setName(userInfo[0]);
+                    transactionSession.setAccountType(userInfo[1]);
+                    transactionSession.setBalance(stoi(userInfo[2]));
+                    transactionSession.setPassword(transactionSession.decryptPassword(userInfo[3]));
+                }
             }
         }
-        // when create is entered
-        else if (userInput[0] == "create") {
-            Create createTransaction;
-            createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
-            createTransaction.executeTransaction();
-        }
+        // // when create is entered
+        // else if (userInput[0] == "create") {
+        //     Create createTransaction;
+        //     createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+        //     createTransaction.executeTransaction();
+        // }
         // commands that require the user to be logged in
         else {
             // when not logged in
@@ -143,7 +146,19 @@ void runSession()
 
                         // reset transactionSession instance since the user is logging out of this session
                         transactionSession = Transaction();
-                        transactionSession.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+                        transactionSession.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                    }
+                }
+                // when create is entered
+                else if (userInput[0] == "create") {
+                    // only if the user is an admin
+                    if (transactionSession.getAccountType() == "AA") {
+                        Create createTransaction;
+                        createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                        createTransaction.executeTransaction();
+                    }
+                    else {
+                        cout << "You cannot create accounts unless you are on an admin account" << endl;
                     }
                 }
                 // when delete is entered
@@ -151,7 +166,7 @@ void runSession()
                     // if the user is an admin
                     if (transactionSession.getAccountType() == "AA") {
                         Delete deleteTransaction;
-                        deleteTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+                        deleteTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
                         deleteTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                     }
                     else {
@@ -159,22 +174,34 @@ void runSession()
                     }
                 }
                 /// TODO: for advertise, bid, refund; item, currentitemsfilemanager need to be fixed/implemented
-                /// TODO: implement advertise.cpp
-                else if (userInput[0] == "advertise") {}
-                /// TODO: implement bid
-                else if (userInput[0] == "bid") {}
-                /// TODO: implement refund
-                else if (userInput[0] == "refund") {}
+                // when advertise is entered
+                else if (userInput[0] == "advertise") {
+                    // Advertise advertiseTransaction;
+                    // advertiseTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                    // advertiseTransaction.executeTransaction("hey");
+                }
+                // when bid is entered
+                else if (userInput[0] == "bid") {
+             //       Bid bidTransaction;
+                 //   bidTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                //    bidTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+                }
+                // when refund is entered
+                else if (userInput[0] == "refund") {
+              //      Refund refundTransaction;
+                 //   refundTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                 //   refundTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+                }
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
                     AddCredit addCreditTransaction;
-                    addCreditTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+                    addCreditTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
                     addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
                 // when changepassword is entered
                 else if (userInput[0] == "changepassword") {
                     ChangePassword changePasswordTransaction;
-                    changePasswordTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE);
+                    changePasswordTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
                     changePasswordTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
                                                                  transactionSession.getBalance(), transactionSession.getPassword());
                 }
@@ -192,18 +219,20 @@ void runSession()
 }
 
 int main(int argc, char* argv[]) {
-    // for 2 files (will be changed for 3 files when that part is implemented)
-    if (argc < 3) {
+    // for 3 files (will be changed for 3 files when that part is implemented)
+    if (argc < 4) {
         cout << "Incorrect number of file paths provided.  Program ending" << endl;
         return 0;
     }
 
     // set the file paths
-    string temp1 = argv[1];
-    string temp2 = argv[2];
+    // string temp1 = argv[1];
+    // string temp2 = argv[2];
+    // string temp3 = argv[3];
     DAILY_TRANS_FILE.assign(argv[1]);
     CURR_USER_ACC_FILE.assign(argv[2]);
-    transactionSession.setFiles(argv[1], argv[2]);
+    AVAIL_ITEMS_FILE.assign(argv[3]);
+    transactionSession.setFiles(argv[1], argv[2], argv[3]);
 
     // run the program
     runSession();
