@@ -1,5 +1,7 @@
 Login successful
+Enter username of account to add credit to
 Enter credit to add to user
 Error. This transaction will cause credit account to exceed max of 999999999
+Enter credit to add to user
 Transaction cancelled
 logout successful
