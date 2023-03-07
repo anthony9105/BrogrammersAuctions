@@ -182,15 +182,15 @@ void runSession()
                 }
                 // when bid is entered
                 else if (userInput[0] == "bid") {
-            //        Bid bidTransaction;
-            //        bidTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-            //        bidTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+             //       Bid bidTransaction;
+                 //   bidTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                //    bidTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
                 // when refund is entered
                 else if (userInput[0] == "refund") {
-             //       Refund refundTransaction;
-             //       refundTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-             //       refundTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+              //      Refund refundTransaction;
+                 //   refundTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                 //   refundTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
                 }
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
