@@ -1,5 +1,0 @@
-Welcome to the Auction System
-Please login to begin. 
-Welcome, newUser12345 
-Cannot advertise as standard-buy 
-Session complete.

@@ -1,4 +1,0 @@
-Login successful
-Item: racecar             Seller username: currentSeller21     Current bid: 000111. Enter new bid
-Error. Bid on item: racecar             unsuccessful.
-You are not an admin user (unprivileged user), and therefore you must make a bid that is 5% or higher than the current bid (000111)

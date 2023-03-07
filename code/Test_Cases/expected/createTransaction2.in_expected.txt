@@ -1,6 +1,0 @@
-Enter new username
-Enter type of user (admin, full-standard, buy-standard, or sell-standard)
-Success.  New user added.
-Success.  New current credit is 000000376.
-Item: racecar             Seller username: currentSeller21     Current bid: 000111. Enter new bid
-Bid successful.  Current highest bid now: 000112
