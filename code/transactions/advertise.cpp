@@ -1,4 +1,4 @@
-/*#include "advertise.h"
+#include "advertise.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -61,8 +61,7 @@ void Advertise::executeTransaction(std::string transaction) {
     }
 
     // use functions in the parent class Transaction
-    Transaction::addToUsersFile(sellerName, itemKeyword, balance, "05");
+    Transaction::addToTransFile(sellerName, itemKeyword, balance, "05");
     cout << "Advertise successful" << endl;
     return;
 }
-*/
