@@ -6,3 +6,4 @@ login newUser12345 abc
 bid racecar currentSeller21
 150
 logout
+close

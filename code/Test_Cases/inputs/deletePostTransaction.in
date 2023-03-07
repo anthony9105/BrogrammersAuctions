@@ -2,3 +2,4 @@ login adminUser1 ^^^^
 delete 
 nonAdminUser1
 logout
+close
