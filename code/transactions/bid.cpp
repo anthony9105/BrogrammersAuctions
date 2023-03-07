@@ -1,4 +1,4 @@
-/*#include "bid.h"
+#include "bid.h"
 #include "../user/user.h"
 #include "addcredit.h"
 #include <iostream>
@@ -76,4 +76,3 @@ void Bid::executeTransaction(User currentUser, const std::string& dailyTransacti
 
     cout << "Bid successful." << endl;
 }
-*/

@@ -1,4 +1,4 @@
-/*#ifndef BID_H
+#ifndef BID_H
 #define BID_H
 
 #include <string>
@@ -12,4 +12,3 @@ public:
 };
 
 #endif // BID_H
-*/
