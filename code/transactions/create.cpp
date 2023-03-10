@@ -30,7 +30,7 @@ void Create::executeTransaction() {
             return;
         }
 
-        usernameIsInUse = Transaction::checkIfUserExists(username);
+        usernameIsInUse = Transaction::checkIfExists(username);
         nameTooLong = Transaction::nameIsTooLong(username);
 
         if (usernameIsInUse) {

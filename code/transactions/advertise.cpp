@@ -5,63 +5,53 @@
 #include "transaction.h"
 #include "../user/user.h"
 
-Advertise::Advertise(std::string dailyTransFileName) {
-    sellerName = "";
-    itemKeyword = "";
-    minBid = 0.0f;
-    this->dailyTransFileName = dailyTransFileName;
-}
+void Advertise::executeTransaction(string name, string accountType) {
 
-void Advertise::executeTransaction(std::string transaction) {
-    std::stringstream stream(transaction);
-    std::string word;
+    if (accountType = "AA" || accountType == "SS" || accountType "FS") {
+        string itemName;
+        bool itemAlreadyExists = true;
 
-    std::vector<std::string> words;
-    while (stream >> word) {
-        words.push_back(word);
+        while (itemAlreadyExists) {
+            cout << "Enter a new item name (max 25 characters)" << endl;
+            cin >> itemName;
+            itemIsValid = Transaction::checkIfExists(itemName);
+        }
+
+        double minimumBid;
+        bool validMinimumBid = false;
+
+        while(!validMinimumBid) {
+            cout << "Enter a valid minimum bid (max: 999.99)" << endl;
+            cin >> minimumBid;
+            
+            if (minimumBid <= 999.99 && minimumBid > 0.01) {
+                // get the number of decimal places
+                double temp = minimumBid;
+                int len = temp.find_last_of('.');
+                temp.erase(0,len+1);
+                len = temp.length();
+                
+                // if the decimal places is only 2 or less
+                if (len <= 2) {
+                    validMinimumBid = true;
+                }
+            }
+        } 
+
+        int numOfDays;
+        bool validNumOfDays = false;
+
+        while (!validNumOfDays) {
+            cout << "Enter number days remaining to bid on this item (max: 100 days)" << endl;
+            cin >> numOfDays;
+
+            if
+        }
+
     }
-
-    if (words.size() != 4) {
-        std::cout << "ERROR: Invalid advertise transaction format" << std::endl;
+    else {
+        cout << "You do not have the account privileges to do this" << endl;
         return;
     }
 
-    // check if seller is logged in
-    if (getName() != words[1]) {
-        std::cout << "ERROR: Seller is not logged in" << std::endl;
-        return;
-    }
-
-    // get seller's balance
-    int balance = getBalance();
-
-    // check if balance is negative
-    if (balance < 0) {
-        std::cout << "ERROR: Seller's balance is negative" << std::endl;
-        return;
-    }
-
-    // check if balance is less than 1
-    if (balance < 1) {
-        std::cout << "ERROR: Seller's balance is less than 1" << std::endl;
-        return;
-    }
-
-    // check if item keyword is greater than 15 characters
-    if (words[2].length() > 15) {
-        std::cout << "ERROR: Item keyword length exceeds 15 characters" << std::endl;
-        return;
-    }
-
-    // check if min bid is greater than or equal to 0.01
-    float minBid = std::stof(words[3]);
-    if (minBid < 0.01) {
-        std::cout << "ERROR: Minimum bid must be greater than or equal to 0.01" << std::endl;
-        return;
-    }
-
-    // use functions in the parent class Transaction
-    Transaction::addToTransFile(sellerName, itemKeyword, balance, "05");
-    cout << "Advertise successful" << endl;
-    return;
 }

@@ -35,7 +35,7 @@ void Delete::executeTransaction(string name, string accountType, int balance) {
             tryingToDeleteSelf = false;
         }
 
-        usernameExists = Transaction::checkIfUserExists(nameToDelete);
+        usernameExists = Transaction::checkIfExists(nameToDelete);
 
         if (!usernameExists) {
             cout << "Error.  Username does not exist.  Enter a username of an existing user" << endl;

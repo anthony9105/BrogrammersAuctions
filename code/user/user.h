@@ -9,7 +9,7 @@ using namespace std;
 */
 class User {
     protected:
-        int balance = 0;
+        double balance = 0.0;
         string name;
         string accountType;
         string password;

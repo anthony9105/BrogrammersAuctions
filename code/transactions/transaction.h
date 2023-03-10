@@ -12,7 +12,7 @@
 using namespace std;
 
 /// global variables
-static int creditAddedThisSession = 0;
+static double creditAddedThisSession = 0.0;
 static string DAILY_TRANS_FILE;
 static string CURR_USER_ACC_FILE;
 static string AVAIL_ITEMS_FILE;
@@ -39,9 +39,11 @@ class Transaction : public User {
 
             string getNameIn15Char(string name);
 
-            int getBalance();
+            double getBalance();
 
-            string getBalanceIn9Char(int balance);
+            string getBalanceIn9Char(double balance);
+
+            string getBalanceInSpecifiedChars(double balance, int numOfCharacters);
 
             string getPassword();
 
@@ -50,7 +52,7 @@ class Transaction : public User {
         /**
          * setters
         */
-            void setBalance(int iBalance);
+            void setBalance(double iBalance);
 
             void setName(string iName);
 
@@ -72,7 +74,7 @@ class Transaction : public User {
             /// @param accountType - account type of the user who did the transaction (ex: AA for admin)
             /// @param balance - balance of the user who did the transaction
             /// @param transCode - transaction code which represents the type of transaction (ex: 01 for create)
-            void addToTransFile(string userName, string accountType, int balance, string transCode);
+            void addToTransFile(string userName, string accountType, double balance, string transCode);
 
             /// @brief addToTransFile function used to add a transaction to the CurrentUsersFile.txt file
             /// @param userName - username of the user to add
@@ -80,7 +82,7 @@ class Transaction : public User {
             /// @param balance - balance of the user to add
             /// @param displayPassword - displayPassword of the user (not encrypted).  This function does encrypt it here
             ///                          right before outputting to the file.
-            void addToUsersFile(string userName, string accountType, int balance, string displayPassword);
+            void addToUsersFile(string userName, string accountType, double balance, string displayPassword);
 
             /// @brief removeFromUsersFile used to remove the information of the user
             /// from the CurrentUserAccounts.txt file
@@ -91,13 +93,15 @@ class Transaction : public User {
             ///        in the CurrentUserAccounts.txt file
             /// @param userToUpdate - the username of the user to update the credit of
             /// @param creditToAdd - the amount of credit to add
-            void updateCreditInUsersFile(string userToUpdate, int creditToAdd);
+            void updateCreditInUsersFile(string userToUpdate, double creditToAdd);
 
             /// @brief updatePasswordInUsersFile function used to update the password of the chosen user
             ///        in the CurrentUserAccounts.txt file
             /// @param userToUpdate - the username of the user to update the password of
             /// @param newPassword - the new password to update
             void updatePasswordInUsersFile(string userToUpdate, string newPassword);
+
+            void addToItemsFile(string itemName, string sellerName, int daysRemaining, int minimumBid);
 
 
         /**
@@ -107,7 +111,7 @@ class Transaction : public User {
             /// username of an exiting user
             /// @param username - username to check exists
             /// @return - true for the user exists or false for the user does not exist
-            bool checkIfUserExists(string username);
+            bool checkIfExists(string thingToCheck);
 
             /// @brief nameIsTooLong function used to check if the given username is too long
             /// (over 15 characters)
@@ -147,7 +151,7 @@ class Transaction : public User {
             /// @param creditToAdd - amount of credit intended to be added to the user's current balance
             /// @return - true for yes the session credit limit is exceeded, or false for no the session credit
             ///           limit is not exceeded
-            bool sessionCreditLimitExceeded(int creditToAdd);
+            bool sessionCreditLimitExceeded(double creditToAdd);
 
             /// @brief getBalanceFromChosenUser function used to get the balance of whatever user wanted.
             ///        This is important for when an admin is trying to add credit to another user, because
@@ -155,7 +159,7 @@ class Transaction : public User {
             ///        addcredit transaction.
             /// @param chosenUsername - the username of the user who's balance we want to obtain
             /// @return - int for the balance that the chosen user has
-            int getBalanceFromChosenUser(string chosenUsername);
+            double getBalanceFromChosenUser(string chosenUsername);
 
             /// @brief cancelTransaction function used to determine if the user's response is to cancel the 
             ///        current transaction (if the response is the CANCEL_COMMAND (currently: "cancel please"))
@@ -163,6 +167,8 @@ class Transaction : public User {
             /// @return - true for yes the user wants to cancel the transaction, or false for the user does not
             ///           want to cancel the transaction
             bool cancelTransaction(string response);
+
+            string fillStringWithSpaces(string originalString, int numOfCharacters);
 
             void executeTransaction();
 };

@@ -48,16 +48,28 @@ vector<string> splitIntoVector(string line) {
         return temp;
     }
 
-    int Transaction::getBalance() {
+    double Transaction::getBalance() {
         return balance;
     }
 
-    string Transaction::getBalanceIn9Char(int balance) {
+    string Transaction::getBalanceIn9Char(double balance) {
         string temp1 = "";
         string temp2 = "";
         temp1 += to_string(balance);
 
         while (temp2.length() < 9 - temp1.length()) {
+            temp2 += "0";
+        }
+        temp2 += temp1;
+        return temp2;
+    }
+
+    string Transaction::getBalanceInSpecifiedChars(double balance, int numOfCharacters) {
+        string temp1 = "";
+        string temp2 = "";
+        temp1 += to_string(balance);
+
+        while (temp2.length() < numOfCharacters - temp1.length()) {
             temp2 += "0";
         }
         temp2 += temp1;
@@ -72,7 +84,7 @@ vector<string> splitIntoVector(string line) {
 /**
  * setters
 */
-    void Transaction::setBalance(int iBalance) {
+    void Transaction::setBalance(double iBalance) {
         balance = iBalance;
     }
 
@@ -108,7 +120,7 @@ vector<string> splitIntoVector(string line) {
     /// @param accountType - account type of the user who did the transaction (ex: AA for admin)
     /// @param balance - balance of the user who did the transaction
     /// @param transCode - transaction code which represents the type of transaction (ex: 01 for create)
-    void Transaction::addToTransFile(string userName, string accountType, int balance, string transCode) {
+    void Transaction::addToTransFile(string userName, string accountType, double balance, string transCode) {
         ofstream dailyTransFile;
 
         // append to the file
@@ -129,7 +141,7 @@ vector<string> splitIntoVector(string line) {
     /// @param balance - balance of the user to add
     /// @param displayPassword - displayPassword of the user (not encrypted).  This function does encrypt it here
     ///                          right before outputting to the file.
-    void Transaction::addToUsersFile(string userName, string accountType, int balance, string displayPassword) {
+    void Transaction::addToUsersFile(string userName, string accountType, double balance, string displayPassword) {
         displayPassword = encryptPassword(displayPassword);
 
         ofstream userAccountsFile;
@@ -184,7 +196,7 @@ vector<string> splitIntoVector(string line) {
     /// @brief updateCreditInUsersFile function used to update the credit of the chosen user
     /// @param userToUpdate - the username of the user to update the credit of
     /// @param creditToAdd - the amount of credit to add
-    void Transaction::updateCreditInUsersFile(string userToUpdate, int creditToAdd) {
+    void Transaction::updateCreditInUsersFile(string userToUpdate, double creditToAdd) {
         ifstream readUserAccountsFile;
         ofstream userAccountsFile;
 
@@ -198,7 +210,7 @@ vector<string> splitIntoVector(string line) {
             result = splitIntoVector(line);
 
             if (result[0] == userToUpdate) {
-                result[2] = getBalanceIn9Char((stoi(result[2])) + creditToAdd);
+                result[2] = getBalanceIn9Char((stod(result[2])) + creditToAdd);
                 line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2] + " " + result[3];
             }
             userAccountsFile << line << endl;
@@ -258,6 +270,18 @@ vector<string> splitIntoVector(string line) {
         // finally delete the temp file since it is no longer needed
         remove(TEMP_FILE.c_str());
     }
+
+    void Transaction::addToItemsFile(string itemName, string sellerName, int daysRemaining, int minimumBid) {
+        ofstream itemsFile;
+        // append to the file
+        itemsFile.open(AVAIL_ITEMS_FILE, ios::app);
+
+        if (itemsFile.is_open()) {
+            itemsFile << fillStringWithSpaces(itemName, 25) << " " << fillStringWithSpaces(sellerName, 15)
+            << " " << fillStringWithSpaces("", 15) << " " << getBalanceInSpecifiedChars(daysRemaining, 3) << " "  << getBalanceInSpecifiedChars(minimumBid, 6) << endl;
+        }
+        itemsFile.close();
+    }
 /**
  ***************************************************************************
 */
@@ -267,11 +291,11 @@ vector<string> splitIntoVector(string line) {
 /**
  * other functions which are used across the child classes such as Create, Delete, AddCredit, etc
 */
-    /// @brief checkIfUserExists function used to check if the given username is a 
-    /// username of an exiting user
-    /// @param username - username to check exists
-    /// @return - true for the user exists or false for the user does not exist
-    bool Transaction::checkIfUserExists(string username) {
+    /// @brief checkIfExists function used to check if the given username/item/etc is a 
+    /// username of an exiting user or existing item, etc
+    /// @param thingToCheck - thing to check if exists
+    /// @return - true for the thing exists or false for the thing does not exist
+    bool Transaction::checkIfExists(string thingToCheck) {
         ifstream readUserAccountsFile;
         readUserAccountsFile.open(CURR_USER_ACC_FILE);
 
@@ -281,8 +305,8 @@ vector<string> splitIntoVector(string line) {
             result = splitIntoVector(line);
 
             for (int i=0; i < result.size(); i++) {
-                // if username is found
-                if (result[i] == username) {
+                // if thingToCheck is found
+                if (result[i] == thingToCheck) {
                     readUserAccountsFile.close();
                     return true;
                 }
@@ -292,7 +316,7 @@ vector<string> splitIntoVector(string line) {
         return false;
     }
 
-    int Transaction::getBalanceFromChosenUser(string chosenUsername) {
+    double Transaction::getBalanceFromChosenUser(string chosenUsername) {
         ifstream readUserAccountsFile;
         readUserAccountsFile.open(CURR_USER_ACC_FILE);
 
@@ -305,7 +329,7 @@ vector<string> splitIntoVector(string line) {
                 // if username is found
                 if (result[i] == chosenUsername) {
                     readUserAccountsFile.close();
-                    return stoi(result[i+2]);
+                    return stod(result[i+2]);
                 }
             }
         }
@@ -421,8 +445,8 @@ vector<string> splitIntoVector(string line) {
         }
     }
 
-    bool Transaction::sessionCreditLimitExceeded(int creditToAdd) {
-        if (creditAddedThisSession + creditToAdd > 1000) {
+    bool Transaction::sessionCreditLimitExceeded(double creditToAdd) {
+        if (creditAddedThisSession + creditToAdd > 1000.00) {
             return true;
         }
 
@@ -436,6 +460,16 @@ vector<string> splitIntoVector(string line) {
             return true;
         }
         return false;
+    }
+
+    string Transaction::fillStringWithSpaces(string originalString, int numOfCharacters) {
+        string newString;
+        newString = originalString;
+        while(newString.length() < numOfCharacters) {
+            newString += " ";
+        }
+
+        return newString;
     }
 
     void Transaction::executeTransaction() {}

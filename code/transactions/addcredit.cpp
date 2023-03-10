@@ -30,7 +30,7 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
             }
 
             // check if the username exists in the CurrentUserAccounts.txt file
-            usernameExists = Transaction::checkIfUserExists(nameToAddCredit);
+            usernameExists = Transaction::checkIfExists(nameToAddCredit);
 
             if (!usernameExists) {
                 cout << "Error.  Username does not exist.  Enter a username of an existing user" << endl;
