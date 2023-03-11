@@ -12,7 +12,7 @@
 /**
  * Delete class
 */
-void Delete::executeTransaction(string name, string accountType, int balance) {
+void Delete::executeTransaction(string name, string accountType, int balance, string userFilePath) {
     string nameToDelete;
     bool usernameExists = false;
     bool tryingToDeleteSelf = true;
@@ -35,7 +35,7 @@ void Delete::executeTransaction(string name, string accountType, int balance) {
             tryingToDeleteSelf = false;
         }
 
-        usernameExists = Transaction::checkIfExists(nameToDelete);
+        usernameExists = Transaction::checkIfExists(nameToDelete, userFilePath);
 
         if (!usernameExists) {
             cout << "Error.  Username does not exist.  Enter a username of an existing user" << endl;

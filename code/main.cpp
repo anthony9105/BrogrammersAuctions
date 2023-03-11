@@ -14,7 +14,7 @@
 #include "transactions/create.h"
 #include "transactions/addcredit.h"
 #include "transactions/changePassword.h"
-// #include "transactions/advertise.h"
+#include "transactions/advertise.h"
 // #include "transactions/bid.h"
 // #include "transactions/refund.h"
 using namespace std;
@@ -112,7 +112,7 @@ void runSession()
                     // set transactionSession with the information returned from logIn function
                     transactionSession.setName(userInfo[0]);
                     transactionSession.setAccountType(userInfo[1]);
-                    transactionSession.setBalance(stoi(userInfo[2]));
+                    transactionSession.setBalance(stod(userInfo[2]));
                     transactionSession.setPassword(transactionSession.decryptPassword(userInfo[3]));
                 }
             }
@@ -155,7 +155,7 @@ void runSession()
                     if (transactionSession.getAccountType() == "AA") {
                         Create createTransaction;
                         createTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                        createTransaction.executeTransaction();
+                        createTransaction.executeTransaction(CURR_USER_ACC_FILE);
                     }
                     else {
                         cout << "You cannot create accounts unless you are on an admin account" << endl;
@@ -167,7 +167,8 @@ void runSession()
                     if (transactionSession.getAccountType() == "AA") {
                         Delete deleteTransaction;
                         deleteTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                        deleteTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+                        deleteTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
+                                                             transactionSession.getBalance(), CURR_USER_ACC_FILE);
                     }
                     else {
                         cout << "You can not delete any accounts unless you are on an admin account" << endl;
@@ -176,9 +177,10 @@ void runSession()
                 /// TODO: for advertise, bid, refund; item, currentitemsfilemanager need to be fixed/implemented
                 // when advertise is entered
                 else if (userInput[0] == "advertise") {
-                    // Advertise advertiseTransaction;
-                    // advertiseTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    // advertiseTransaction.executeTransaction("hey");
+                    Advertise advertiseTransaction;
+                    advertiseTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
+                    advertiseTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
+                                                            transactionSession.getBalance(), AVAIL_ITEMS_FILE);
                 }
                 // when bid is entered
                 else if (userInput[0] == "bid") {
@@ -194,9 +196,18 @@ void runSession()
                 }
                 // when addcredit is entered
                 else if (userInput[0] == "addcredit") {
+                    double result;
                     AddCredit addCreditTransaction;
                     addCreditTransaction.setFiles(DAILY_TRANS_FILE, CURR_USER_ACC_FILE, AVAIL_ITEMS_FILE);
-                    addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(), transactionSession.getBalance());
+                    result = addCreditTransaction.executeTransaction(transactionSession.getName(), transactionSession.getAccountType(),
+                                                                     transactionSession.getBalance(), CURR_USER_ACC_FILE);
+
+                    if (result == 0.0) {}
+                    else if (result == -1.0) {}
+                    // set the new balance if the user added credit to itself (this way when logging out the new correct balance is shown in the users file)
+                    else {
+                        transactionSession.setBalance(result);
+                    }
                 }
                 // when changepassword is entered
                 else if (userInput[0] == "changepassword") {

@@ -10,7 +10,8 @@ using namespace std;
 */
 class AddCredit : public Transaction {
     public:
-        void executeTransaction(string name, string accountType, int balance);
+        double newBalanceOfUser;
+        double executeTransaction(string name, string accountType, double balance, string userFilePath);
 };
 
 #endif

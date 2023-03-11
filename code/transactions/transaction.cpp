@@ -6,6 +6,8 @@
 #include <string>
 #include <sstream>
 #include <cstdio>
+#include <iomanip>
+
 #include "../user/user.h"
 #include "transaction.h"
 
@@ -52,22 +54,25 @@ vector<string> splitIntoVector(string line) {
         return balance;
     }
 
-    string Transaction::getBalanceIn9Char(double balance) {
+    string Transaction::getBalanceInSpecifiedChars(double balance, int numOfCharacters) {
         string temp1 = "";
         string temp2 = "";
-        temp1 += to_string(balance);
+        stringstream ss;
+        ss << fixed << setprecision(2) << balance;
+        temp1 = ss.str();
 
-        while (temp2.length() < 9 - temp1.length()) {
+        while (temp2.length() < numOfCharacters - temp1.length()) {
             temp2 += "0";
         }
         temp2 += temp1;
         return temp2;
     }
 
-    string Transaction::getBalanceInSpecifiedChars(double balance, int numOfCharacters) {
+    string Transaction::getIntInSpecifiedChars(int num, int numOfCharacters) {
         string temp1 = "";
         string temp2 = "";
-        temp1 += to_string(balance);
+        stringstream ss;
+        temp1 += to_string(num);
 
         while (temp2.length() < numOfCharacters - temp1.length()) {
             temp2 += "0";
@@ -129,7 +134,7 @@ vector<string> splitIntoVector(string line) {
         // write new line to the file
         if (dailyTransFile.is_open()) {
             dailyTransFile << transCode << " " << getNameIn15Char(userName)
-            << " " << accountType << " " << getBalanceIn9Char(balance) << endl;
+            << " " << accountType << " " << getBalanceInSpecifiedChars(balance, 12) << endl;
         }
 
         dailyTransFile.close();
@@ -150,7 +155,7 @@ vector<string> splitIntoVector(string line) {
 
         if (userAccountsFile.is_open()) {
             userAccountsFile << getNameIn15Char(userName)
-            << " " << accountType << " " << getBalanceIn9Char(balance) << " " << displayPassword << endl;
+            << " " << accountType << " " << getBalanceInSpecifiedChars(balance, 12) << " " << displayPassword << endl;
         }
         userAccountsFile.close();
     }
@@ -210,7 +215,9 @@ vector<string> splitIntoVector(string line) {
             result = splitIntoVector(line);
 
             if (result[0] == userToUpdate) {
-                result[2] = getBalanceIn9Char((stod(result[2])) + creditToAdd);
+                double newBalance = stod(result[2]) + creditToAdd;
+                result[2] = getBalanceInSpecifiedChars(newBalance, 12);
+                //result[2] = getBalanceInSpecifiedChars((stod(result[2])) + creditToAdd, 12);
                 line = getNameIn15Char(result[0]) + " " + result[1] + " " + result[2] + " " + result[3];
             }
             userAccountsFile << line << endl;
@@ -271,14 +278,14 @@ vector<string> splitIntoVector(string line) {
         remove(TEMP_FILE.c_str());
     }
 
-    void Transaction::addToItemsFile(string itemName, string sellerName, int daysRemaining, int minimumBid) {
+    void Transaction::addToItemsFile(string itemName, string sellerName, int daysRemaining, double minimumBid) {
         ofstream itemsFile;
         // append to the file
         itemsFile.open(AVAIL_ITEMS_FILE, ios::app);
 
         if (itemsFile.is_open()) {
             itemsFile << fillStringWithSpaces(itemName, 25) << " " << fillStringWithSpaces(sellerName, 15)
-            << " " << fillStringWithSpaces("", 15) << " " << getBalanceInSpecifiedChars(daysRemaining, 3) << " "  << getBalanceInSpecifiedChars(minimumBid, 6) << endl;
+            << " " << fillStringWithSpaces(" ", 15) << " " << getIntInSpecifiedChars(daysRemaining, 3) << " "  << getBalanceInSpecifiedChars(minimumBid, 9) << endl;
         }
         itemsFile.close();
     }
@@ -295,19 +302,19 @@ vector<string> splitIntoVector(string line) {
     /// username of an exiting user or existing item, etc
     /// @param thingToCheck - thing to check if exists
     /// @return - true for the thing exists or false for the thing does not exist
-    bool Transaction::checkIfExists(string thingToCheck) {
-        ifstream readUserAccountsFile;
-        readUserAccountsFile.open(CURR_USER_ACC_FILE);
+    bool Transaction::checkIfExists(string thingToCheck, string filePath) {
+        ifstream readFile;
+        readFile.open(filePath);
 
         string line;
         vector<string> result;
-        while (getline(readUserAccountsFile, line)) {
+        while (getline(readFile, line)) {
             result = splitIntoVector(line);
 
             for (int i=0; i < result.size(); i++) {
                 // if thingToCheck is found
                 if (result[i] == thingToCheck) {
-                    readUserAccountsFile.close();
+                    readFile.close();
                     return true;
                 }
             }
@@ -470,6 +477,27 @@ vector<string> splitIntoVector(string line) {
         }
 
         return newString;
+    }
+
+    bool Transaction::is2OrLessDecimals(string response) {
+        // get the number of decimal places
+        int numOfDecimals = -1;
+        bool decimalFound = false;
+
+        for (int i=0; i < response.length() ; i++) {
+            if (response[i] == '.') {
+                decimalFound = true;
+            }
+
+            if (decimalFound) {
+                numOfDecimals++;
+            }
+        }
+        // if the decimal places is only 2 or less
+        if (numOfDecimals <= 2) {
+            return true;
+        }
+        return false;
     }
 
     void Transaction::executeTransaction() {}

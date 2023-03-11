@@ -6,7 +6,7 @@
 */
 class Delete : public Transaction {
     public:
-        void executeTransaction(string name, string accountType, int balance);
+        void executeTransaction(string name, string accountType, int balance, string userFilePath);
 };
 
 #endif

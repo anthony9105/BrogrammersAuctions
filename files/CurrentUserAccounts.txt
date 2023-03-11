@@ -1,4 +1,4 @@
-adminUser1      AA 000003507.00 aaaa
+adminUser1      AA 000004813.88 aaaa
 user1234        AA 000001201.00 bbbb
 user5678        AA 000000400.43 !!!!
 newUser123      AA 000000452.23 aaaa
@@ -13,7 +13,7 @@ someguy71       SS 000000000.00 def
 someguy88       BS 000000000.00 ghkx
 adam            SS 000000014.00 ghxk
 anthony         AA 000000080.00 ijkm
-baron           AA 000000000.00 eeee
+baron           AA 000000051.59 eeee
 nearlyAtMax     SS 999999991.00 eeee
 newUser55       AA 000000000.00 def
 kaathihan       AA 000000000.00 def

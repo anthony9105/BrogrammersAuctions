@@ -11,10 +11,13 @@
 #include "transaction.h"
 #include "addcredit.h"
 
-void AddCredit::executeTransaction(string name, string accountType, int balance) {
+const string ADDCREDIT_TRANS_CODE = "06";
+
+double AddCredit::executeTransaction(string name, string accountType, double balance, string userFilePath) {
     string nameToAddCredit;
     nameToAddCredit = name;
     bool usernameExists = false;
+    bool personIsAddingCreditToThemself = false;
 
     // if the user doing this transaction is an admin
     if (accountType == "AA") {
@@ -26,11 +29,11 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
 
             // to exit from/cancel addcredit entirely
             if (Transaction::cancelTransaction(nameToAddCredit)) {
-                return;
+                return -1.0;
             }
 
             // check if the username exists in the CurrentUserAccounts.txt file
-            usernameExists = Transaction::checkIfExists(nameToAddCredit);
+            usernameExists = Transaction::checkIfExists(nameToAddCredit, userFilePath);
 
             if (!usernameExists) {
                 cout << "Error.  Username does not exist.  Enter a username of an existing user" << endl;
@@ -39,15 +42,19 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
         }
     }
 
-    int creditToAdd;
+    if (name == nameToAddCredit) {
+        personIsAddingCreditToThemself = true;
+    }
+
+    double creditToAdd;
     string response;
     bool validCreditToAdd = false;
-    int balanceOfUserToAddTo = Transaction::getBalanceFromChosenUser(nameToAddCredit);
+    double balanceOfUserToAddTo = Transaction::getBalanceFromChosenUser(nameToAddCredit);
 
     // if the balance of the user to add to is already at the maximum credit
-    if (balanceOfUserToAddTo >= 999999999) {
-        cout << "Balance is already at the maximum of 999999999" << endl;
-        return;
+    if (balanceOfUserToAddTo >= 999999999.99) {
+        cout << "Balance is already at the maximum of 999999999.99" << endl;
+        return -1.0;
     }
 
     // loop to run until the credit added is a valid amount
@@ -56,29 +63,32 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
 
         try {
             getline(cin, response);
+            creditToAdd = stod(response);
 
-            creditToAdd = stoi(response);
-
-            if (balanceOfUserToAddTo + creditToAdd > 999999999) {
+            if (balanceOfUserToAddTo + creditToAdd > 999999999.99) {
                 cout << "Error. This transaction will cause credit account to exceed max of 999999999" << endl;
             }
             else if (Transaction::sessionCreditLimitExceeded(creditToAdd)) {
                 cout << "Error. No more than $1000.00 can be added in a given session" << endl;
             }
             else {
-                validCreditToAdd = true;
-                break;
+                if (is2OrLessDecimals(response)) {
+                    validCreditToAdd = true;
+                }
             }
         }
         // invalid input such as entering a string instead of int
         catch (invalid_argument& ia) {
             // check if user wants to cancel transaction
             if (Transaction::cancelTransaction(response)) {
-                return;
+                return -1.0;
             }
             cout << "Invalid input" << endl;
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            //cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        catch (exception& e) {
+            cout << "fdfeihfdiehfie" << endl;
         }
     }
 
@@ -90,9 +100,17 @@ void AddCredit::executeTransaction(string name, string accountType, int balance)
 
     // use functions in the parent class Transaction
     Transaction::updateCreditInUsersFile(nameToAddCredit, creditToAdd);
-    Transaction::addToTransFile(name, accountType, balanceOfUserToAddTo, "06");
-    cout << "Add credit successful" << endl;
-    return;
 
-    // seg fault after here for some reason
+    if (personIsAddingCreditToThemself) {
+        Transaction::addToTransFile(name, accountType, balanceOfUserToAddTo, ADDCREDIT_TRANS_CODE);
+        cout << "Add credit successful" << endl;
+        return balanceOfUserToAddTo;
+    }    
+    else { 
+        Transaction::addToTransFile(name, accountType, balance, ADDCREDIT_TRANS_CODE);
+        cout << "Add credit successful" << endl;
+        return 0.0;
+    }
+
+
 }

@@ -12,7 +12,7 @@
 /**
  * Create class
 */
-void Create::executeTransaction() {
+void Create::executeTransaction(string userFilePath) {
     bool usernameIsInUse = true;
     bool nameTooLong = true;
     bool validAccountType = false;
@@ -30,7 +30,7 @@ void Create::executeTransaction() {
             return;
         }
 
-        usernameIsInUse = Transaction::checkIfExists(username);
+        usernameIsInUse = Transaction::checkIfExists(username, userFilePath);
         nameTooLong = Transaction::nameIsTooLong(username);
 
         if (usernameIsInUse) {

@@ -9,8 +9,7 @@ using namespace std;
 
 class Advertise : public Transaction {
     public:
-        Advertise();
-        void executeTransaction(string name, string accountType);
+        void executeTransaction(string name, string accountType, double balance, string availItemsFile);
 };
 
 #endif

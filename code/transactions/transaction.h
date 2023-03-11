@@ -41,9 +41,9 @@ class Transaction : public User {
 
             double getBalance();
 
-            string getBalanceIn9Char(double balance);
-
             string getBalanceInSpecifiedChars(double balance, int numOfCharacters);
+
+            string getIntInSpecifiedChars(int num, int numOfCharacters);
 
             string getPassword();
 
@@ -101,7 +101,7 @@ class Transaction : public User {
             /// @param newPassword - the new password to update
             void updatePasswordInUsersFile(string userToUpdate, string newPassword);
 
-            void addToItemsFile(string itemName, string sellerName, int daysRemaining, int minimumBid);
+            void addToItemsFile(string itemName, string sellerName, int daysRemaining, double minimumBid);
 
 
         /**
@@ -111,7 +111,7 @@ class Transaction : public User {
             /// username of an exiting user
             /// @param username - username to check exists
             /// @return - true for the user exists or false for the user does not exist
-            bool checkIfExists(string thingToCheck);
+            bool checkIfExists(string thingToCheck, string filePath);
 
             /// @brief nameIsTooLong function used to check if the given username is too long
             /// (over 15 characters)
@@ -169,6 +169,8 @@ class Transaction : public User {
             bool cancelTransaction(string response);
 
             string fillStringWithSpaces(string originalString, int numOfCharacters);
+
+            bool is2OrLessDecimals(string response);
 
             void executeTransaction();
 };
