@@ -15,3 +15,7 @@ To run the test script:
 1. make sure you are in the code directory
 2. run chmod +x testing.sh
 3. run ./testing.sh
+
+To run the backend prototype:
+1. make sure you are in the backend directory
+2. run python backend.py
