@@ -1,0 +1,4 @@
+vicks user01 user03 10 10
+fan user01 N/A 75 75
+lotion user01 user03 5 5
+lamp user02 N/A 50 50

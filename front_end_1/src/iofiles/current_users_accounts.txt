@@ -1,4 +1,0 @@
-user01 AA 49 teww
-user02 FS 100 teww
-user03 BS 100 teww
-user04 SS 100 riateww

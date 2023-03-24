@@ -1,0 +1,20 @@
+Program Running Instructions:
+
+-> cd src
+-> make
+-> ./auction_system ./iofiles/current_users_accounts.txt ./iofiles/available_items.txt ./iofiles/daily_transaction.txt
+
+
+Script Running Instructions:
+
+-> cd src/scripts
+-> bash
+-> ./test.sh
+
+
+Program Users:
+
+user01	AA	pass
+user02	FS	pass
+user03	BS	pass
+user04	SS	pass

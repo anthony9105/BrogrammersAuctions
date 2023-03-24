@@ -1,8 +1,0 @@
-Welcome to the Auction System
-Please login to begin. 
-Welcome, adminUser1.
-Advertise an item
-Item name:
-Price below minimum(0) Item min Bid:
-Item max duration: Duration below minimum(1) Item max duration:
-Session complete.
