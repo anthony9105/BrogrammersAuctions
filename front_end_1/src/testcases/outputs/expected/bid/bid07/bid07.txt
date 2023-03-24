@@ -1,0 +1,29 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user01 (AA)!
+
+Enter operation:
+Enter item name:
+Enter seller's username:
+Current Highest Bid: $50
+Enter new bid amount:
+Error: Bid amount must be greater than current highest bid.
+
+Enter operation:
+user01 successfully logged out.

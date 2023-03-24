@@ -1,0 +1,7 @@
+login
+user01
+pass
+refund
+50
+user00
+logout

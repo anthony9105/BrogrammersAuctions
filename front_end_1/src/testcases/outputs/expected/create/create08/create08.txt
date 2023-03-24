@@ -1,0 +1,28 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user01 (AA)!
+
+Enter operation:
+Enter a username to create:
+Enter a user type:
+Enter a password:
+Error: Password be only 15 characters in max length.
+
+Enter operation:
+user01 successfully logged out.

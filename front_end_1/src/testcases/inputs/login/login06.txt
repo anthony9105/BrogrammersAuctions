@@ -1,0 +1,7 @@
+login
+user03
+wrongpass
+login
+user03
+pass
+logout

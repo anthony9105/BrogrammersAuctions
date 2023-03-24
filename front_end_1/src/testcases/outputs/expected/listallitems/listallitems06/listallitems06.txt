@@ -1,0 +1,36 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user02 (FS)!
+
+Enter operation:
+Enter the item name:
+Enter the minimum bid ($):
+Enter auction duration (in days):
+wallet successfully put up for auction for 99 days.
+
+Enter operation:
+Item Name: 		 Item Seller: 	 Highest Bidder: 	 Highest Bid: 	 Auction Days Left:
+vicks                    user01          user03                  10              10
+fan                      user01          N/A                     75              75
+lotion                   user01          user03                  5               5
+lamp                     user02          N/A                     50              50
+wallet                   user02          N/A                     100             99
+
+Enter operation:
+user02 successfully logged out.

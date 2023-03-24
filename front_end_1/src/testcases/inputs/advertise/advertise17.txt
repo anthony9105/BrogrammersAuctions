@@ -1,0 +1,8 @@
+login
+user02
+pass
+advertise
+wallet
+100
+99
+logout

@@ -1,0 +1,7 @@
+login
+user01
+pass
+advertise
+wallet
+ten
+logout

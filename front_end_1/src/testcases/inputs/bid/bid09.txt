@@ -1,0 +1,5 @@
+bid
+login
+user02
+pass
+logout

@@ -1,0 +1,7 @@
+login
+user04
+pass
+advertise
+wallet
+1000
+logout

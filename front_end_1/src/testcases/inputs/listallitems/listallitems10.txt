@@ -1,0 +1,5 @@
+login
+user04
+pass
+listallitems
+logout

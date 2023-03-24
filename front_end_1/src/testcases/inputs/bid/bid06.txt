@@ -1,0 +1,8 @@
+login
+user01
+pass
+bid
+lamp
+user02
+ten
+logout

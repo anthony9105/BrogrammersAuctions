@@ -1,0 +1,4 @@
+login
+user04
+pass
+logout

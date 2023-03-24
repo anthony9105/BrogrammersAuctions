@@ -1,0 +1,8 @@
+login
+user01
+pass
+create
+user05
+AA
+thisisaverylongpassword
+logout

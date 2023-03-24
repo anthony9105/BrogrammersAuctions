@@ -1,0 +1,28 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user01 (AA)!
+
+Enter operation:
+Enter refund amount:
+Enter buyer's username:
+Enter seller's username:
+Error: This username does not exist in the user-accounts file.
+
+Enter operation:
+user01 successfully logged out.

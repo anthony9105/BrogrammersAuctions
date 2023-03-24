@@ -1,0 +1,28 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user01 (AA)!
+
+Enter operation:
+Enter the item name:
+Enter the minimum bid ($):
+Enter auction duration (in days):
+Error: Auction duration must be between 1-100 days.
+
+Enter operation:
+user01 successfully logged out.

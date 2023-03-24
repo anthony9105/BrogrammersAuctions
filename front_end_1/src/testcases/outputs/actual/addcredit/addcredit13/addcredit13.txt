@@ -1,0 +1,27 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user03 (BS)!
+
+Enter operation:
+Current credit balance for user03: $100.00
+Enter the credit amount to add:
+New credit balance for user03: $110.00
+
+Enter operation:
+user03 successfully logged out.

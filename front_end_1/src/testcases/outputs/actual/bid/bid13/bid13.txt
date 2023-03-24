@@ -1,0 +1,30 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user02 (FS)!
+
+Enter operation:
+Enter item name:
+Enter seller's username:
+Error: You cannot place a bid on your own advertised item.
+
+Enter operation:
+Invalid input for operation. Please try again.
+
+Enter operation:
+user02 successfully logged out.

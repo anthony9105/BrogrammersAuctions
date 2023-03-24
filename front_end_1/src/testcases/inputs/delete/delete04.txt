@@ -1,0 +1,5 @@
+delete
+login
+user01
+pass
+logout

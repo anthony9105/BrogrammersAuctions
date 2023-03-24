@@ -1,0 +1,27 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user04 (SS)!
+
+Enter operation:
+Enter the item name:
+Enter the minimum bid ($):
+Error: Minimum bid amount must be betwceen 0-999.99.
+
+Enter operation:
+user04 successfully logged out.

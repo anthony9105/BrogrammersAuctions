@@ -1,0 +1,6 @@
+login
+user01
+pass
+addcredit
+1001
+logout

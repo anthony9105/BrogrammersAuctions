@@ -1,0 +1,29 @@
+Welcome to AuctionBay!
+--
+Here is a list of operations (what to input):
+- Login (login)
+- Create (create)
+- Delete (delete)
+- Advertise (advertise)
+- Bid (bid)
+- Refund (refund)
+- Add Credit (addcredit)
+- List All Items (listallitems)
+- List All Users (listallusers)
+- Reset Password (resetpassword)
+- Logout (logout)
+
+Enter operation:
+Enter username:
+Enter password:
+Hello user04 (SS)!
+
+Enter operation:
+Item Name: 		 Item Seller: 	 Highest Bidder: 	 Highest Bid: 	 Auction Days Left:
+vicks                    user01          user03                  10              10
+fan                      user01          N/A                     75              75
+lotion                   user01          user03                  5               5
+lamp                     user02          N/A                     50              50
+
+Enter operation:
+user04 successfully logged out.

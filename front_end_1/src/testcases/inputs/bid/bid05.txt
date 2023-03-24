@@ -1,0 +1,7 @@
+login
+user01
+pass
+bid
+fan
+user01
+logout

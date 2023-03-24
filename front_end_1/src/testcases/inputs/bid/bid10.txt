@@ -1,0 +1,6 @@
+login
+user02
+pass
+bid
+pencil
+logout
