@@ -109,7 +109,23 @@ class FileModifier:
                 else:
                     file.write(line)
 
-    # This function will do the back end error recording. It is currently incomplete. 
-    def log_information():
-        # TODO
-        return 0
+    # This function is part of the backend error recording. It checks that no item has a negative number of days left.
+    def negative_days_check(self, words):
+        if int(words[3]) < 0:
+            print("ERROR: failed constraint error caused by transaction:", words[0], words[1], words[2], words[
+                3], words[4], "No item should ever have a negative number of days left")
+            return True
+        return False
+    
+    # This function is part of the backend error recording. It checks that a newly created user has a name different from all existing users.
+    def different_name_check(self, words):
+        name = words[1]
+
+        with open(self.curr_user_file, 'r') as file:
+            for line in file:
+                if line.startswith(name):
+                    # do something with the line
+                    print("ERROR: failed constraint error caused by transaction:", words[0], words[1], words[2], words[
+                          3], words[4], "A newly created user must have a name different from all existing users")
+                    return True
+        return False
