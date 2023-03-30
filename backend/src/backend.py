@@ -30,13 +30,17 @@ class BackendDriver:
                 words = line.split()
 
                 if words[0] == '01':
-                    fm.create_modifications(words)
+                    issue = fm.different_name_check(words)
+                    if issue == False:
+                        fm.create_modifications(words)
 
                 elif words[0] == '02':
                     fm.delete_modifications(words)
 
                 elif words[0] == '03':
-                    fm.advertise_modifications(words)
+                    issue = fm.negative_days_check(words)
+                    if issue == False:
+                        fm.advertise_modifications(words)
 
                 elif words[0] == '04':  
                     fm.bid_modifications(words)
