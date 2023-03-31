@@ -1,7 +1,14 @@
 01 user05 SS 0 teww
+
 02 userbaron AA 0 ffff
+
 03 chair user01 49 0
+
 04 lamp user02 50 60
+
 05 user02 user01 3
+
 06 user01 AA 47 teww
+
 07 user01 AA 47 teww123
+

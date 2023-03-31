@@ -19,3 +19,12 @@ chair user01 N/A 49 0
 chair user01 N/A 49 0
 chair user01 N/A 49 0
 chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
