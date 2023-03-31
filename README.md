@@ -19,3 +19,7 @@ To run the test script:
 To run the backend prototype:
 1. make sure you are in the backend/src directory
 2. run python backend.py or python3 backend.py
+
+To run the backend tests:
+1. make sure you are in the backend/src directory
+2. run pytest
