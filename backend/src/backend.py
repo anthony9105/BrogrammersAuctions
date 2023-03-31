@@ -16,7 +16,7 @@ class BackendDriver:
         with open("../merged_daily_transaction.txt", "r") as b_file, open("../daily_transaction_new_content.txt", "w") as c_file:
             for line in b_file:
                 if line not in a_lines:
-                    c_file.write(line + '\n')
+                    c_file.write(line)
 
 
     # This function is used to start the execution of the backend.  It reads the new daily tranaction content and applies the
