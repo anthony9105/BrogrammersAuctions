@@ -22,7 +22,9 @@ class TestFileModifier:
 
         with open(curr_user_file, "r") as f:
             content = f.read()
-        expected = " ".join(words) + "\n"
+
+        expected = (words[0] + " " + words[1] + " " + words[2] +
+                    " " + words[3] + " " + words[4] + "\n")
         assert content == expected
 
     def test_delete_modifications(self, file_modifier, setup_files):
