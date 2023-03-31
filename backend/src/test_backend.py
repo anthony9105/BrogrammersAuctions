@@ -1,7 +1,5 @@
-from src.backend import BackendDriver
-
 import pytest
-from backend import BackendDriver
+from backend import BackendDriver, FileModifier
 from file_modifier import FileModifier
 from unittest.mock import MagicMock, patch
 
