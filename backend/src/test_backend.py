@@ -36,7 +36,7 @@ class TestBackendDriver:
             f.write("01 ...\n")
 
         backend_driver.execute_back_end()
-        assert mock_instance.create_modifications.called
+        assert MockFileModifier.return_value.create_modifications.called
 
         # Test case 2.2
         with open(daily_transaction_new_content, "w") as f:
