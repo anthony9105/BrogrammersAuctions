@@ -23,7 +23,7 @@ class TestFileModifier:
         with open(curr_user_file, "r") as f:
             content = f.read()
 
-        expected = (words[0] + " " + words[1] + " " + words[2] +
+        expected = (words[1] + " " + words[2] +
                     " " + words[3] + " " + words[4] + "\n")
         assert content == expected
 

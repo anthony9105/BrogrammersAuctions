@@ -8,10 +8,19 @@ class FileModifier:
     def __init__(self):
         pass
 
+    def not_modifying_because_user_already_exists(self):
+        return
+    
+    def not_modifying_because_item_has_negative_days(self):
+        return
+    
+    def not_executing_because_of_missing_info(self):
+        return
+
     # This function makes the modifications to the current_users_accounts.txt file that the create command causes.
     def create_modifications(self, words):
         with open(self.curr_user_file, "a") as file:
-                file.write(words[0] + " " + words[1] + " " + words[2] +
+                file.write(words[1] + " " + words[2] +
                         " " + words[3] + " " + words[4] + "\n")
 
     # This function makes the modifications to the current_users_accounts.txt file that the delete command causes.
@@ -129,3 +138,9 @@ class FileModifier:
                           3], words[4], "A newly created user must have a name different from all existing users")
                     return True
         return False
+    
+    def missing_info(self, words, correctAmount):
+        if (len(words) < correctAmount):
+            return True
+        else:
+            return False

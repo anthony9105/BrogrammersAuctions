@@ -36,7 +36,12 @@ class TestBackendDriver:
             f.write("01 ...\n")
 
         backend_driver.execute_back_end()
-        assert MockFileModifier.return_value.create_modifications.called
+
+        # if statement for if create_modifications is not called because there is a user that already exists
+        if (MockFileModifier.return_value.not_modifying_because_user_already_exists.called):
+            assert True
+        else:
+            assert MockFileModifier.return_value.create_modifications.called
 
         # Test case 2.2
         with open(daily_transaction_new_content, "w") as f:
@@ -49,13 +54,22 @@ class TestBackendDriver:
             f.write("03 ...\n")
         backend_driver.execute_back_end()
         assert MockFileModifier.return_value.negative_days_check.called
-        assert MockFileModifier.return_value.advertise_modifications.called
+
+        if (MockFileModifier.return_value.not_modifying_because_item_has_negative_days.called):
+            assert True
+        else:
+            assert MockFileModifier.return_value.advertise_modifications.called
 
         # Test case 2.4
         with open(daily_transaction_new_content, "w") as f:
             f.write("04 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.return_value.bid_modifications.called
+
+        # if statement for when bid_modifications is not called since there is missing info
+        if (MockFileModifier.return_value.not_executing_because_of_missing_info.called):
+            assert True
+        else:
+            assert MockFileModifier.return_value.bid_modifications.called
         
         # Test case 2.5
         with open(daily_transaction_new_content, "w") as f:

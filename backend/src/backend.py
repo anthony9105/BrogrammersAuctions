@@ -38,6 +38,8 @@ class BackendDriver:
                     issue = fm.different_name_check(words)
                     if issue == False:
                         fm.create_modifications(words)
+                    else:
+                        fm.not_modifying_because_user_already_exists()
 
                 elif words[0] == '02':
                     if len(words) < 2:
@@ -48,13 +50,18 @@ class BackendDriver:
                     if len(words) < 5:
                         continue
                     issue = fm.negative_days_check(words)
+                    fm.advertise_modifications(words)
                     if issue == False:
                         fm.advertise_modifications(words)
+                    else:
+                        fm.not_modifying_because_item_has_negative_days()
 
                 elif words[0] == '04':  
-                    if len(words) < 6:
-                        continue
-                    fm.bid_modifications(words)
+                    if (fm.missing_info(words, 5) == False):
+                        fm.bid_modifications(words)
+                    else:
+                        fm.not_executing_because_of_missing_info()
+
 
                 elif words[0] == '05':
                     if len(words) < 3:
