@@ -11,8 +11,8 @@ class FileModifier:
     # This function makes the modifications to the current_users_accounts.txt file that the create command causes.
     def create_modifications(self, words):
         with open(self.curr_user_file, "a") as file:
-                    file.write(words[1] + " " + words[2] +
-                            " " + words[3] + " " + words[4] + "\n")
+                file.write(words[0] + " " + words[1] + " " + words[2] +
+                        " " + words[3] + " " + words[4] + "\n")
 
     # This function makes the modifications to the current_users_accounts.txt file that the delete command causes.
     def delete_modifications(self, words):

@@ -1,5 +1,5 @@
 import pytest
-from backend import BackendDriver, FileModifier
+from backend import BackendDriver
 from file_modifier import FileModifier
 from unittest.mock import MagicMock, patch
 
@@ -19,39 +19,46 @@ class TestBackendDriver:
     @patch('backend.FileModifier', autospec=True)
     def test_execute_back_end(self, MockFileModifier, backend_driver, setup_files):
         daily_transaction, merged_daily_transaction, daily_transaction_new_content = setup_files
-
+    
         # Test case 2.1
-        daily_transaction_new_content.write("01 ...")
+        with open(daily_transaction_new_content, "w") as f:
+            f.write("01 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.create_modifications.called
+        assert MockFileModifier.return_value.create_modifications.called
 
         # Test case 2.2
-        daily_transaction_new_content.write("02 ...")
+        with open(daily_transaction_new_content, "w") as f:
+            f.write("02 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.delete_modifications.called
+        assert MockFileModifier.return_value.delete_modifications.called
 
         # Test case 2.3
-        daily_transaction_new_content.write("03 ...")
+        with open(daily_transaction_new_content, "w") as f:
+            f.write("03 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.negative_days_check.called
-        assert MockFileModifier.advertise_modifications.called
+        assert MockFileModifier.return_value.negative_days_check.called
+        assert MockFileModifier.return_value.advertise_modifications.called
 
         # Test case 2.4
-        daily_transaction_new_content.write("04 ...")
+        with open(daily_transaction_new_content, "w") as f:
+            f.write("04 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.bid_modifications.called
+        assert MockFileModifier.return_value.bid_modifications.called
 
         # Test case 2.5
-        daily_transaction_new_content.write("05 ...")
+        with open(daily_transaction_new_content, "w") as f:
+            f.write("05 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.refund_modifications.called
+        assert MockFileModifier.return_value.refund_modifications.called
 
         # Test case 2.6
-        daily_transaction_new_content.write("06 ...")
+        with open(daily_transaction_new_content, "w") as f:
+            f.write("06 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.addCredit_modifications.called
+        assert MockFileModifier.return_value.addCredit_modifications.called
 
         # Test case 2.7
-        daily_transaction_new_content.write("07 ...")
+        with open(daily_transaction_new_content, "w") as f:
+            f.write("07 ...\n")
         backend_driver.execute_back_end()
-        assert MockFileModifier.resetPassword_modifications.called
+        assert MockFileModifier.return_value.resetPassword_modifications.called

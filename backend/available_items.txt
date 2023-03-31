@@ -5,3 +5,17 @@ lamp user02 user01 50 60
 car user01 N/A 2 33
 chair user01 N/A 49 0
 chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
+chair user01 N/A 49 0
