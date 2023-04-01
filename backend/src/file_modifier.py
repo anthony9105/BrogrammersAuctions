@@ -8,12 +8,18 @@ class FileModifier:
     def __init__(self):
         pass
 
+    # empty function called when create_modifications is not going to be called since the user to be added already exists
+    # (used for the tests)
     def not_modifying_because_user_already_exists(self):
         return
     
+    # empty function called when certain functions are not going to be called since there are negative days found for the item
+    # (used for the tests)
     def not_modifying_because_item_has_negative_days(self):
         return
     
+    # empty function called when certain functions are not going to be called since there is missing info
+    # (used for the tests)
     def not_executing_because_of_missing_info(self):
         return
 
@@ -139,6 +145,7 @@ class FileModifier:
                     return True
         return False
     
+    # function used to return if there is too few amount of elements in words or not
     def missing_info(self, words, correctAmount):
         if (len(words) < correctAmount):
             return True
