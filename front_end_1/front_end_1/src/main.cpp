@@ -36,7 +36,7 @@ int main(int argc, char** argv){
 	AuctionSystem auctionSys(true);				   // Initializing auction system by calling AuctionSystem class
 	User currentUser;                              // Creating new user object
 
-	cout << "Welcome to AuctionBay!\n--" << endl;
+	cout << "Welcome to Brogrammer's Auctions!\n--" << endl;
     cout << "Here is a list of operations (what to input):" << endl;
     cout << "- Login (login)\n"
          << "- Create (create)\n"
