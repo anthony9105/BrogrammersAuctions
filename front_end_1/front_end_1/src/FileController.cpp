@@ -105,6 +105,7 @@ ITEM_RECORD FileController::getItem(std::string lookupItem) {
 // Adds a user to the current users file
 void FileController::addUser(USER_RECORD newUser) {
 	std::ofstream outfile;
+
     outfile.open(currentUsersFile, std::ios_base::app);
     outfile << newUser.username << " " 
 			<< newUser.accountType << " " 

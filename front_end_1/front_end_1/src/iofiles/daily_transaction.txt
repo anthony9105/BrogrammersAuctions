@@ -45,3 +45,12 @@
 05 user01 user02 100
 07 user01 AA 2907 riateww
 01 user06 AA 0 teww
+06 user01 AA 100 teww
+06 user01 AA 123.445 teww
+01 newuser AA 0 efg
+00 user01 AA 123.445 teww
+00 user01 AA 123.445 teww
+00 user01 AA 123.445 teww
+01 bob FS 0 efg
+02 newuser AA 0 ijk
+00 user01 AA 123.445 teww

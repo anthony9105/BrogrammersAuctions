@@ -47,7 +47,9 @@ int main(int argc, char** argv){
          << "- List All Items (listallitems)\n"
 		 << "- List All Users (listallusers)\n"
 		 << "- Reset Password (resetpassword)\n"
-         << "- Logout (logout)\n" << endl;
+         << "- Logout (logout)\n" 
+		 << "- Cancel transaction (cancel)\n" 
+		 << "- Close program (close)\n" << endl;
 
 	// Repeat until auction closes (exit command sets auction to closed)
 	while (auctionOpen) {
@@ -69,7 +71,7 @@ int main(int argc, char** argv){
 				} else {
 					cout << "Error: This username does not exist in the user-accounts file.\n" << endl;
 				}
-			} else if (userInput == "logout") {
+			} else if (userInput == "close") {
 				return 0;
 			} else {
 				cout << "Error: You must login first.\n" << endl;
@@ -380,10 +382,11 @@ int main(int argc, char** argv){
 		else if (command == "logout") {
 			transactionCode = LOGOUT_TRANSACTION_CODE;
 			transactionDetails = currentUser.toString(); // Write logout to daily transaction
-			auctionOpen = false;			 // Bool changes to false as system closes
+			//auctionOpen = false;			 // Bool changes to false as system closes
 			auctionSys.Logout(currentUser);  // Logout user from auction system
 			currentUser = User();            // Reset current user information
-			return 0;
+			cout << "\n\n" << endl;
+			//return 0;
 		}
 
 		// Handles any case where user inputs any operation other than the above conditionals
