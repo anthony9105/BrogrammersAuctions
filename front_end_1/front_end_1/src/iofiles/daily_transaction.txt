@@ -54,3 +54,34 @@
 01 bob FS 0 efg
 02 newuser AA 0 ijk
 00 user01 AA 123.445 teww
+00 user01 AA 123.445 teww
+02 bob FS 0 efg
+00 user01 AA 123.445 teww
+03 soccer user01 30 0
+00 user01 AA 123.445 teww
+04 lamp user02 50 51
+04 lamp user02 50 55
+00 user01 AA 17.445 teww
+00 user04 SS 100 riateww
+04 lotion user01 5 6
+00 user03 BS 94 teww
+00 user01 AA 17.445 teww
+04 lamp user02 50 56
+04 lamp user02 50 57
+00 user01 AA 34.445 teww
+04 lotion user01 5 7
+00 user01 AA 34.445 teww
+04 lotion user01 5 8.23
+06 user02 FS 308.05 teww
+05 user01 user02 10.23
+05 user02 user01 10.23
+05 user01 user02 10.25
+00 user01 AA 34.445 teww
+06 user01 AA 54.695 teww
+07 user01 AA 54.695 teww
+07 user01 AA 54.695 teww
+07 user01 AA 54.695 efg
+07 user01 AA 54.695 teww
+01 dummy SS 0 efg
+02 dummy SS 0 efg
+00 user01 AA 54.695 teww

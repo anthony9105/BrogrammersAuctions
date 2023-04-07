@@ -20,10 +20,17 @@ USER_RECORD User::CreateAccount() {
 
 	std::printf("Enter a user type:\n");
 	std::cin >> newUser.accountType;
+	std::cin.ignore();
+
+	// if input is "cancel"
+	if (cancelCommandEntered(newUser.accountType)) {
+		newUser.accountType = "ER";
+		return newUser;
+	}
+
 	if (newUser.accountType != "AA" && newUser.accountType != "FS" && newUser.accountType != "BS" && newUser.accountType != "SS") {
 		printf("Error: Invalid user type. (Must be: AA, FS, BS or SS).\n");
 		newUser.accountType = "ER";
-		std::cin.ignore();
 		return newUser;
 	}
 
@@ -31,6 +38,13 @@ USER_RECORD User::CreateAccount() {
 	std::printf("Enter a password:\n");
 	std::cin >> password;
 	std::cin.ignore();
+
+	// if input is "cancel"
+	if (cancelCommandEntered(password)) {
+		newUser.accountType = "ER";
+		return newUser;
+	}
+
 	if (password.length() > 15 || password.length() < 1) {
 		printf("Error: Password be only 15 characters in max length.\n");
 		newUser.accountType = "ER";
@@ -59,6 +73,17 @@ ITEM_RECORD User::Advertise() {
 	// User input for minimum bid for advertise operation
 	std::printf("Enter the minimum bid ($):\n");
 	std::cin >> minBid;
+	std::cin.clear();
+	std::cin.ignore();
+
+	// if the input is "cancel"
+	if (cancelCommandEntered(minBid)) {
+		// set itemRecord duration to 999 (which is the MAX_DURATION)
+		// so that when this is returned to main.cpp, the item is NOT created
+		itemRecord.duration = 999;
+		return itemRecord;
+	}
+
 	if (is_number(minBid) == false) { // Checking if min bid amount is a number
 		itemRecord.duration = 999;
 		std::printf("Error: Minimum bid amount must be a number.\n");
@@ -73,11 +98,21 @@ ITEM_RECORD User::Advertise() {
 		}
 	}
 	
-	std::cin.clear();
 
 	// User input for duration for advertise operation
 	std::printf("Enter auction duration (in days):\n");
 	std::cin >> duration;
+	std::cin.clear();
+	std::cin.ignore();
+
+	// if the input is "cancel"
+	if (cancelCommandEntered(duration)) {
+		// set itemRecord duration to 999 (which is the MAX_DURATION)
+		// so that when this is returned to main.cpp, the item is NOT created
+		itemRecord.duration = 999;
+		return itemRecord;
+	}
+
 	if (is_number(duration) == false) { // Checking if duration is a number
 		itemRecord.duration = 999;
 		std::printf("Error: Duration must be a number.\n");
@@ -103,17 +138,25 @@ REFUND_RECORD User::Refund() {
 	std::string amount;
 	std::printf("Enter refund amount:\n");
 	std::cin >> amount; 
-	if (isFloat(amount)) {
-		if (stof(amount) <= 0) {
-			printf("Error: Refund amount must be a greater than 0.\n");
+
+	if (!cancelCommandEntered(amount)) {
+		if (isFloat(amount)) {
+			if (stof(amount) <= 0) {
+				printf("Error: Refund amount must be a greater than 0.\n");
+				refundRecord.buyer.empty();
+				refundRecord.seller.empty();
+				refundRecord.amount = 0;
+			} else {
+				refundRecord.amount = stof(amount);
+			}
+		} else {
+			printf("Error: Refund amount must be a number.\n");
 			refundRecord.buyer.empty();
 			refundRecord.seller.empty();
 			refundRecord.amount = 0;
-		} else {
-			refundRecord.amount = stof(amount);
 		}
-	} else {
-		printf("Error: Refund amount must be a number.\n");
+	}
+	else {
 		refundRecord.buyer.empty();
 		refundRecord.seller.empty();
 		refundRecord.amount = 0;
@@ -132,19 +175,33 @@ float User::AddCredit(float amount) {
 	return this->credit;
 }
 
-// resests password and checks thersholds
+// resets password and checks thersholds
 std::string User::ResetPassword() {
 	std:string password;
 	std::printf("Enter a password:\n");
 	std::cin >> password;
 	std::cin.ignore();
-	if (password.length() > 15 || password.length() < 1) {
-		printf("Error: Password must be between 1-15 characters long.\n");
-		password = password.empty();
-	} else {
-		password = Encrypt(password);
-		this->password = password;
-		printf("Successfully changed password!\n");
+
+	if (!cancelCommandEntered(password)) {
+		if (password.length() > 15 || password.length() < 1) {
+			printf("Error: Password must be between 1-15 characters long.\n");
+			password = password.empty();
+		} else {
+			password = Encrypt(password);
+
+			if (this->password == password) {
+				printf("This is already the password! Returning to main menu\n");
+
+				// return "" so that when this is returned to main.cpp, the password
+				// is not changed and also the transaction is not completed/added to 
+				// the daily transaction file
+				return "";
+			}
+			else {
+				this->password = password;
+				printf("Successfully changed password!\n");
+			}
+		}
 	}
 
 	return password;
@@ -166,4 +223,14 @@ bool User::isFloat(const std::string& s) {
     float f;
     iss >> std::noskipws >> f;
     return iss.eof() && !iss.fail(); 
+}
+
+// Check if input is "cancel" (meaning the user wants to cancel the current transaction)
+bool User::cancelCommandEntered(const std::string& s) {
+	if (s == "cancel") {
+		cout << "Cancelling current transaction and returning to main menu\n" << endl;
+		return true;
+	}
+
+	return false;
 }

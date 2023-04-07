@@ -16,7 +16,10 @@ bool AuctionSystem::Login(USER_RECORD userRecord, User &currentUser) {
 	std::cin >> password;
 	std::cin.ignore();
 
-	if (password == Decrypt(userRecord.password)) {
+	if (currentUser.cancelCommandEntered(password)) {
+		return false;
+	}
+	else if (password == Decrypt(userRecord.password)) {
 		loggedIn = true; // Login method called once user logins in
 
 		// Initializing all user information from current active login in session

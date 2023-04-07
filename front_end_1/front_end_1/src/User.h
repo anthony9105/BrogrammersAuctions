@@ -26,6 +26,7 @@ class User {
 
 		bool is_number(const std::string& s);
 		bool isFloat(const std::string& s);
+		bool cancelCommandEntered(const std::string& s);
 		
 };
 #endif

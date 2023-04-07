@@ -1,5 +1,4 @@
-user01 AA 123.445 teww
-user02 FS 123.03 teww
+user01 AA 54.695 teww
+user02 FS 297.8 teww
 user03 BS 100 teww
 user04 SS 100 riateww
-bob FS 0 efg
