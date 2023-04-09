@@ -8,11 +8,26 @@ class FileModifier:
     def __init__(self):
         pass
 
+    # empty function called when create_modifications is not going to be called since the user to be added already exists
+    # (used for the tests)
+    def not_modifying_because_user_already_exists(self):
+        return
+    
+    # empty function called when certain functions are not going to be called since there are negative days found for the item
+    # (used for the tests)
+    def not_modifying_because_item_has_negative_days(self):
+        return
+    
+    # empty function called when certain functions are not going to be called since there is missing info
+    # (used for the tests)
+    def not_executing_because_of_missing_info(self):
+        return
+
     # This function makes the modifications to the current_users_accounts.txt file that the create command causes.
     def create_modifications(self, words):
         with open(self.curr_user_file, "a") as file:
-                    file.write(words[1] + " " + words[2] +
-                            " " + words[3] + " " + words[4] + "\n")
+                file.write(words[1] + " " + words[2] +
+                        " " + words[3] + " " + words[4] + "\n")
 
     # This function makes the modifications to the current_users_accounts.txt file that the delete command causes.
     def delete_modifications(self, words):
@@ -109,7 +124,30 @@ class FileModifier:
                 else:
                     file.write(line)
 
-    # This function will do the back end error recording. It is currently incomplete. 
-    def log_information():
-        # TODO
-        return 0
+    # This function is part of the backend error recording. It checks that no item has a negative number of days left.
+    def negative_days_check(self, words):
+        if int(words[3]) < 0:
+            print("ERROR: failed constraint error caused by transaction:", words[0], words[1], words[2], words[
+                3], words[4], "No item should ever have a negative number of days left")
+            return True
+        return False
+    
+    # This function is part of the backend error recording. It checks that a newly created user has a name different from all existing users.
+    def different_name_check(self, words):
+        name = words[1]
+
+        with open(self.curr_user_file, 'r') as file:
+            for line in file:
+                if line.startswith(name):
+                    # do something with the line
+                    print("ERROR: failed constraint error caused by transaction:", words[0], words[1], words[2], words[
+                          3], words[4], "A newly created user must have a name different from all existing users")
+                    return True
+        return False
+    
+    # function used to return if there is too few amount of elements in words or not
+    def missing_info(self, words, correctAmount):
+        if (len(words) < correctAmount):
+            return True
+        else:
+            return False
