@@ -85,3 +85,7 @@
 01 dummy SS 0 efg
 02 dummy SS 0 efg
 00 user01 AA 54.695 teww
+06 user01 AA 56.7 teww
+06 user01 AA 256.946 teww
+04 lamp user02 50 58.23
+00 user01 AA 198.72 teww

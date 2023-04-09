@@ -9,6 +9,7 @@
 #include <type_traits>
 #include <typeinfo>
 #include <limits>
+#include <cmath>
 
 #include "Record.h"			// DEFINES RECORD STRUCTS & FUNCTIONS, AND CONSTANTS
 #include "FileController.h" // HANDLES ALL FILE CONTROL
@@ -55,6 +56,9 @@ int main(int argc, char** argv){
 	// Repeat until auction closes (exit command sets auction to closed)
 	while (auctionOpen) {
 		transactionCode.clear(); // Reset the transaction code
+
+		currentUser.credit = round(currentUser.credit * 100.0f) / 100.0f;
+
 		// Prompt user to log in (repeat until user is logged in)
 		while (!auctionSys.loggedIn) {
 			string userInput;
@@ -236,7 +240,6 @@ int main(int argc, char** argv){
 											std::cin.clear();
 											std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
 											
-											cout << "BID AMOUNT: " << bidAmount << endl;	
 											// if input is NOT "cancel"
 											if (!currentUser.cancelCommandEntered(bidAmount)) {
 												if (!currentUser.isFloat(bidAmount)) {

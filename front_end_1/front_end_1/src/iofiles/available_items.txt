@@ -1,5 +1,5 @@
 vicks user01 user03 10 10
 fan user01 N/A 75 75
 lotion user01 user02 5 8.23
-lamp user02 user01 50 57
+lamp user02 user01 50 58.23
 soccer user01 N/A 30 23

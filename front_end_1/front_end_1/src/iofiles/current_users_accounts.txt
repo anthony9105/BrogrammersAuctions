@@ -1,4 +1,4 @@
-user01 AA 54.695 teww
+user01 AA 198.72 teww
 user02 FS 297.8 teww
 user03 BS 100 teww
 user04 SS 100 riateww

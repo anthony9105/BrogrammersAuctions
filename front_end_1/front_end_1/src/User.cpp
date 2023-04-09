@@ -167,6 +167,8 @@ REFUND_RECORD User::Refund() {
 
 // addcredit to users account, and checks thersholds
 float User::AddCredit(float amount) {
+	//this->credit = round(this->credit * 100.0) / 100.0;
+
 	if ((this->credit + amount) < MAX_CREDIT) {
 		this->credit += amount;
 	} else {
