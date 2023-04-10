@@ -10,6 +10,7 @@ const std::string ADMIN = "AA";
 const std::string FULL_STANDARD = "FS";
 const std::string SELL_STANDARD = "SS";
 const std::string BUY_STANDARD = "BS";
+const std::string ACCOUNT_MANAGER = "AM";
 
 // Transaction Codes
 const std::string LOGOUT_TRANSACTION_CODE = "00";
@@ -20,6 +21,7 @@ const std::string BID_TRANSACTION_CODE = "04";
 const std::string REFUND_TRANSACTION_CODE = "05";
 const std::string ADDCREDIT_TRANSACTION_CODE = "06";
 const std::string RESETPASSWORD_TRANSACTION_CODE = "07";
+const std::string CANCELAUCTION_TRANSACTION_CODE = "08";
 
 // Minimums and Maximums
 const int MAX_CREDIT = 999999;

@@ -55,7 +55,8 @@ int main(int argc, char** argv){
 		 << "- List All Users (listallusers)\n"
 		 << "- Reset Password (resetpassword)\n"
          << "- Logout (logout)\n" 
-		 << "- Cancel transaction (cancel)\n" << std::endl;
+		 << "- Cancel auction (cancel)\n" 
+		 << "- Cancel transaction [only when in the middle of a transaction] (canceltransaction)\n" << std::endl;
 
 	// Repeat until auction closes (exit command sets auction to closed)
 	while (auctionOpen) {
@@ -82,9 +83,7 @@ int main(int argc, char** argv){
 						std::cout << "Error: This username does not exist in the user-accounts file.\n" << std::endl;
 					}
 				}
-			} //else if (userInput == "close") {
-				//return 0;
-			//} 
+			}
 			else {
 				std::cout << "Error: You must login first.\n" << std::endl;
 			}
@@ -440,9 +439,43 @@ int main(int argc, char** argv){
 			auctionOpen = false;			 // Bool changes to false as system closes
 			auctionSys.Logout(currentUser);  // Logout user from auction system
 			currentUser = User();            // Reset current user information
+		}
 
+		else if (command == "cancel") {
+			if (currentUser.accountType == ADMIN) {
+				std::string itemName;
+				cout << "Enter the item name to cancel the auction for: " << endl;
+				std::cin >> itemName;
+
+				std::cin.clear();
+				std::cin.ignore();
+
+				if (fc.findItem(itemName)) {
+					ITEM_RECORD itemRecord = fc.getItem(itemName);
+					transactionCode = CANCELAUCTION_TRANSACTION_CODE;
+					transactionDetails = recordToString(itemRecord);
+				}
+				else {
+					std::printf("Error: %s does not exist in available-items file.\n", itemName.c_str());
+				}
+
+			}
+			else {
+				cout << "Error: Only AA has privilages for this operation." << endl;
+			}
+		}
+
+		// Handles any case where user inputs any operation other than the above conditionals
+		else {
+			cout << "Invalid input for operation. Please try again." << endl;
+		}
+
+		// print to daily transaction file
+		if (!transactionCode.empty()) {
+			fc.logTransaction(transactionCode, transactionDetails); // Log all daily transactions
+
+			// update merged transaction file
 			std::string pathToTransFiles = "./iofiles";
-
 			ofstream outfile;
 			outfile.open("./iofiles/merged_daily_transaction.txt", ios_base::app);
 
@@ -461,74 +494,6 @@ int main(int argc, char** argv){
 
 			outfile.close();
 			infile.close();
-			
-			// // getting all the files in the iofiles directory
-			// string command = "dir ";
-			// string allTransFiles;
-			// array<char, 128> buffer;
-			// command.append(pathToTransFiles);
-			// const char* finalCommand = command.c_str();
-
-			// std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(finalCommand, "r"), pclose);
-			// if (!pipe) {
-			// 	throw std::runtime_error("popen() failed!");
-			// }
-			// while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-			// 	allTransFiles += buffer.data();
-			// }
-
-
-			// // splitting allTransFiles into a vector<string>
-			// vector<string> transFilePaths;
-			// stringstream ss(allTransFiles);
-			// string temp;
-
-			// while(getline(ss, temp, ' ')) {
-			// 	if (temp != "" && temp != " ") {
-			// 		transFilePaths.push_back(pathToTransFiles + "/" + temp);
-			// 	}
-			// }
-
-			// std::ofstream outfile;
-			// outfile.open("./merged_transaction_file2.txt", std::ios_base::trunc);
-			// // concatenate all the daily tranaction files into a merged transaction file
-			// for (int i = 0; i < transFilePaths.size(); i++) {
-			// 	std::ifstream infile;
-			// 	string contents;
-
-			// 	infile.open(transFilePaths[i].c_str());
-			// 	//inFiles[i].open(transFilePaths[i]);
-				
-			// 	if (infile) {
-			// 		ostringstream ss;
-			// 		ss << infile.rdbuf(); // reading data
-			// 		contents = ss.str();
-			// 	}
-			// 	else {
-			// 		cout << "Wtf" << endl;
-			// 	}
-
-			// 	cout << transFilePaths[i] << endl;
-			// 	cout << contents << endl;
-
-    		// 	outfile << contents;
-
-			// 	infile.close();
-			// }
-
-			// outfile.close();
-
-			//return 0;
-		}
-
-		// Handles any case where user inputs any operation other than the above conditionals
-		else {
-			cout << "Invalid input for operation. Please try again." << endl;
-		}
-
-		// print to daily transaction file
-		if (!transactionCode.empty()) {
-			fc.logTransaction(transactionCode, transactionDetails); // Log all daily transactions
 		}
 	}
     return 0;

@@ -232,7 +232,7 @@ bool User::isFloat(const std::string& s) {
 
 // Check if input is "cancel" (meaning the user wants to cancel the current transaction)
 bool User::cancelCommandEntered(const std::string& s) {
-	if (s == "cancel") {
+	if (s == "canceltransaction") {
 		cout << "Cancelling current transaction and returning to main menu\n" << endl;
 		return true;
 	}
