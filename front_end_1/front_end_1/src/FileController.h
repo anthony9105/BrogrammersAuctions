@@ -35,6 +35,7 @@ class FileController {
 
 		// Transaction file methods
 		void logTransaction(std::string transactionNumber, std::string output);
+		void resetMergedTransFile();
 
 		// getter
 		std::string getTransFile();

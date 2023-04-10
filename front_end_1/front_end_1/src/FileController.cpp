@@ -20,6 +20,13 @@ FileController::FileController(std::string userFile, std::string itemFile, std::
 	outfile.close();
 }
 
+// to reset/empty the merged transaction file (if "reset" is given as the last command line argument)
+void FileController::resetMergedTransFile() {
+	std::ofstream outfile;
+	outfile.open("./iofiles/merged_daily_transaction.txt", std::ofstream::out | std::ofstream::trunc);
+	outfile.close();
+}
+
 // Appends a transaction to the daily transaction file
 void FileController::logTransaction(std::string transactionNumber, std::string output) {
 	std::ofstream outfile;

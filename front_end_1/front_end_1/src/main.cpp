@@ -15,6 +15,7 @@
 #include <cmath>
 #include <memory>
 #include <vector>
+#include <string.h>
 
 #include "Record.h"			// DEFINES RECORD STRUCTS & FUNCTIONS, AND CONSTANTS
 #include "FileController.h" // HANDLES ALL FILE CONTROL
@@ -41,6 +42,13 @@ int main(int argc, char** argv){
 	FileController fc(argv[1], argv[2], argv[3]);  // Takes in all the input files (accoutns file, items file, and transaction file)
 	AuctionSystem auctionSys(true);				   // Initializing auction system by calling AuctionSystem class
 	User currentUser;                              // Creating new user object
+
+	// if "reset" is given as the 5th command line argument, reset the merged daily transaction file
+	if (argc >= 5) {
+		if (strcmp(argv[4], "reset") == 0) {
+			fc.resetMergedTransFile();
+		}
+	}
 
 	std::cout << "Welcome to Brogrammer's Auctions!\n--" << std::endl;
     std::cout << "Here is a list of operations (what to input):" << std::endl;
