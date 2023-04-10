@@ -132,7 +132,7 @@ int main(int argc, char** argv){
 
 		// User enters Delete operation - Delete a user account
 		else if (command == "delete") {
-			if (currentUser.accountType == ADMIN) { // Verifies user access to operation
+			if (currentUser.accountType == ADMIN || currentUser.accountType == ACCOUNT_MANAGER) { // Verifies user access to operation
 				std::string username = currentUser.DeleteAccount();
 
 				if (!currentUser.cancelCommandEntered(username)) {
@@ -141,12 +141,18 @@ int main(int argc, char** argv){
 					if (!userRecord.username.empty()) {
 						if (userRecord.username != currentUser.username) {
 
-							fc.deleteUser(username);		// Remove the user record
+							// if the current user is an AM, they cannot delete AA or AM, only FS, BS, or SS
+							if (currentUser.accountType == ACCOUNT_MANAGER && (userRecord.accountType == ADMIN || userRecord.accountType == ACCOUNT_MANAGER)) {
+								printf("Error: As an AM user, you can only delete regular users (FS, BS, SS) and not AA or AM\n");
+							}
+							else {
+								fc.deleteUser(username);		// Remove the user record
 
-							std::printf("%s successfully deleted.\n", username.c_str());
-							// Add delete record to transaction file
-							transactionCode = DELETE_TRANSACTION_CODE;
-							transactionDetails = recordToString(userRecord);
+								std::printf("%s successfully deleted.\n", username.c_str());
+								// Add delete record to transaction file
+								transactionCode = DELETE_TRANSACTION_CODE;
+								transactionDetails = recordToString(userRecord);
+							}
 						} else { // Checks if user tries to delete itself
 							std::printf("Error: You cannot delete your own user.\n");
 						}
@@ -156,7 +162,7 @@ int main(int argc, char** argv){
 				}
 				std::cin.ignore();
 			} else {
-				std::cout << "Error: Only AA has privileges for this operation." << std::endl;
+				std::cout << "Error: Only AA and AM has privileges for this operation." << std::endl;
 			}
 		}
 
@@ -292,17 +298,17 @@ int main(int argc, char** argv){
 		}
 
 		else if (command == "listallusers") {
-			if (currentUser.accountType == ADMIN) {
+			if (currentUser.accountType == ADMIN || currentUser.accountType == ACCOUNT_MANAGER) {
 				fc.displayAvailableUsers(); // Displays and formats current users file
 			} else {
-				std::printf("Error: Only AA has privilages for this operation.\n");
+				std::printf("Error: Only AA and AM has privilages for this operation.\n");
 			}
 		}
 
 		else if (command == "refund") {
 			// Validating user privilege, making sure it is an admin
 			if (currentUser.accountType == FULL_STANDARD || currentUser.accountType == BUY_STANDARD || currentUser.accountType == SELL_STANDARD) {
-				std::printf("Error: Only AA has privileges for this operation.\n");
+				std::printf("Error: Only AA and AM has privileges for this operation.\n");
 			} else {
 				REFUND_RECORD refundRecord = currentUser.Refund();	// Create refund record for buyer to get refund from seller
 

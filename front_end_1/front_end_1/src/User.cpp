@@ -29,10 +29,19 @@ USER_RECORD User::CreateAccount() {
 		return newUser;
 	}
 
-	if (newUser.accountType != "AA" && newUser.accountType != "FS" && newUser.accountType != "BS" && newUser.accountType != "SS") {
-		printf("Error: Invalid user type. (Must be: AA, FS, BS or SS).\n");
+	if (newUser.accountType != "AA" && newUser.accountType != "FS" && newUser.accountType != "BS" && newUser.accountType != "SS" && newUser.accountType != "AM") {
+		printf("Error: Invalid user type. (Must be: AA, FS, BS, SS, or AM).\n");
 		newUser.accountType = "ER";
 		return newUser;
+	}
+
+	// if account manager tries to create an admin or account manager
+	if (newUser.accountType == "AA" || newUser.accountType == "AM") {
+		if (this->accountType == "AM") {
+			printf("Error: AM user type can only create regular users, not AA or AM.\n");
+			newUser.accountType = "ER";
+			return newUser;
+		}
 	}
 
 	std:string password;
