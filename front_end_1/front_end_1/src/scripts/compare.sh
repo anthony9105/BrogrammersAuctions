@@ -1,5 +1,5 @@
 # Script: compare.sh
-# Authors: Rija Baig, Preet Panchal, Eihab Syed, Nathaniel Tai
+# Authors: 
 # Details: Compares the output provided by the test.sh script with
 #		   the predetermined expected output files. Returns PASS or
 #		   FAIL depending on differences.

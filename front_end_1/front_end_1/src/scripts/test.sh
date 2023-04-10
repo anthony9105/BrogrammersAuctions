@@ -1,5 +1,5 @@
 # Script: test.sh
-# Authors: Rija Baig, Preet Panchal, Eihab Syed, Nathaniel Tai
+# Authors: 
 # Details: Iterates over all testing input files and stores outputs in
 #		   a directory to be used in the comparison script.
 
