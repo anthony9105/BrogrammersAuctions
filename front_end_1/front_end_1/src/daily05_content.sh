@@ -1,6 +1,6 @@
 #!/usr/bin/expect -f
 
-spawn ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction1
+spawn ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction1 reset
 expect "Enter operation:"
 send "login\r"
 send "user02\r"
