@@ -26,3 +26,9 @@
 00 user01 AA 198.72 teww
 00 user01 AA 198.72 teww
 00 user01 AA 198.72 teww
+08 lotion user01 5 8.23
+08 lotion user01 5 8.23
+08 lotion user01 5 8.23
+08 lotion user01 5 8.23
+00 user04 AM 100 riateww
+00 user04 AM 100 riateww

@@ -456,7 +456,7 @@ int main(int argc, char** argv){
 		}
 
 		else if (command == "cancel") {
-			if (currentUser.accountType == ADMIN) {
+			if (currentUser.accountType == ADMIN || currentUser.accountType == ACCOUNT_MANAGER) {
 				std::string itemName;
 				cout << "Enter the item name to cancel the auction for: " << endl;
 				std::cin >> itemName;
@@ -468,6 +468,8 @@ int main(int argc, char** argv){
 					ITEM_RECORD itemRecord = fc.getItem(itemName);
 					transactionCode = CANCELAUCTION_TRANSACTION_CODE;
 					transactionDetails = recordToString(itemRecord);
+
+					printf("Auction for %s, by seller: %s, successfully cancelled.\n", itemRecord.itemName.c_str(), itemRecord.seller.c_str());
 				}
 				else {
 					std::printf("Error: %s does not exist in available-items file.\n", itemName.c_str());
@@ -475,7 +477,7 @@ int main(int argc, char** argv){
 
 			}
 			else {
-				cout << "Error: Only AA has privilages for this operation." << endl;
+				cout << "Error: Only AA and AM has privilages for this operation." << endl;
 			}
 		}
 
