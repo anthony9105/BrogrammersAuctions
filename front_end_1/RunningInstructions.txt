@@ -11,6 +11,12 @@ Script Running Instructions:
 -> bash
 -> ./test.sh
 
+Seperate Day Instructions:
+
+-> cd src
+-> bash
+-> ./weekly.sh
+
 
 Program Users:
 
