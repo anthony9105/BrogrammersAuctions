@@ -1,5 +1,8 @@
-/* Program: AuctionBay
+/* Program: Brogrammer's Auctions
  * Description: Auction-style Sales Service console application.
+
+	Takes in the current users, available items file, and daily transaction file name/path to create.
+	Full running instructions found in front_end_1/front_end_1/src/RunningInstructions.txt
 */
 
 #include <string>
