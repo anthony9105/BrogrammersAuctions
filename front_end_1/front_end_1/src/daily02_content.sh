@@ -1,6 +1,6 @@
 #!/usr/bin/expect -f
 
-spawn ./auction_system ./current_users_accounts.txt ./available_items.txt ./iofiles/available_items.txt ./iofiles/daily_transaction reset
+spawn ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction1 reset
 expect "Enter operation:"
 send "login\r"
 send "user02\r"
@@ -12,7 +12,7 @@ send "logout\r"
 send "close\r"
 interact
 
-spawn ./auction_system ./current_users_accounts.txt ./available_items.txt ./iofiles/available_items.txt ./iofiles/daily_transaction2
+spawn ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction2
 expect "Enter operation:"
 send "login\r"
 send "user02\r"
@@ -29,7 +29,7 @@ send "logout\r"
 send "close\r"
 interact
 
-spawn ./auction_system ./current_users_accounts.txt ./available_items.txt ./iofiles/available_items.txt ./iofiles/daily_transaction3
+spawn ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction3
 expect "Enter operation:"
 send "login\r"
 send "user02\r"
