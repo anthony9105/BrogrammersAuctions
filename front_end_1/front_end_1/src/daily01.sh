@@ -32,7 +32,7 @@ interact
 spawn ./auction_system ./current_users_accounts.txt ./available_items.txt ./iofiles/available_items.txt ./iofiles/daily_transaction3
 expect "Enter operation:"
 send "login\r"
-send "user02\r"
+send "user01\r"
 send "pass\r"
 send "delete\r"
 send "logout\r"
