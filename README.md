@@ -23,3 +23,19 @@ To run the backend prototype:
 To run the backend tests:
 1. make sure you are in the backend/src directory
 2. run pytest
+
+To run the weekly script:
+
+1. make sure you are in the front_end_1/src directory
+2. run chmod +x daily01.sh
+3. run chmod +x daily02.sh
+4. run chmod +x daily03sh
+5. run chmod +x daily04.sh
+6. run chmod +x daily05.sh
+7. run chmod +x daily01_content.sh
+8. run chmod +x daily02_content.sh
+9. run chmod +x daily03_contentsh
+10. run chmod +x daily04_content.sh
+11. run chmod +x daily05_content.sh
+12. run chmod +x weekly.sh
+13. run ./weekly.sh
