@@ -39,3 +39,9 @@ To run the weekly script:
 11. run chmod +x daily05_content.sh
 12. run chmod +x weekly.sh
 13. run ./weekly.sh
+
+To run a daily script:
+1. make sure you are in the front_end_1/src directory
+2. run chmod +x daily01.sh
+3. run ./daily01.sh
+This is the same for daily01-05
