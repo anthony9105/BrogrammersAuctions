@@ -1,2 +1,0 @@
-04 vicks user01 4 0
-03 airpods01 user01 25 25
