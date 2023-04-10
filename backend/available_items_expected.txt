@@ -1,6 +1,0 @@
-vicks user01 user03 10 10
-fan user01 N/A 75 75
-lotion user01 user03 5 5
-lamp user02 user01 50 60
-car user01 N/A 2 33
-chair user01 N/A 49 0
