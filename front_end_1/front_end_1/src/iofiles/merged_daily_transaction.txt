@@ -1,0 +1,17 @@
+00 user01 AA 54.695 teww
+06 user01 AA 56.7 teww
+06 user01 AA 256.946 teww
+04 lamp user02 50 58.23
+00 user01 AA 198.72 teww
+04 vicks user01 4 0
+03 airpods01 user01 25 25
+01 testuser01 FS 0
+01 testuser02 SS 0
+02 testuser02 SS 0
+03 vicks user01 56 4
+04 vicks user01 4 0
+04 vicks user01 4 0
+03 airpods01 user01 25 25
+06 user01 AA 199.72 teww
+06 user01 AA 199.72 teww
+06 user01 AA 199.72 teww

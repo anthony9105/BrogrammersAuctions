@@ -12,6 +12,12 @@ FileController::FileController(std::string userFile, std::string itemFile, std::
 	currentUsersFile = userFile;
 	availableItemsFile = itemFile;
 	dailyTransactionFile = transFile;
+
+	// just incase, clear the file to rewrite its contents.  (However the transFile path provided should
+	// not be one already used).
+	std::ofstream outfile;
+	outfile.open(transFile, std::ofstream::out | std::ofstream::trunc);
+	outfile.close();
 }
 
 // Appends a transaction to the daily transaction file
@@ -102,6 +108,7 @@ ITEM_RECORD FileController::getItem(std::string lookupItem) {
 	return itemRecord;
 }
 
+// NO LONGER USED.  (THIS IS NOW DONE IN THE BACKEND)
 // Adds a user to the current users file
 void FileController::addUser(USER_RECORD newUser) {
 	std::ofstream outfile;
@@ -128,6 +135,9 @@ void FileController::deleteUser(std::string username) {
 		}
 	}
 	infile.close();
+
+	// NO LONGER USED.  (THIS IS NOW DONE IN THE BACKEND)
+	/*
     outfile.open(currentUsersFile, std::ofstream::out | std::ofstream::trunc); // Clear the file to rewrite contents
 	outfile.close();
 
@@ -161,6 +171,7 @@ void FileController::deleteUser(std::string username) {
 				<< available_items[i].minBid << std::endl;
 	}
 	outfile.close();
+	*/
 }
 
 // Updates a users credit amount in the current users file
@@ -177,6 +188,9 @@ void FileController::updateCredit(std::string username, float credit) {
 		current_users.push_back(myUser);
 	}
 
+
+	// NO LONGER USED.  (THIS IS NOW DONE IN THE BACKEND)
+	/*
     outfile.open(currentUsersFile, std::ofstream::out | std::ofstream::trunc); // Clear the file to rewrite contents
 	outfile.close();
 
@@ -185,6 +199,7 @@ void FileController::updateCredit(std::string username, float credit) {
 		outfile << current_users[i].username << " " << current_users[i].accountType << " " << current_users[i].credit << " " << current_users[i].password << std::endl;
 	}
 	outfile.close();
+	*/
 }
 
 // Updates a users credit amount in the current users file
@@ -201,6 +216,8 @@ void FileController::resetPassword(std::string username, std::string password) {
 		current_users.push_back(myUser);
 	}
 
+	// NO LONGER USED.  (THIS IS NOW DONE IN THE BACKEND)
+	/*
     outfile.open(currentUsersFile, std::ofstream::out | std::ofstream::trunc); // Clear the file to rewrite contents
 	outfile.close();
 
@@ -209,8 +226,10 @@ void FileController::resetPassword(std::string username, std::string password) {
 		outfile << current_users[i].username << " " << current_users[i].accountType << " " << current_users[i].credit << " " << current_users[i].password << std::endl;
 	}
 	outfile.close();
+	*/
 }
 
+// NO LONGER USED.  (THIS IS NOW DONE IN THE BACKEND)
 // Adds an auction item to the available items file
 void FileController::addItem(ITEM_RECORD itemRecord) {
 	std::ofstream outfile;
@@ -294,7 +313,8 @@ void FileController::updateItemBid(ITEM_RECORD itemRecord, std::string buyer) {
 		current_items.push_back(item);
 	}
 
-
+	// NO LONGER USED.  (THIS IS NOW DONE IN THE BACKEND)
+	/*
     outfile.open(availableItemsFile, std::ofstream::out | std::ofstream::trunc); // Clear the file to rewrite contents
 	outfile.close();
 
@@ -307,4 +327,9 @@ void FileController::updateItemBid(ITEM_RECORD itemRecord, std::string buyer) {
 				<< current_items[i].highestBid << std::endl;
 	}
 	outfile.close();
+	*/
+}
+
+std::string FileController::getTransFile() {
+	return dailyTransactionFile;
 }

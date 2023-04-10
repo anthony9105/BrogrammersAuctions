@@ -5,6 +5,7 @@
 #include <sstream>
 #include <type_traits>
 #include <typeinfo>
+#include <cmath>
 
 // Returns current user information as a string
 std::string User::toString(){
@@ -167,13 +168,15 @@ REFUND_RECORD User::Refund() {
 
 // addcredit to users account, and checks thersholds
 float User::AddCredit(float amount) {
-	//this->credit = round(this->credit * 100.0) / 100.0;
 
 	if ((this->credit + amount) < MAX_CREDIT) {
 		this->credit += amount;
 	} else {
 		std::printf("Error: Exceeded $%i credit limit for this user.\n", MAX_CREDIT); 
 	}
+
+	this->credit = round(this->credit * 100.0) / 100.0;		
+
 	return this->credit;
 }
 
