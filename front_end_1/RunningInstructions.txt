@@ -1,5 +1,6 @@
 Program Running Instructions:
 
+-> Ensure you are in the frontend directory
 -> cd src
 -> make
 -> ./auction_system ./iofiles/current_users_accounts.txt ./iofiles/available_items.txt ./iofiles/daily_transaction.txt
@@ -7,12 +8,14 @@ Program Running Instructions:
 
 Script Running Instructions:
 
+-> Ensure you are in the frontend directory
 -> cd src/scripts
 -> bash
 -> ./test.sh
 
 Seperate Day Instructions:
 
+-> Ensure you are in the frontend directory
 -> cd src
 -> bash
 -> ./weekly.sh
@@ -24,3 +27,22 @@ user01	AA	pass
 user02	FS	pass
 user03	BS	pass
 user04	SS	pass
+
+
+Backend Program Running:
+
+-> Ensure you are in the backend directory
+-> cd src
+-> make
+-> run python backend.py
+
+PyTest Running Instructions:
+
+-> Ensure you are in the backend directory
+-> run pytest src/
+
+PyTest Running Instructions (Individual Files):
+
+-> Ensure you are in the backend directory
+-> cd src
+-> run pytest file_name.py
