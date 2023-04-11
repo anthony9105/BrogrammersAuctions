@@ -5,7 +5,10 @@ by Baron, Anthony, Kaatihan
 1. make sure you are in the front_end_1/front_end_1/src directory
 2. enter: make
 3. enter: ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction1.txt reset
-4. the previous step takes the currentusers file first, then the availableitems file, then the transaction file to create, and optional argument "reset" which tells
+<br/>or
+ ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction1.txt
+ 
+5. the previous step takes the currentusers file first, then the availableitems file, then the transaction file to create, and optional argument "reset" which tells
 the frontend to reset the merged daily transaction file to empty or not.
 
 # Front end operations list:
