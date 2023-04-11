@@ -16,13 +16,22 @@ Script Running Instructions:
 -> bash
 -> ./test.sh
 
-Seperate Day Instructions:
+
+To run the weekly script:
 
 -> Ensure you are in the frontend directory
--> cd src
--> bash
--> ./weekly.sh
-
+-> run chmod +x daily01.sh
+-> run chmod +x daily02.sh
+-> run chmod +x daily03sh
+-> run chmod +x daily04.sh
+-> run chmod +x daily05.sh
+-> run chmod +x daily01_content.sh
+-> run chmod +x daily02_content.sh
+-> run chmod +x daily03_contentsh
+-> run chmod +x daily04_content.sh
+-> run chmod +x daily05_content.sh
+-> run chmod +x weekly.sh
+-> run ./weekly.sh
 
 Program Users:
 
