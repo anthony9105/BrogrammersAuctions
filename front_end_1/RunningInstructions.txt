@@ -3,7 +3,10 @@ Program Running Instructions:
 -> Ensure you are in the frontend directory
 -> cd src
 -> make
--> ./auction_system ./iofiles/current_users_accounts.txt ./iofiles/available_items.txt ./iofiles/daily_transaction.txt
+-> ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction1.txt reset
+or
+-> ./auction_system ../../../backend/current_users_accounts.txt ../../../backend/available_items.txt ./iofiles/daily_transaction1.txt
+optional argument "reset" which tells the frontend to reset the merged daily transaction file to empty or not.
 
 
 Script Running Instructions:
