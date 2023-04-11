@@ -28,21 +28,21 @@ a user to cancel/exit out of a transaction they are in the middle of by entering
 This is different from the cancel auction (cancel) command.
 
 # Starting users:
--user01	AA	pass
--user02	FS	pass
--user03	BS	pass
--user04	AM	newpass
--user05  SS  pass
+- user01	AA	pass
+- user02	FS	pass
+- user03	BS	pass
+- user04	AM	newpass
+- user05  SS  pass
 
 
 # Starting items:
--item name:       seller:      current bidder/buyer:      days left:      current bid:
+- item name:       seller:      current bidder/buyer:      days left:      current bid:
 
--vicks            user01            user03                  10                 10
--fan              user01             N/A                    75                 75
--lotion           user01            user02                   5                8.23
--lamp             user02             user01                 50               58.23
--soccerball       user01             N/A                    30                 23
+- vicks            user01            user03                  10                 10
+- fan              user01             N/A                    75                 75
+- lotion           user01            user02                   5                8.23
+- lamp             user02             user01                 50               58.23
+- soccerball       user01             N/A                    30                 23
 
 
 # To run the test script:
